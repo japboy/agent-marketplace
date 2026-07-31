@@ -6,11 +6,11 @@ uv = "0.12.0"
 vale = "3.16.0"
 
 [tasks.format]
-description = "Format repository Markdown, JSON, and YAML"
+description = "Format repository Markdown, JSON-compatible configuration, and YAML"
 run = "dprint fmt --incremental=false"
 
 [tasks.format-check]
-description = "Check repository Markdown, JSON, and YAML formatting"
+description = "Check repository Markdown, JSON-compatible configuration, and YAML formatting"
 run = "dprint check"
 
 [tasks.prose-test]
