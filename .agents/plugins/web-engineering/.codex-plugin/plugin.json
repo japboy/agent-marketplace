@@ -1,0 +1,27 @@
+{
+  "name": "web-engineering",
+  "version": "0.1.0",
+  "description": "Reviews frontend tests, web standards, route-state analytics architecture, and XState architecture.",
+  "author": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com",
+    "url": "https://github.com/japboy"
+  },
+  "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/web-engineering",
+  "repository": "https://github.com/japboy/agent-marketplace",
+  "keywords": ["frontend", "testing", "web-standards", "analytics", "xstate"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Web Engineering",
+    "shortDescription": "Web engineering reviews",
+    "longDescription": "Review frontend test value, standards-based Web UI implementation, route-state analytics, and XState v5 architecture.",
+    "developerName": "Yu Inao",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Review this frontend implementation and its tests.",
+      "Evaluate this route-state analytics architecture.",
+      "Review this XState v5 architecture."
+    ]
+  }
+}

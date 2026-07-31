@@ -1,0 +1,3 @@
+tests/vale/fixtures/positive.md:2:16:AgentMarketplace.JapaneseAsciiSpacing:Add a half-width space between Japanese text and the ASCII letter in '明V'.
+tests/vale/fixtures/positive.md:7:4:AgentMarketplace.JapaneseAsciiSpacing:Add a half-width space between Japanese text and the ASCII letter in 'e本'.
+tests/vale/fixtures/positive.md:9:3:AgentMarketplace.JapaneseAsciiSpacing:Add a half-width space between Japanese text and the ASCII letter in '示V'.

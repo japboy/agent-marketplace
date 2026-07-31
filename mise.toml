@@ -1,0 +1,26 @@
+[tools]
+dprint = "0.55.2"
+hk = "1.53.0"
+python = "3.14.6"
+uv = "0.12.0"
+vale = "3.16.0"
+
+[tasks.format]
+description = "Format repository Markdown, JSON, and YAML"
+run = "dprint fmt --incremental=false"
+
+[tasks.format-check]
+description = "Check repository Markdown, JSON, and YAML formatting"
+run = "dprint check"
+
+[tasks.prose-test]
+description = "Verify Vale parser-scope fixtures"
+run = "sh tests/vale/test.sh"
+
+[tasks.prose-check]
+description = "Check repository prose policy"
+run = "git ls-files --cached --others --exclude-standard -z -- '*.md' '*.mdown' '*.markdown' '*.markdn' ':(exclude)tests/vale/fixtures/**' | xargs -0 vale --no-global --config=.vale.ini"
+
+[tasks.check]
+description = "Run every read-only repository quality gate"
+depends = ["format-check", "prose-test", "prose-check", "skills-check"]

@@ -1,0 +1,26 @@
+{
+  "name": "software-delivery",
+  "version": "0.1.0",
+  "description": "Provides atomic Git commit creation and iterative GitHub issue plan refinement workflows.",
+  "author": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com",
+    "url": "https://github.com/japboy"
+  },
+  "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/software-delivery",
+  "repository": "https://github.com/japboy/agent-marketplace",
+  "keywords": ["git", "github", "planning"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Software Delivery",
+    "shortDescription": "Git and GitHub workflows",
+    "longDescription": "Refine implementation plans in GitHub issues and create authorized, atomic Git commits.",
+    "developerName": "Yu Inao",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Refine the implementation plan in this GitHub issue.",
+      "Create an authorized atomic commit for these changes."
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "agent-marketplace",
+  "version": "0.1.0",
+  "owner": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com"
+  },
+  "description": "Reusable Agent Skills for Claude Code and Codex.",
+  "plugins": [
+    {
+      "name": "workflow-tooling",
+      "source": "./.agents/plugins/workflow-tooling",
+      "category": "Developer Tools",
+      "tags": ["memory", "agent-skills", "handoff"],
+      "strict": true
+    },
+    {
+      "name": "software-delivery",
+      "source": "./.agents/plugins/software-delivery",
+      "category": "Developer Tools",
+      "tags": ["git", "github", "planning"],
+      "strict": true
+    },
+    {
+      "name": "language-quality",
+      "source": "./.agents/plugins/language-quality",
+      "category": "Communication",
+      "tags": ["japanese", "translation", "terminology"],
+      "strict": true
+    },
+    {
+      "name": "design-engineering",
+      "source": "./.agents/plugins/design-engineering",
+      "category": "Creativity",
+      "tags": ["design-systems", "reverse-engineering", "documentation"],
+      "strict": true
+    },
+    {
+      "name": "web-engineering",
+      "source": "./.agents/plugins/web-engineering",
+      "category": "Developer Tools",
+      "tags": ["frontend", "testing", "web-standards", "analytics", "xstate"],
+      "strict": true
+    }
+  ]
+}

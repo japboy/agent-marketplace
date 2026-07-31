@@ -1,0 +1,27 @@
+{
+  "name": "workflow-tooling",
+  "version": "0.1.0",
+  "description": "Provides repository-shared memory, Agent Skill authoring, and conversation handoff workflows.",
+  "author": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com",
+    "url": "https://github.com/japboy"
+  },
+  "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/workflow-tooling",
+  "repository": "https://github.com/japboy/agent-marketplace",
+  "keywords": ["memory", "agent-skills", "handoff"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Workflow Tooling",
+    "shortDescription": "Agent workflow utilities",
+    "longDescription": "Maintain repository-shared memory, author portable Agent Skills, and prepare conversation handoffs.",
+    "developerName": "Yu Inao",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Set up shared repository memory for this project.",
+      "Create or improve an Agent Skill.",
+      "Prepare a handoff summary for the next agent."
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "workflow-tooling",
+  "displayName": "Workflow Tooling",
+  "version": "0.1.0",
+  "description": "Provides repository-shared memory, Agent Skill authoring, and conversation handoff workflows.",
+  "author": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com",
+    "url": "https://github.com/japboy"
+  },
+  "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/workflow-tooling",
+  "repository": "https://github.com/japboy/agent-marketplace",
+  "keywords": ["memory", "agent-skills", "handoff"],
+  "skills": "./skills/"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "design-engineering",
+  "version": "0.1.0",
+  "description": "Reverse-engineers implementations, design files, and documentation into reusable design systems.",
+  "author": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com",
+    "url": "https://github.com/japboy"
+  },
+  "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/design-engineering",
+  "repository": "https://github.com/japboy/agent-marketplace",
+  "keywords": ["design-systems", "reverse-engineering", "documentation"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Design Engineering",
+    "shortDescription": "Design system reconstruction",
+    "longDescription": "Reconstruct evidence-based design systems from existing implementation, design, and documentation sources.",
+    "developerName": "Yu Inao",
+    "category": "Creativity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Reconstruct a design system from this implementation and its design sources."
+    ]
+  }
+}

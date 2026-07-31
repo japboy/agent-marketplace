@@ -1,0 +1,10 @@
+#!/bin/sh
+#MISE description="Install this repository's hk-managed Git hooks"
+
+set -eu
+
+script_dir=$(CDPATH= cd "$(dirname "$0")" && pwd)
+repo_root=${MISE_PROJECT_ROOT:-$(CDPATH= cd "$script_dir/.." && pwd)}
+
+cd "$repo_root"
+exec hk install --mise

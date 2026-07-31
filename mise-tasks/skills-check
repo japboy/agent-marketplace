@@ -1,0 +1,64 @@
+#!/bin/sh
+#MISE description="Validate all or changed Plugin-owned Agent Skills with the locked reference CLI"
+
+set -eu
+
+script_dir=$(CDPATH= cd "$(dirname "$0")" && pwd)
+repo_root=${MISE_PROJECT_ROOT:-$(CDPATH= cd "$script_dir/.." && pwd)}
+skill_list=$(mktemp "${TMPDIR:-/tmp}/agent-marketplace-skills.XXXXXX")
+
+cleanup() {
+  rm -f "$skill_list"
+}
+trap cleanup EXIT HUP INT TERM
+
+if [ "$#" -eq 0 ]; then
+  find "$repo_root/.agents/plugins" -path '*/skills/*/SKILL.md' -type f -exec dirname {} \; >"$skill_list"
+  empty_message='No Plugin-owned Agent Skills found'
+  empty_status=1
+else
+  for changed_path do
+    case "$changed_path" in
+      "$repo_root"/*) relative_path=${changed_path#"$repo_root"/} ;;
+      ./*) relative_path=${changed_path#./} ;;
+      *) relative_path=$changed_path ;;
+    esac
+
+    case "$relative_path" in
+      .agents/plugins/*/skills/*/*)
+        plugin_and_rest=${relative_path#.agents/plugins/}
+        plugin=${plugin_and_rest%%/*}
+        skills_and_rest=${plugin_and_rest#*/}
+        skill_and_rest=${skills_and_rest#skills/}
+        skill=${skill_and_rest%%/*}
+        skill_root="$repo_root/.agents/plugins/$plugin/skills/$skill"
+
+        # A fully deleted Skill has no remaining root to validate. Partial
+        # deletions, including SKILL.md deletion, retain the directory and are
+        # passed to skills-ref so the invalid state fails.
+        if [ -d "$skill_root" ]; then
+          printf '%s\n' "$skill_root" >>"$skill_list"
+        fi
+        ;;
+    esac
+  done
+  empty_message='No changed Agent Skills to validate'
+  empty_status=0
+fi
+
+LC_ALL=C sort -u "$skill_list" -o "$skill_list"
+
+if [ ! -s "$skill_list" ]; then
+  printf '%s\n' "$empty_message"
+  exit "$empty_status"
+fi
+
+cd "$repo_root"
+skill_count=0
+while IFS= read -r skill_root; do
+  relative_skill_root=${skill_root#"$repo_root"/}
+  uv run --locked agentskills validate "$relative_skill_root"
+  skill_count=$((skill_count + 1))
+done <"$skill_list"
+
+printf 'Valid Agent Skills: %s\n' "$skill_count"

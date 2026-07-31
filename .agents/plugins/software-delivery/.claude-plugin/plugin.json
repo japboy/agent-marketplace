@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "software-delivery",
+  "displayName": "Software Delivery",
+  "version": "0.1.0",
+  "description": "Provides atomic Git commit creation and iterative GitHub issue plan refinement workflows.",
+  "author": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com",
+    "url": "https://github.com/japboy"
+  },
+  "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/software-delivery",
+  "repository": "https://github.com/japboy/agent-marketplace",
+  "keywords": ["git", "github", "planning"],
+  "skills": "./skills/"
+}

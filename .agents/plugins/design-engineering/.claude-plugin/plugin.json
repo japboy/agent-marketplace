@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "design-engineering",
+  "displayName": "Design Engineering",
+  "version": "0.1.0",
+  "description": "Reverse-engineers implementations, design files, and documentation into reusable design systems.",
+  "author": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com",
+    "url": "https://github.com/japboy"
+  },
+  "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/design-engineering",
+  "repository": "https://github.com/japboy/agent-marketplace",
+  "keywords": ["design-systems", "reverse-engineering", "documentation"],
+  "skills": "./skills/"
+}

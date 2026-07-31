@@ -1,0 +1,5 @@
+extends: existence
+message: "Add a half-width space between Japanese text and the ASCII letter in '%s'."
+level: error
+raw:
+  - '(?:[\p{Han}\p{Hiragana}\p{Katakana}][A-Za-z]|[A-Za-z][\p{Han}\p{Hiragana}\p{Katakana}])'

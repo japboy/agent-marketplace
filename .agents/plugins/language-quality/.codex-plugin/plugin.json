@@ -1,0 +1,26 @@
+{
+  "name": "language-quality",
+  "version": "0.1.0",
+  "description": "Provides evidence-backed terminology research and natural Japanese rewriting workflows.",
+  "author": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com",
+    "url": "https://github.com/japboy"
+  },
+  "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/language-quality",
+  "repository": "https://github.com/japboy/agent-marketplace",
+  "keywords": ["japanese", "translation", "terminology"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Language Quality",
+    "shortDescription": "Japanese language workflows",
+    "longDescription": "Research established English and Japanese terminology, then naturalize Japanese writing without changing meaning.",
+    "developerName": "Yu Inao",
+    "category": "Communication",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Research the established Japanese translation for this term.",
+      "Rewrite the previous response as natural Japanese."
+    ]
+  }
+}

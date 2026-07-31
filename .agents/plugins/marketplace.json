@@ -1,0 +1,68 @@
+{
+  "name": "agent-marketplace",
+  "interface": {
+    "displayName": "Agent Marketplace"
+  },
+  "plugins": [
+    {
+      "name": "workflow-tooling",
+      "source": {
+        "source": "local",
+        "path": "./.agents/plugins/workflow-tooling"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "software-delivery",
+      "source": {
+        "source": "local",
+        "path": "./.agents/plugins/software-delivery"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "language-quality",
+      "source": {
+        "source": "local",
+        "path": "./.agents/plugins/language-quality"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Communication"
+    },
+    {
+      "name": "design-engineering",
+      "source": {
+        "source": "local",
+        "path": "./.agents/plugins/design-engineering"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creativity"
+    },
+    {
+      "name": "web-engineering",
+      "source": {
+        "source": "local",
+        "path": "./.agents/plugins/web-engineering"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

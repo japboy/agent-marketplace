@@ -1,0 +1,26 @@
+amends "package://github.com/jdx/hk/releases/download/v1.53.0/hk@1.53.0#/Config.pkl"
+
+min_hk_version = "1.53.0"
+
+local agentSkills = new Mapping<String, Step> {
+  ["agent-skills"] {
+    // A change anywhere in a Skill can affect the instructions that the Skill
+    // exposes. The task maps each changed file to its owning Skill root.
+    glob = Regex(#"^\.agents/plugins/[^/]+/skills/[^/]+(?:/.*)?$"#)
+    check = new Command {
+      argv = List("mise", "run", "skills-check", "--", "{{files}}")
+    }
+  }
+}
+
+hooks {
+  ["pre-commit"] {
+    fix = false
+    stash = "none"
+    steps = agentSkills
+  }
+  ["check"] {
+    fix = false
+    steps = agentSkills
+  }
+}
