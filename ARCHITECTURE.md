@@ -65,8 +65,8 @@ Plugin topology ──────── architecture review ─ dual-marketplac
 Dependency declarations converge into two ordinary update states regardless of their manager:
 
 ```text
-GitHub Actions / mise / Python / custom declarations ── Renovate ── major PR ───── manual review
-                                                              └── non-major PR ─ green CI ─ automerge
+GitHub Actions / mise / Python / custom declarations ── weekly Renovate ── major PR ─ manual review
+                                                                  └── non-major PR ─ CI ─ automerge
 uv.lock ───────────────────────── weekly lock-file maintenance PR ─────────────── manual review
 ```
 
@@ -123,14 +123,15 @@ manual / CI ── all Skill roots ┘
   exhaustive for the repository: native managers own GitHub Actions, mise, and PEP 621 declarations;
   custom regex managers own uv's required version, duplicated hk versions, and dprint plugin
   versions with their content digests.
-- Ordinary dependency updates have exactly two states across all managers: SemVer-major updates form
-  one manual-review PR, while minor, patch, pin, digest, rollback, and bump updates form one
-  non-major PR. Non-major PRs use Renovate-managed automerge only after required status checks pass;
-  major PRs never automerge. Pre-1.0 minor and patch releases remain non-major by this policy.
+- Ordinary dependency updates are created or updated only during the weekly Monday 00:00–03:59
+  `Asia/Tokyo` window and have exactly two states across all managers: SemVer-major updates form one
+  manual-review PR, while minor, patch, pin, digest, rollback, and bump updates form one non-major
+  PR. Non-major PRs use Renovate-managed automerge only after required status checks pass; major PRs
+  never automerge. Pre-1.0 minor and patch releases remain non-major by this policy.
 - PyPI releases must be at least three days old before Renovate creates an update branch, matching
-  uv's `exclude-newer` resolution policy. Lock-file maintenance runs weekly in a separate manual PR.
-  Dependency replacements also remain separate because Renovate does not combine replacement or
-  lock-file-maintenance updates with ordinary dependency groups.
+  uv's `exclude-newer` resolution policy. Lock-file maintenance uses the same weekly window in a
+  separate manual PR. Dependency replacements also remain separate because Renovate does not combine
+  replacement or lock-file-maintenance updates with ordinary dependency groups.
 - Stable decisions are recorded in tracked architecture and documentation; local agent-memory state
   remains under the Git common directory.
 
