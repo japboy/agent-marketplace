@@ -33,8 +33,9 @@ and manifests describe that boundary but do not duplicate its Skill files.
 ├── .github/workflows/quality.yml       # Separate format, prose, and Skill CI gates
 ├── hk.pkl                              # Git hook events and staged-file selection
 ├── .vale.ini                           # Repository-owned prose style entrypoint
-├── dprint.json                         # Deterministic Markdown, JSON, and YAML formatting
+├── dprint.json                         # Deterministic structured-file formatting
 ├── mise.toml                           # Native mise tools and declarative tasks
+├── renovate.json5                      # Finite dependency-update policy
 └── README.md
 ```
 
@@ -59,6 +60,14 @@ Repository Markdown/JSON/YAML ── dprint check/fmt ── structural state
 Repository Markdown ───────────── Vale check ─────── prose policy
 Plugin-owned SKILL.md ── skills-ref ───────── Agent Skills format
 Plugin topology ──────── architecture review ─ dual-marketplace contract
+```
+
+Dependency declarations converge into two ordinary update states regardless of their manager:
+
+```text
+GitHub Actions / mise / Python / custom declarations ── weekly Renovate ── major PR ─ manual review
+                                                                  └── non-major PR ─ CI ─ automerge
+uv.lock ───────────────────────── weekly lock-file maintenance PR ─────────────── manual review
 ```
 
 For Agent Skill validation, the two finite entry paths converge before invoking the validator:
@@ -97,9 +106,11 @@ manual / CI ── all Skill roots ┘
   them to unique owning Skill roots. A completely deleted Skill is absent and requires no format
   validation, while any remaining root is validated as a whole. The step explicitly disables fixing
   and stashing, so validation never mutates the working tree.
-- Document quality has two explicit owners: dprint owns deterministic Markdown, JSON, and YAML
-  formatting, while the repository Vale style owns Markdown prose policy without automatic
-  correction. The official Agent Skills reference CLI owns Skill format validation.
+- Document quality has two explicit owners: dprint owns deterministic Markdown, JSON,
+  JSONC-compatible Renovate JSON5, and YAML formatting, while the repository Vale style owns
+  Markdown prose policy without automatic correction. `renovate.json5` deliberately uses the JSONC
+  subset of JSON5 and is explicitly associated with dprint's JSON plugin. The official Agent Skills
+  reference CLI owns Skill format validation.
 - Vale follows its native repository layout: `.vale.ini` is the root entrypoint, `styles/` is the
   `StylesPath`, and `tests/vale/` owns integration fixtures. The entrypoint selects only the
   repository-owned `AgentMarketplace` style; no external Vale package or `vale sync` step
@@ -108,6 +119,19 @@ manual / CI ── all Skill roots ┘
   mise resolves the independent dprint, Vale, and hk CLI versions from the native root `mise.toml`;
   its Aqua backend verifies upstream release checksums. uv resolves `skills-ref` from the root
   development dependency group and lockfile. CI, hooks, and local commands use the same state.
+- Root `renovate.json5` owns dependency discovery and update policy. Its enabled manager list is
+  exhaustive for the repository: native managers own GitHub Actions, mise, and PEP 621 declarations;
+  custom regex managers own uv's required version, duplicated hk versions, and dprint plugin
+  versions with their content digests.
+- Ordinary dependency updates are created or updated only during the weekly Monday 00:00–03:59
+  `Asia/Tokyo` window and have exactly two states across all managers: SemVer-major updates form one
+  manual-review PR, while minor, patch, pin, digest, rollback, and bump updates form one non-major
+  PR. Non-major PRs use Renovate-managed automerge only after required status checks pass; major PRs
+  never automerge. Pre-1.0 minor and patch releases remain non-major by this policy.
+- PyPI releases must be at least three days old before Renovate creates an update branch, matching
+  uv's `exclude-newer` resolution policy. Lock-file maintenance uses the same weekly window in a
+  separate manual PR. Dependency replacements also remain separate because Renovate does not combine
+  replacement or lock-file-maintenance updates with ordinary dependency groups.
 - Stable decisions are recorded in tracked architecture and documentation; local agent-memory state
   remains under the Git common directory.
 
@@ -172,7 +196,11 @@ and Claude product validators remain release checks documented in `.agents/plugi
 - [Vale styles and rule layout](https://vale.sh/docs/styles)
 - [Vale `BasedOnStyles`](https://vale.sh/docs/keys/basedonstyles)
 - [dprint JSON Plugin](https://dprint.dev/plugins/json/)
+- [dprint configuration and plugin associations](https://dprint.dev/config/)
 - [dprint Pretty YAML Plugin](https://dprint.dev/plugins/pretty_yaml/)
+- [Renovate configuration options](https://docs.renovatebot.com/configuration-options/)
+- [Renovate regex custom manager](https://docs.renovatebot.com/modules/manager/regex/)
+- [Renovate GitHub release-attachments datasource](https://docs.renovatebot.com/modules/datasource/github-release-attachments/)
 - [Agent Skills specification](https://agentskills.io/specification)
 - [Claude Code Plugins reference](https://code.claude.com/docs/en/plugins-reference)
 - [GitHub repository licensing guidance](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
