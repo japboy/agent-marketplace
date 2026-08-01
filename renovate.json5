@@ -106,11 +106,10 @@
       "description": "Update the dprint Pretty YAML plugin and digest",
       "managerFilePatterns": ["/^dprint\\.json$/"],
       "matchStrings": [
-        "https://plugins\\.dprint\\.dev/g-plane/pretty_yaml-v(?<currentValue>\\d+\\.\\d+\\.\\d+)\\.wasm@(?<currentDigest>[a-f0-9]{64})",
+        "https://plugins\\.dprint\\.dev/g-plane/pretty_yaml-(?<currentValue>v\\d+\\.\\d+\\.\\d+)\\.wasm@(?<currentDigest>[a-f0-9]{64})",
       ],
       "datasourceTemplate": "github-release-attachments",
       "packageNameTemplate": "g-plane/pretty_yaml",
-      "extractVersionTemplate": "^v(?<version>.*)$",
       "versioningTemplate": "semver",
     },
   ],
