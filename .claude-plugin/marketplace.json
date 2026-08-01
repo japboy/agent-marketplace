@@ -6,7 +6,7 @@
     "name": "Yu Inao",
     "email": "84360+japboy@users.noreply.github.com"
   },
-  "description": "Reusable Agent Skills for Claude Code and Codex.",
+  "description": "My own personal marketplace for Agent Skills & tools",
   "plugins": [
     {
       "name": "workflow-tooling",
