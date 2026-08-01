@@ -1,7 +1,7 @@
 # Agent Marketplace
 
-A dual-format marketplace that distributes one physical set of Agent Skills to Claude Code and
-Codex.
+A personal marketplace for Agent Skills and tools, currently offering reusable Skills for Claude
+Code and Codex.
 
 ## Overview
 

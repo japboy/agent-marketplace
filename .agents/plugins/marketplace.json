@@ -1,7 +1,7 @@
 {
   "name": "agent-marketplace",
   "interface": {
-    "displayName": "Agent Marketplace"
+    "displayName": "Agent Marketplace @japboy"
   },
   "plugins": [
     {
