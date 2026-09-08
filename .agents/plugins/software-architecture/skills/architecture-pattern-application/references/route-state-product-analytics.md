@@ -257,8 +257,13 @@ flowchart LR
   C --> D[Consent and privacy boundary]
   D --> E[Event queue]
   E --> F[Collector transport]
-  F --> G[DWH raw event table]
+  F --> G[Selected analytics destination]
 ```
+
+Choose the destination independently of the observation boundary. Frontend projection can send
+derived events to an existing analytics service. When historical reinterpretation is required,
+retain canonical transitions in logs, a time-series store, or a DWH raw table. Retaining raw history
+is a project requirement to decide, not a prerequisite for every projection.
 
 The History API distinguishes adding and replacing entries from history traversal
 ([R1](#r1-history-api)). Calling `pushState()` or `replaceState()` does not itself emit `popstate`
@@ -628,16 +633,16 @@ measurements:
 
 Keep responsibilities explicit:
 
-| Layer                   | Responsibility                                          |
-| ----------------------- | ------------------------------------------------------- |
-| Feature code            | Update product state and route state correctly          |
-| Router                  | Maintain canonical route transitions                    |
-| Route registry          | Define stable state names and meanings                  |
-| Instrumentation runtime | Observe transitions and send raw events                 |
-| Measurement manifest    | Declare semantic interpretation rules                   |
-| Collector               | Handle consent, privacy, batching, retry, and transport |
-| DWH raw table           | Preserve raw transition history                         |
-| Semantic model          | Produce funnels, journeys, metrics, and named events    |
+| Layer                       | Responsibility                                                                |
+| --------------------------- | ----------------------------------------------------------------------------- |
+| Feature code                | Update product state and route state correctly                                |
+| Router                      | Maintain canonical route transitions                                          |
+| Route registry              | Define stable state names and meanings                                        |
+| Instrumentation runtime     | Observe transitions and send raw events                                       |
+| Measurement manifest        | Declare semantic interpretation rules                                         |
+| Collector                   | Handle consent, privacy, batching, retry, and transport                       |
+| History store (when needed) | Preserve raw transitions for later interpretation                             |
+| Interpretation layer        | Derive named events, funnels, journeys, and metrics from observed transitions |
 
 ## Privacy and Consent
 
@@ -717,7 +722,9 @@ Use these questions when reviewing a web app:
 - Are route-unobservable facts represented by state machines, domain events, or form/media lifecycle
   sources?
 - Is consent enforced at the instrumentation boundary?
-- Can DWH models reproduce funnels and journeys from raw transition data?
+- Can the selected interpretation layer derive the required measurements from observed transitions?
+- If historical reinterpretation is required, does the selected history store retain the necessary
+  raw transitions and attributes?
 
 ## Decision Template
 

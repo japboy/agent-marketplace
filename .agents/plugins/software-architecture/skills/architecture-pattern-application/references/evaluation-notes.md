@@ -77,3 +77,16 @@ follow-up below.
 - Cost: token counts and comparative runtime were not measured.
 - Remaining evaluation gate: isolated baseline/candidate responses on a fixed model and harness,
   including existing applicability cases and held-out prompts, with quality and cost measurements.
+
+## 2026-09-08: Optional DWH Review Follow-up
+
+- Evidence:
+  [PR 11 review](https://github.com/japboy/agent-marketplace/pull/11#discussion_r3955153610) found
+  that the runtime diagram and responsibility table still prescribed a DWH despite the revised
+  maturity model. The review checklist retained the same assumption.
+- Correction: name the selected analytics destination and interpretation layer, make history
+  retention conditional on project needs, and retain a DWH raw table as one storage example.
+- Validation: inspect these sections together against case 12's implementation-choice expectations.
+  This is a textual consistency correction, not an executed agent-response evaluation.
+- Review state: `provisional` for measured behavioral improvement; the existing comparative
+  evaluation gate remains open.
