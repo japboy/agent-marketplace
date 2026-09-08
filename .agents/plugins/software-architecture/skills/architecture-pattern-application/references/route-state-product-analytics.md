@@ -12,21 +12,34 @@ architecture, and downstream data modeling need to be coherent.
 
 ## Core Thesis
 
-Product analytics should be derived from canonical product state transitions, not scattered UI-side
-tracking calls.
+Product analytics should derive new measurements from an existing stream of canonical product-state
+transitions, with no or minimal changes to product instrumentation as analysis needs evolve.
+Removing scattered UI-side tracking calls supports this goal; it is not the success criterion by
+itself.
 
-The strongest web version of this pattern is:
+Consider analytics reuse when designing or revisiting URLs. Representing meaningful product-visible
+states in URLs gives future analysis a shared state vocabulary, alongside navigation and information
+architecture benefits. SEO-driven URL design can motivate this level of state detail, but SEO is not
+a prerequisite. Apply this lens during design, not only after meaningful routes already exist.
+
+The pattern separates observation from interpretation:
 
 ```mermaid
 flowchart LR
   A[URL or route state<br/>canonical product state] --> B[Route transition instrumentation]
-  B --> C[Declarative measurement manifests]
-  C --> D[Raw behavioral logs<br/>in the warehouse]
-  D --> E[Semantic modeling<br/>funnels, journeys, metrics]
+  B --> C[Canonical transition stream]
+  C --> D[Declarative interpretation<br/>named events, funnels, journeys]
+  C --> E[Retained transition history]
+  E --> D
 ```
 
-The goal is not to make `track(...)` safer. The goal is to avoid making product code call
-`track(...)` for durable product metrics.
+A new question that can be answered from already observed states and attributes should require only
+an interpretation change. A question requiring an unobserved fact may require extending an
+instrumentation source. New product states still require a state-contract change; the pattern does
+not promise that instrumentation never changes.
+
+Retained history enables later derivation only when it contains the states and attributes needed by
+the new question. The collection and interpretation locations are implementation choices.
 
 ## Problem
 
@@ -71,15 +84,29 @@ durable product analytics.
 
 ## Architecture Levels
 
-Use this ladder to classify a tracking design.
+Classify operational maturity by what changes when a measurement is requested:
 
-| Level | Pattern                                               | Assessment                                                           |
-| ----- | ----------------------------------------------------- | -------------------------------------------------------------------- |
-| 1     | UI-side SDK calls                                     | Easy to start, weak under refactoring                                |
-| 2     | Typed analytics abstraction                           | Safer API, still procedural                                          |
-| 3     | Application event projection                          | Better separation, still depends on explicit event emission          |
-| 4     | State transition projection                           | Analytics derived from explicit finite state changes                 |
-| 5     | Route-state raw collection with DWH semantic modeling | Strongest when URL or route state is a stable product-state contract |
+| Level | Pattern                                                 | Change required for a new measurement                       |
+| ----- | ------------------------------------------------------- | ----------------------------------------------------------- |
+| 0     | Add or change individual tracking events as needs arise | Individual event implementation                             |
+| 1     | Consolidate and type event patterns and metadata        | Event implementation through a shared contract              |
+| 2     | Derive measurements from an observed event stream       | Interpretation rules; no or minimal instrumentation changes |
+
+These levels describe this pattern's operating model, not a vendor maturity standard. Level 2 is
+bounded by the facts the stream observes; typing an API or moving calls out of components alone does
+not establish it.
+
+Choose implementation mechanisms separately from maturity:
+
+- Route transitions expose product-visible navigation state.
+- State machines or domain events expose facts not represented by routes.
+- A frontend observer can project the stream into existing analytics events.
+- Logs or a time-series store can retain transitions for later ETL and interpretation.
+- A DWH can retain raw transitions and derive measurements in semantic models.
+
+DWH modeling is one realization, not a higher maturity level than frontend or ETL projection. Choose
+where to interpret the stream according to when measurements are needed and whether historical
+reinterpretation is required.
 
 The main transition is from procedural tracking to observed product-state transitions:
 
@@ -294,9 +321,13 @@ scattered through UI code.
 
 ## Frontend Implementation Example
 
-A frontend implementation can keep feature code unaware of analytics. Feature code changes route
+This example uses frontend projection as one implementation choice. Feature code changes route
 state; the instrumentation layer observes router transitions, normalizes them, emits one raw
 transition event, and optionally projects semantic events from the measurement manifest.
+
+The inline manifest makes the example self-contained. Changing it here still requires a frontend
+release, even though feature code stays unchanged. To derive new measurements without that release,
+apply interpretation rules downstream to retained raw transitions.
 
 ```ts
 type RouteName = "lesson" | "problem" | "problem_result";
@@ -690,20 +721,24 @@ Use these questions when reviewing a web app:
 
 ## Decision Template
 
-Use this structure for architecture recommendations:
+Use this structure for architecture recommendations, selecting an interpretation location for the
+project rather than assuming a warehouse:
 
 ```text
 Decision:
-  Adopt route-state-based product analytics for durable web behavior metrics.
+  Derive durable web behavior metrics from observed state transitions so new
+  analysis questions require no or minimal instrumentation changes.
 
 Canonical state:
-  URLs and route names are the primary product-state representation.
+  Design URLs and route names to express meaningful product-visible states,
+  including their reuse as a vocabulary for future analysis.
 
 Raw event:
   user_state_transitioned
 
 Semantic derivation:
-  Measurement manifests or DWH models derive named analytics events.
+  Declare interpretation rules over the transition stream.
+  Select frontend projection, ETL, or DWH modeling for the project's needs.
 
 Non-route gaps:
   State machines, domain events, form lifecycle, or media lifecycle sources.
@@ -711,7 +746,7 @@ Non-route gaps:
 Boundaries:
   Router owns transitions.
   Instrumentation owns observation and transport.
-  DWH owns long-term semantic modeling.
+  The selected interpretation layer owns measurement definitions.
 
 Risks:
   Weak IA naming, unsafe query params, ambiguous route semantics, incomplete
