@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "software-delivery",
   "displayName": "Software Delivery",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Provides atomic Git commits, reviewer-oriented GitHub pull requests, and iterative issue plan refinement workflows.",
   "author": {
     "name": "Yu Inao",
