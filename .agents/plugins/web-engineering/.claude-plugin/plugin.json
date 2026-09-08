@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "web-engineering",
   "displayName": "Web Engineering",
-  "version": "0.1.0",
-  "description": "Reviews frontend tests, web standards, route-state analytics architecture, and XState architecture.",
+  "version": "0.2.0",
+  "description": "Reviews frontend tests, web standards, and XState architecture.",
   "author": {
     "name": "Yu Inao",
     "email": "84360+japboy@users.noreply.github.com",
@@ -11,6 +11,11 @@
   },
   "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/web-engineering",
   "repository": "https://github.com/japboy/agent-marketplace",
-  "keywords": ["frontend", "testing", "web-standards", "analytics", "xstate"],
+  "keywords": [
+    "frontend",
+    "testing",
+    "web-standards",
+    "xstate"
+  ],
   "skills": "./skills/"
 }

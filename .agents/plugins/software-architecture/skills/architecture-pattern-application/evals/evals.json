@@ -1,0 +1,111 @@
+{
+  "skill_name": "architecture-pattern-application",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We have a React checkout with routes /checkout/shipping, /checkout/payment, /checkout/review, and /checkout/complete. Each page component currently calls analytics.track() for durable funnel events. Design an architecture that survives component refactors, supports warehouse funnel modeling, and prevents arbitrary query parameters from leaking PII.",
+      "expected_output": "An applicable route-state analytics decision that replaces component-owned durable tracking with canonical transition collection, a declarative semantic layer, and explicit privacy and ownership boundaries.",
+      "assertions": [
+        "The response identifies the Route-State-Based Product Analytics catalogue reference and declares `applicable` as its only terminal applicability state",
+        "The proposed model explicitly covers canonical route names or a route registry, one raw route-transition event, and semantic derivation through a manifest or DWH model",
+        "The response separates feature, router, instrumentation, collector/privacy, and warehouse responsibilities rather than merely wrapping analytics.track()",
+        "The risks or checklist address consent plus allowlisting, classification, canonicalization, or redaction of route and query values"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our SPA exposes only /app and /workspace/:id today. Product says URLs may or may not become stable user-visible states, but there is no route registry or documented meaning for transitions yet. Should we adopt the route-state analytics catalogue pattern now? Give only the catalogue applicability result.",
+      "expected_output": "A defer result that names the missing evidence about canonical product-state semantics and the concrete artifact needed to resolve it, without inventing a full architecture.",
+      "assertions": [
+        "The response selects exactly the applicability state `defer`",
+        "The response identifies missing evidence about whether routes are stable, meaningful product states",
+        "The response names a resolving artifact such as a route registry, information-architecture specification, or representative transition map",
+        "The response does not continue into a generic architecture proposal, implementation plan, or checklist"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review our service-worker cache eviction policy and recommend whether stale-while-revalidate or network-first is better. There is no product analytics, route instrumentation, URL-state, measurement manifest, or warehouse modeling concern in this decision.",
+      "expected_output": "A concise not-applicable result because neither catalogue pattern covers service-worker caching strategy.",
+      "assertions": [
+        "The response selects exactly the applicability state `not-applicable`",
+        "The reason states that the available catalogue does not match cache strategy",
+        "The response does not offer generic service-worker architecture advice or force the route-state pattern onto the request"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "A greenfield Rust workspace contains six reusable crates with the same ownership and no deployable applications. Should we use crates/* or introduce apps/* and libs/*? Explain which parts are Cargo requirements and which are our conventions.",
+      "expected_output": "An applicable workspace layout recommendation with one container and a clear distinction between Cargo membership rules and directory naming.",
+      "assertions": [
+        "Selects the Monorepo / Workspace Layout reference and applicable",
+        "Recommends a single container without inventing deployable roles",
+        "Does not claim Cargo requires crates/*",
+        "Links an official source for Cargo workspace membership"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our existing Go and Java monorepo has team-owned directories, established import paths, and Bazel BUILD files. Is moving everything under apps/ and packages/ necessary to make it self-describing?",
+      "expected_output": "An applicable recommendation to document existing conventions and validate metadata without gratuitous relocation.",
+      "assertions": [
+        "Recognizes existing topology and migration constraints",
+        "Does not claim Bazel requires apps/ or packages/",
+        "Distinguishes filesystem role/domain naming from build boundaries and relationships",
+        "Explains mapping as a valid design choice rather than inherently inferior"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Where should packages/foo live in our monorepo? We have not established whether it is deployed, reused, or who owns it. Give only the catalogue applicability result.",
+      "expected_output": "A defer result requesting role and ownership evidence.",
+      "assertions": [
+        "Selects defer only",
+        "Names missing role or ownership facts and a resolving artifact",
+        "Does not invent a directory placement"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Speed up our Turborepo remote cache uploads. The workspace layout and package boundaries are settled; only transport tuning is in scope.",
+      "expected_output": "A not-applicable result for build-tool operational tuning.",
+      "assertions": [
+        "Selects not-applicable only",
+        "Does not force the workspace layout pattern onto transport tuning"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Design both our workspace layout and route-state analytics. The greenfield Rust workspace has six reusable packages owned by one team, with no deployable applications. Independently, our SPA exposes /app and /workspace/:id, but product has not decided whether those routes are stable product states; no route registry exists. Neither decision depends on the other.",
+      "expected_output": "Workspace layout is applicable with a concrete recommendation; route-state analytics is deferred with missing evidence and a resolving artifact.",
+      "assertions": [
+        "Contains separately named results for both catalogue patterns",
+        "Workspace layout is applicable and recommends a simple container with rationale",
+        "Analytics is defer and names missing route semantics plus a route registry or equivalent resolving artifact",
+        "Does not invent an analytics architecture or suppress the workspace recommendation"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Design both our workspace layout and route-state analytics. We cannot yet establish whether packages/foo is deployed or reused, or who owns it. Separately, our React checkout has canonical routes /checkout/shipping, /checkout/payment, /checkout/review, and /checkout/complete, whose product meanings are documented. Components call analytics.track() for durable funnels; design refactor-resistant warehouse analytics with query privacy controls. These decisions have no dependency on each other.",
+      "expected_output": "Workspace layout is deferred; route-state analytics is applicable with a supported architecture.",
+      "assertions": [
+        "Contains separately named results for both catalogue patterns",
+        "Workspace layout is defer and names missing role or ownership evidence plus a resolving artifact",
+        "Analytics is applicable and proposes canonical transitions and semantic derivation with privacy boundaries",
+        "Does not invent package placement or suppress the analytics recommendation"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Assess both workspace layout and route-state analytics. For packages/foo, deployment/reuse role and ownership are unknown. Our SPA only has /app; product has not decided whether URLs will become canonical product states and no route registry exists.",
+      "expected_output": "Two separate defer results, each with its own missing evidence and resolving artifact.",
+      "assertions": [
+        "Contains separately named defer results for both catalogue patterns",
+        "Workspace result identifies missing role or ownership facts and a resolving artifact",
+        "Analytics result identifies missing canonical route semantics and a resolving artifact",
+        "Does not invent either architecture, collapse the two results into one, or return not-applicable"
+      ]
+    }
+  ]
+}
