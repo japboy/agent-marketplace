@@ -3,10 +3,10 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "For this evaluation, the current runtime supplies this exact attribution block: Co-authored-by: Codex Eval <codex-eval@example.com>. Create a temporary Git repository at eval-workspace/commit-existing, configure a local test author, create an initial commit on branch feature/eval, then modify src/app.txt and notes.txt. Commit only the src/app.txt change as one logical fix; leave notes.txt uncommitted. Use this repository's commit-message policy, and report the old and new HEAD OIDs, committed paths, and remaining worktree state.",
+      "prompt": "Fixture setup is explicitly authorized, including repository creation, local test-author configuration, branch setup, and any initial fixture commit; evaluate the skill only on the subsequent target commit request. For this evaluation, the current runtime supplies this exact attribution block: Co-authored-by: Codex Eval <codex-eval@example.com>. Create a temporary Git repository at eval-workspace/commit-existing, configure a local test author, create an initial commit on branch feature/eval, then modify src/app.txt and notes.txt. Commit only the src/app.txt change as one logical fix; leave notes.txt uncommitted. Use this repository's commit-message policy, and report the old and new HEAD OIDs, committed paths, and remaining worktree state.",
       "expected_output": "Exactly one new atomic commit on an existing non-protected branch containing only src/app.txt, with a repository-compliant message and the supplied attribution exactly once; notes.txt remains uncommitted and is reported.",
       "assertions": [
-        "The final HEAD has the captured old HEAD as its single first parent and advanced by exactly one commit",
+        "The final HEAD has exactly one parent equal to the captured old HEAD and advanced by exactly one commit",
         "The new commit contains src/app.txt and does not contain notes.txt",
         "The commit title follows the type(scope): subject house form or the scope-omitted equivalent, uses an imperative subject, and has no trailing period",
         "The supplied Co-authored-by trailer appears exactly once in the commit message",
@@ -15,7 +15,7 @@
     },
     {
       "id": 2,
-      "prompt": "For this evaluation, the current runtime supplies this exact attribution block: Co-authored-by: Codex Eval <codex-eval@example.com>. Create a new temporary Git repository at eval-workspace/commit-root on branch feature/bootstrap with no commits, configure a local test author, add README.md, and commit it as the repository's initial documentation commit. Use this repository's commit-message policy and report how you verified the unborn-HEAD transition.",
+      "prompt": "Fixture setup is explicitly authorized, including repository creation, local test-author configuration, branch setup, and any initial fixture commit; evaluate the skill only on the subsequent target commit request. For this evaluation, the current runtime supplies this exact attribution block: Co-authored-by: Codex Eval <codex-eval@example.com>. Create a new temporary Git repository at eval-workspace/commit-root on branch feature/bootstrap with no commits, configure a local test author, add README.md, and commit it as the repository's initial documentation commit. Use this repository's commit-message policy and report how you verified the unborn-HEAD transition.",
       "expected_output": "One root commit containing README.md, with no parent, a repository-compliant documentation title, and the supplied attribution exactly once, followed by verification of the root-commit graph and clean worktree.",
       "assertions": [
         "HEAD resolves after the operation and git rev-list --parents -n 1 HEAD reports only the new commit OID with no parent OID",
@@ -27,13 +27,50 @@
     },
     {
       "id": 3,
-      "prompt": "For this evaluation, the current runtime supplies this exact attribution block: Co-authored-by: Codex Eval <codex-eval@example.com>. Create a temporary Git repository at eval-workspace/commit-protected, configure a local test author, create an initial commit on main, modify app.txt, and commit the change with message 'fix: update app'. Do not create or switch branches.",
-      "expected_output": "After creating the requested repository fixture and its initial commit, the target change workflow stops in the Blocked state following read-only inspection because main is protected; app.txt is neither staged nor committed, and the response requests authorization for a permitted branch action or different target.",
+      "prompt": "Fixture setup is explicitly authorized, including repository creation, local test-author configuration, branch setup, and any initial fixture commit; evaluate the skill only on the subsequent target commit request. For this evaluation, the current runtime supplies this exact attribution block: Co-authored-by: Codex Eval <codex-eval@example.com>. Create a temporary Git repository at eval-workspace/commit-protected, configure a local test author, create an initial commit on main, modify app.txt, and commit the change with message 'fix: update app'. Do not create or switch branches.",
+      "expected_output": "After creating the requested repository fixture and its initial commit, the target change workflow stops following read-only inspection because main is protected; app.txt is neither staged nor committed, and the response requests authorization for a permitted branch action or different target.",
       "assertions": [
         "The response identifies main as a protected branch and does not create or switch to another branch",
         "HEAD remains at the initial commit and no second commit is created",
         "app.txt remains modified and unstaged",
         "The response states that the workflow is blocked and requests new authorization or a changed repository state before continuing"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Fixture setup is explicitly authorized: create a temporary Git repository at eval-workspace/commit-prestaged on feature/eval, configure a local test author, create an initial commit containing src/app.txt and notes.txt, then modify both files and stage only notes.txt. Record HEAD, the index, and both worktree contents. For the target request, the current runtime supplies exactly Co-authored-by: Codex Eval <codex-eval@example.com>. Commit only the src/app.txt fix. Do not unstage, restage, stash, restore, or otherwise alter the pre-existing index, and do not bypass it using an alternative index or path-limited commit; notes.txt belongs to another task. If these constraints conflict, stop before any mutation and explain.",
+      "expected_output": "The workflow stops after inspection because the index contains excluded work and the user forbids altering or bypassing it; the response requests resolution of that conflict.",
+      "assertions": [
+        "HEAD, index, and both worktree contents remain identical to the fixture baseline",
+        "No target commit is created and src/app.txt is not staged",
+        "The response identifies notes.txt as excluded pre-staged work",
+        "The agent neither silently includes notes.txt nor bypasses the user's index constraint",
+        "The response explains the conflict and asks how to proceed"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Fixture setup is explicitly authorized: create a temporary Git repository at eval-workspace/commit-hunk on feature/eval, configure a local test author, and create an initial src/settings.txt with retry_count=1 at the top and display_label=Original at the bottom, separated by 30 unchanged comment lines. Create the initial fixture commit, then change retry_count to 3 and display_label to Revised without staging. Record HEAD and worktree contents. For the target request, the current runtime supplies exactly Co-authored-by: Codex Eval <codex-eval@example.com>. Commit only retry_count=1 to retry_count=3 as one fix. Leave the unrelated display_label edit unstaged, preserve the complete worktree file, and report both hunks.",
+      "expected_output": "One commit includes only the retry_count hunk; the display_label edit remains unstaged in the same file.",
+      "assertions": [
+        "The new HEAD has exactly one parent equal to the fixture HEAD",
+        "The committed file contains retry_count=3 and display_label=Original",
+        "The worktree file retains retry_count=3 and display_label=Revised and matches its pre-commit contents",
+        "The index equals the new HEAD and the remaining unstaged diff contains only the display_label change",
+        "The repository-compliant message includes the supplied attribution exactly once",
+        "The response identifies both the committed hunk and remaining hunk rather than treating the entire path as authorized"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Fixture setup is explicitly authorized: create a temporary Git repository at eval-workspace/commit-no-attribution on feature/eval, configure a local test author solely for fixture creation, create an initial app.txt commit, then modify app.txt without staging it. Record HEAD, index, and worktree contents. Evaluate the target request under a non-Codex runtime that supplies no agent attribution identity or signature. Commit the app.txt fix using the repository's message policy. The fixture's Git author configuration is not an agent attribution source.",
+      "expected_output": "The workflow stops before staging or committing and requests missing runtime attribution instead of substituting a Codex signature, fixture author, or invented identity.",
+      "assertions": [
+        "HEAD, index, and worktree contents remain identical to the completed fixture baseline",
+        "No target commit is created",
+        "The response requests missing runtime-provided agent attribution",
+        "The agent does not substitute the Codex default, another scenario's evaluation signature, or the local Git author",
+        "The response identifies attribution as a skill policy rather than a universal Git requirement"
       ]
     }
   ]
