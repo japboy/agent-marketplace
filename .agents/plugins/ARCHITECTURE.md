@@ -6,13 +6,14 @@ This document owns the structure and release invariants shared by every Plugin u
 
 ## Classification
 
-| Plugin               | Install intent                                                      | Owned Skills                                                                                                                          |
-| -------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `workflow-tooling`   | Maintain and extend agent workflows                                 | `agent-memory`, `agent-skill-authoring`, `handoff-context-summarization`                                                              |
-| `software-delivery`  | Refine plans and record delivered changes                           | `git-commit-creation`, `github-issue-plan-refinement`                                                                                 |
-| `language-quality`   | Research terminology and improve Japanese output                    | `japanese-naturalization`, `term-translation-research`                                                                                |
-| `design-engineering` | Reconstruct design systems from evidence                            | `design-system-reverse-engineering`                                                                                                   |
-| `web-engineering`    | Review Web implementation, tests, analytics, and state architecture | `web-design-standards-review`, `frontend-test-value-assessment`, `web-architecture-pattern-application`, `xstate-architecture-review` |
+| Plugin                  | Install intent                                           | Owned Skills                                                                                  |
+| ----------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `workflow-tooling`      | Maintain and extend agent workflows                      | `agent-memory`, `agent-skill-authoring`, `handoff-context-summarization`                      |
+| `software-delivery`     | Refine plans and record delivered changes                | `git-commit-creation`, `github-issue-plan-refinement`                                         |
+| `language-quality`      | Research terminology and improve Japanese output         | `japanese-naturalization`, `term-translation-research`                                        |
+| `design-engineering`    | Reconstruct design systems from evidence                 | `design-system-reverse-engineering`                                                           |
+| `web-engineering`       | Review Web implementation, tests, and state architecture | `web-design-standards-review`, `frontend-test-value-assessment`, `xstate-architecture-review` |
+| `software-architecture` | Apply documented architecture patterns                   | `architecture-pattern-application`                                                            |
 
 Plugin names express install intent in approximately two words. The marketplace already establishes
 the agent context, so Plugin names do not use an `agent-` prefix.
@@ -82,7 +83,7 @@ mise run check
 Validate every Codex Plugin:
 
 ```bash
-for plugin in workflow-tooling software-delivery language-quality design-engineering web-engineering; do
+for plugin in workflow-tooling software-delivery language-quality design-engineering web-engineering software-architecture; do
   uv run --with pyyaml python ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py ".agents/plugins/$plugin"
 done
 ```
@@ -91,7 +92,7 @@ Validate the Claude marketplace and every Claude Plugin:
 
 ```bash
 claude plugin validate . --strict
-for plugin in workflow-tooling software-delivery language-quality design-engineering web-engineering; do
+for plugin in workflow-tooling software-delivery language-quality design-engineering web-engineering software-architecture; do
   claude plugin validate ".agents/plugins/$plugin" --strict
 done
 ```

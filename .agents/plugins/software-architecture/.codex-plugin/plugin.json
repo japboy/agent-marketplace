@@ -1,0 +1,31 @@
+{
+  "name": "software-architecture",
+  "version": "0.1.0",
+  "description": "Applies documented architecture patterns to workspace topology and route-state product analytics.",
+  "author": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com",
+    "url": "https://github.com/japboy"
+  },
+  "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/software-architecture",
+  "repository": "https://github.com/japboy/agent-marketplace",
+  "keywords": [
+    "architecture",
+    "patterns",
+    "monorepo",
+    "analytics"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Software Architecture",
+    "shortDescription": "Architecture pattern application",
+    "longDescription": "Apply documented patterns to monorepo workspace layout and route-state product analytics, with explicit applicability and evidence.",
+    "developerName": "Yu Inao",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Design this monorepo workspace layout.",
+      "Evaluate this route-state analytics architecture."
+    ]
+  }
+}

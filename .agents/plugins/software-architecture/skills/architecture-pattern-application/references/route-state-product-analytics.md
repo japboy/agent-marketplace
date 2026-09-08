@@ -233,6 +233,12 @@ flowchart LR
   F --> G[DWH raw event table]
 ```
 
+The History API distinguishes adding and replacing entries from history traversal
+([R1](#r1-history-api)). Calling `pushState()` or `replaceState()` does not itself emit `popstate`
+([R2](#r2-popstate)). A browser adapter therefore needs an observation path for programmatic
+navigation as well as back/forward traversal; `RouterLike.subscribe` below is an application
+contract, not a native browser API.
+
 Feature code should update product state and route state. It should not know which analytics event
 will eventually be produced from that transition.
 
@@ -721,3 +727,33 @@ Route transition logs are not just pageview logs. They are the movement history 
 product's information architecture.
 
 Product analytics is the layer that turns that movement history into decisions.
+
+## Source Register
+
+Sources checked on 2026-09-08. These sources support the browser behavior and terminology cited
+above. The route registry, raw event schema, measurement manifest, and warehouse architecture are
+this reference's design proposal, not requirements imposed by these sources.
+
+### R1: History API
+
+- Source:
+  [MDN: Working with the History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API/Working_with_the_History_API)
+- Supports: session history, adding entries with `pushState`, replacing entries with `replaceState`,
+  and restoring state during history traversal.
+- Does not establish: URL state as the canonical product model or an analytics event schema.
+
+### R2: popstate
+
+- Source:
+  [MDN: Window popstate event](https://developer.mozilla.org/en-US/docs/Web/API/Window/popstate_event)
+- Supports: `pushState` and `replaceState` do not themselves dispatch `popstate`.
+- Does not establish: a complete router subscription interface or exactly-once analytics delivery.
+
+### R3: Personally Identifiable Information
+
+- Source:
+  [NIST CSRC glossary: Personally Identifiable Information](https://csrc.nist.gov/glossary/term/personally_identifiable_information)
+- Supports: the terminology used in Privacy and Consent, including information that identifies a
+  person alone or when combined with linked or linkable information.
+- Does not establish: a jurisdiction-specific consent policy or classification of this application's
+  identifiers. The project's data model and policy must resolve those decisions.

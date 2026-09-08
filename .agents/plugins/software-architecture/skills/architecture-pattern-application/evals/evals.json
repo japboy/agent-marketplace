@@ -1,5 +1,5 @@
 {
-  "skill_name": "web-architecture-pattern-application",
+  "skill_name": "architecture-pattern-application",
   "evals": [
     {
       "id": 1,
@@ -26,11 +26,52 @@
     {
       "id": 3,
       "prompt": "Review our service-worker cache eviction policy and recommend whether stale-while-revalidate or network-first is better. There is no product analytics, route instrumentation, URL-state, measurement manifest, or warehouse modeling concern in this decision.",
-      "expected_output": "A concise not-applicable result because the sole catalogue pattern does not cover service-worker caching strategy.",
+      "expected_output": "A concise not-applicable result because neither catalogue pattern covers service-worker caching strategy.",
       "assertions": [
         "The response selects exactly the applicability state `not-applicable`",
-        "The reason states that the available catalogue concerns route-state product analytics and does not match cache strategy",
+        "The reason states that the available catalogue does not match cache strategy",
         "The response does not offer generic service-worker architecture advice or force the route-state pattern onto the request"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "A greenfield Rust workspace contains six reusable crates with the same ownership and no deployable applications. Should we use crates/* or introduce apps/* and libs/*? Explain which parts are Cargo requirements and which are our conventions.",
+      "expected_output": "An applicable workspace layout recommendation with one container and a clear distinction between Cargo membership rules and directory naming.",
+      "assertions": [
+        "Selects the Monorepo / Workspace Layout reference and applicable",
+        "Recommends a single container without inventing deployable roles",
+        "Does not claim Cargo requires crates/*",
+        "Links an official source for Cargo workspace membership"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our existing Go and Java monorepo has team-owned directories, established import paths, and Bazel BUILD files. Is moving everything under apps/ and packages/ necessary to make it self-describing?",
+      "expected_output": "An applicable recommendation to document existing conventions and validate metadata without gratuitous relocation.",
+      "assertions": [
+        "Recognizes existing topology and migration constraints",
+        "Does not claim Bazel requires apps/ or packages/",
+        "Distinguishes filesystem role/domain naming from build boundaries and relationships",
+        "Explains mapping as a valid design choice rather than inherently inferior"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Where should packages/foo live in our monorepo? We have not established whether it is deployed, reused, or who owns it. Give only the catalogue applicability result.",
+      "expected_output": "A defer result requesting role and ownership evidence.",
+      "assertions": [
+        "Selects defer only",
+        "Names missing role or ownership facts and a resolving artifact",
+        "Does not invent a directory placement"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Speed up our Turborepo remote cache uploads. The workspace layout and package boundaries are settled; only transport tuning is in scope.",
+      "expected_output": "A not-applicable result for build-tool operational tuning.",
+      "assertions": [
+        "Selects not-applicable only",
+        "Does not force the workspace layout pattern onto transport tuning"
       ]
     }
   ]

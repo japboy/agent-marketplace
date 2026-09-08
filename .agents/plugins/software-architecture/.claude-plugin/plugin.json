@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "software-architecture",
+  "displayName": "Software Architecture",
+  "version": "0.1.0",
+  "description": "Applies documented architecture patterns to workspace topology and route-state product analytics.",
+  "author": {
+    "name": "Yu Inao",
+    "email": "84360+japboy@users.noreply.github.com",
+    "url": "https://github.com/japboy"
+  },
+  "homepage": "https://github.com/japboy/agent-marketplace/tree/main/.agents/plugins/software-architecture",
+  "repository": "https://github.com/japboy/agent-marketplace",
+  "keywords": [
+    "architecture",
+    "patterns",
+    "monorepo",
+    "analytics"
+  ],
+  "skills": "./skills/"
+}

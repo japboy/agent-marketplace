@@ -12,35 +12,68 @@
       "name": "workflow-tooling",
       "source": "./.agents/plugins/workflow-tooling",
       "category": "Developer Tools",
-      "tags": ["memory", "agent-skills", "handoff"],
+      "tags": [
+        "memory",
+        "agent-skills",
+        "handoff"
+      ],
       "strict": true
     },
     {
       "name": "software-delivery",
       "source": "./.agents/plugins/software-delivery",
       "category": "Developer Tools",
-      "tags": ["git", "github", "planning"],
+      "tags": [
+        "git",
+        "github",
+        "planning"
+      ],
       "strict": true
     },
     {
       "name": "language-quality",
       "source": "./.agents/plugins/language-quality",
       "category": "Communication",
-      "tags": ["japanese", "translation", "terminology"],
+      "tags": [
+        "japanese",
+        "translation",
+        "terminology"
+      ],
       "strict": true
     },
     {
       "name": "design-engineering",
       "source": "./.agents/plugins/design-engineering",
       "category": "Creativity",
-      "tags": ["design-systems", "reverse-engineering", "documentation"],
+      "tags": [
+        "design-systems",
+        "reverse-engineering",
+        "documentation"
+      ],
       "strict": true
     },
     {
       "name": "web-engineering",
       "source": "./.agents/plugins/web-engineering",
       "category": "Developer Tools",
-      "tags": ["frontend", "testing", "web-standards", "analytics", "xstate"],
+      "tags": [
+        "frontend",
+        "testing",
+        "web-standards",
+        "xstate"
+      ],
+      "strict": true
+    },
+    {
+      "name": "software-architecture",
+      "source": "./.agents/plugins/software-architecture",
+      "category": "Developer Tools",
+      "tags": [
+        "architecture",
+        "patterns",
+        "monorepo",
+        "analytics"
+      ],
       "strict": true
     }
   ]
