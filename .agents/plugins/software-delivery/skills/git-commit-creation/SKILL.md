@@ -59,6 +59,8 @@ Follow repository instructions first. The following defaults are house policy, n
 - Use [Conventional Commit-style](https://www.conventionalcommits.org/en/v1.0.0/) titles:
   `<type>(<scope>): <subject>`; omit an uninformative scope. Use a concise imperative subject
   without a trailing period, aiming for a title of 50 characters or fewer.
+- Use `feat` for features, `fix` for bug fixes, `refactor` for code restructuring without behavior
+  changes, `docs` for documentation, `test` for tests, and `chore` for maintenance.
 - Omit the body when the title suffices. Otherwise separate it with a blank line and use concise `-`
   bullets under useful `Problem:`, `Change:`, and `Rationale:` sections. Add `Alternatives:` only
   for meaningful rejected options or trade-offs. Omit empty sections and repeated points; wrap at
