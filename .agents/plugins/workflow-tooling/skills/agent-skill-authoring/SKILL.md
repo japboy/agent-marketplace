@@ -262,7 +262,7 @@ Claude Code context accounting:
   combined 25,000-token budget filled from the most recently invoked skill. Place durable rules near
   the top of `SKILL.md`.
 
-Claude Code supports dynamic context injection with `` !`command` `` and `` ```! `` fenced command
+Claude Code supports dynamic context injection with `` !`command` `` and ` ```! ` fenced command
 blocks. Treat this as Claude Code-specific behavior, use `${CLAUDE_SKILL_DIR}` for bundled files,
 keep commands deterministic, and account for settings that can disable skill shell execution.
 

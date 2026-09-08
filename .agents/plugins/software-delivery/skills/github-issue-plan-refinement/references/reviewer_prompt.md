@@ -9,11 +9,11 @@ Placeholders:
 - `{{issue}}` — issue number
 - `{{round}}` — 1-based round counter
 - `{{current_body}}` — the issue body at the start of the round
-- `{{prior_feedback}}` — the prior-batch final messages. On the very first batch this is
-  `(no prior round)`. Otherwise `run_batch.sh` pre-composes a file concatenating every `final.md`
-  from the previous batch's rounds, each section preceded by a `### From: round-<n>` header, and
-  hands the same file to every worker in the current batch. Reviewers should treat the headers as
-  attribution only and avoid repeating advice that was already acted on.
+- `{{prior_feedback}}` — the prior-batch final messages. On the very first batch this is `(no prior
+  round)`. Otherwise `run_batch.sh` pre-composes a file concatenating every `final.md` from the
+  previous batch's rounds, each section preceded by a `### From: round-<n>` header, and hands the
+  same file to every worker in the current batch. Reviewers should treat the headers as attribution
+  only and avoid repeating advice that was already acted on.
 
 The template is intentionally plain text (not Markdown-heavy) so that the reviewer model does not
 over-interpret formatting.

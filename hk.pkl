@@ -1,6 +1,6 @@
-amends "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Config.pkl"
+amends "package://github.com/jdx/hk/releases/download/v1.58.1/hk@1.58.1#/Config.pkl"
 
-min_hk_version = "1.54.0"
+min_hk_version = "1.58.1"
 
 local agentSkills = new Mapping<String, Step> {
   ["agent-skills"] {

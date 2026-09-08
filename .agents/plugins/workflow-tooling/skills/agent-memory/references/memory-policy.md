@@ -104,6 +104,6 @@ Use stable keys for repeatable operations:
 
 ## Concurrency
 
-SQLite supports multiple readers with a single writer. Keep write transactions short. Use
-`BEGIN IMMEDIATE` for event insertion, `busy_timeout` for contention, and WAL mode for concurrent
-access from linked worktrees.
+SQLite supports multiple readers with a single writer. Keep write transactions short. Use `BEGIN
+IMMEDIATE` for event insertion, `busy_timeout` for contention, and WAL mode for concurrent access
+from linked worktrees.

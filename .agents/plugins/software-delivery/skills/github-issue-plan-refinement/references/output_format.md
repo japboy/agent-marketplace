@@ -32,8 +32,7 @@ row per finding with these columns in this order:
 ```
 
 - `Severity`: `BLOCKER`, `IMPORTANT`, `QUESTION`, `SUGGESTION`, or `NIT`.
-- `Sources`: every source as `[round-N](file:///<absolute-path>)
-  <reviewer>`, sorted by round and
+- `Sources`: every source as `[round-N](file:///<absolute-path>) <reviewer>`, sorted by round and
   separated by `<br>`.
 - `Disposition`: `Auto-applied`, `Awaiting (Q<n>)`, or `Skipped`.
 - `Summary`: one short line when a detail section follows. Otherwise include the defect, action or
@@ -53,9 +52,8 @@ Each required section is `### Finding <#> — <SEVERITY>`, followed by a `**Sour
 `**Disposition**:`, and explanatory prose of at most 400 characters. Add a fenced block only when
 prose cannot convey the fix. Sort sections by finding ID.
 
-Before persistence, verify that the detail-section count equals
-`BLOCKER + IMPORTANT/Awaiting + QUESTION` and every `Awaiting (Q<n>)` maps one-to-one to a user
-question and decision entry.
+Before persistence, verify that the detail-section count equals `BLOCKER + IMPORTANT/Awaiting +
+QUESTION` and every `Awaiting (Q<n>)` maps one-to-one to a user question and decision entry.
 
 ## Cross-round notes
 
@@ -140,8 +138,7 @@ Rules:
 - The header in parentheses matches the AskUserQuestion `header` field (or the equivalent label in
   Codex fallback).
 - The selected label is the `label` field, quoted verbatim. When the user picked "Other", write
-  `selected "Other" → custom:
-  <free-text>` instead.
+  `selected "Other" → custom: <free-text>` instead.
 - The optional `; reason: …` clause appears only when the user added notes via the AskUserQuestion
   `annotations` channel or provided rationale in their free-text reply.
 - Lines appear in `Q<n>` order.

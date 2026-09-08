@@ -210,8 +210,8 @@ Run this layer only when the skill targets Claude Code.
 
 ### Dynamic Context and Supporting Files
 
-- [ ] `` !`command` `` or `` ```! `` dynamic context injection is used only when Claude
-      Code-specific execution is intended
+- [ ] `` !`command` `` or ` ```! ` dynamic context injection is used only when Claude Code-specific
+      execution is intended
 - [ ] injected commands are deterministic and least-privilege
 - [ ] `${CLAUDE_SKILL_DIR}` is used when bundled files must be referenced reliably
 - [ ] settings that disable skill shell execution are considered
