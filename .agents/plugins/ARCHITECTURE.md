@@ -9,7 +9,7 @@ This document owns the structure and release invariants shared by every Plugin u
 | Plugin                  | Install intent                                           | Owned Skills                                                                                  |
 | ----------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | `workflow-tooling`      | Maintain and extend agent workflows                      | `agent-memory`, `agent-skill-authoring`, `handoff-context-summarization`                      |
-| `software-delivery`     | Refine plans and record delivered changes                | `git-commit-creation`, `github-issue-plan-refinement`                                         |
+| `software-delivery`     | Refine plans and record delivered changes                | `git-commit-creation`, `github-pull-request-creation`, `github-issue-plan-refinement`         |
 | `language-quality`      | Research terminology and improve Japanese output         | `japanese-naturalization`, `term-translation-research`                                        |
 | `design-engineering`    | Reconstruct design systems from evidence                 | `design-system-reverse-engineering`                                                           |
 | `web-engineering`       | Review Web implementation, tests, and state architecture | `web-design-standards-review`, `frontend-test-value-assessment`, `xstate-architecture-review` |

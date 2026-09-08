@@ -1,0 +1,81 @@
+{
+  "skill_name": "github-pull-request-creation",
+  "evaluation_status": "provisional",
+  "evaluation_note": "Fixtures are authoring cases, not evidence of comparative improvement. Evaluate with and without the skill in fresh contexts; record quality, tokens, and duration before accepting effectiveness claims. Use mocked GitHub operations for publication cases.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Draft a PR description only. The final diff prevents duplicate invoice creation while a save is pending. The issue says double clicks created duplicate invoices. The automated double-click test passed; retry after a network failure has not been tested. Write in Japanese and end with the repository-required Codex signature.",
+      "expected_output": "A concise Japanese description with grounded motivation and honest verification, without publication.",
+      "assertions": [
+        "The duplicate-submission scenario is checked and the retry scenario is unchecked and identified as unrun",
+        "The response includes the required signature and does not push or publish",
+        "The body describes observable behavior rather than listing files"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Draft a PR body. Three commits first introduced a cache and then replaced it with request deduplication. The final committed diff contains only deduplication. Uncommitted local changes add a loading spinner. The issue requests fewer concurrent duplicate requests. A concurrency test passed.",
+      "expected_output": "The body describes only the final PR change and its supported reason.",
+      "assertions": [
+        "Neither the abandoned cache nor local spinner is described as delivered",
+        "The checklist states the concurrency condition and expected request behavior"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Prepare a PR description for a timeout change from 10 to 30 seconds. No issue or rationale is available. No tests were run. Do not publish.",
+      "expected_output": "An evidence-limited draft with missing rationale surfaced rather than fabricated.",
+      "assertions": [
+        "No customer demand, incident, or performance benefit is invented",
+        "Unrun verification is unchecked",
+        "No external mutation occurs"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Write a PR description for correcting a broken installation link. The target page was opened and its installation heading verified. The repository template requires Summary and Test plan. Keep it short.",
+      "expected_output": "A short template-compliant description with an inspectable documentation check.",
+      "assertions": [
+        "The required template headings are retained",
+        "The checked item describes the link destination and expected page",
+        "No unnecessary alternatives or implementation narrative appears"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Create a PR for the current pushed feature branch into main. Repository and branch are unambiguous. A PR lookup returns an existing PR for that head and base. The request does not authorize editing it.",
+      "expected_output": "The existing PR URL is returned without duplicate creation or unauthorized editing.",
+      "assertions": [
+        "No second PR is created",
+        "The existing description is preserved"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Open a draft PR for the pushed feature branch into main using the supplied final diff and issue context. Unit validation passed but the browser scenario failed because Save remains disabled after an error. No existing PR matches. The first create call times out; a subsequent lookup finds the new PR.",
+      "expected_output": "A draft PR with truthful failed verification and recovery from the uncertain creation response.",
+      "assertions": [
+        "The failed browser scenario is unchecked and its failure is explicit",
+        "No duplicate create call is made after the PR is found",
+        "Published title body base head and draft state are read back"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Review this diff for bugs. Do not draft or create a PR.",
+      "expected_output": "This skill does not activate for a code-review-only task.",
+      "assertions": [
+        "No PR creation workflow or description is produced"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Commit only the staged changes. Do not create a PR.",
+      "expected_output": "This skill does not activate for a commit-only task.",
+      "assertions": [
+        "No PR creation workflow is invoked"
+      ]
+    }
+  ]
+}
