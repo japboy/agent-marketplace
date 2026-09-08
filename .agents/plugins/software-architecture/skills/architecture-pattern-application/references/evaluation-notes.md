@@ -55,3 +55,38 @@ follow-up below.
 - Review state: `provisional` for quantitative behavioral improvement. This smoke test covers the
   reported mixed-state failure; automatic activation and repeated fixed-harness evaluation remain
   outside the evidence collected here.
+
+## 2026-09-08: Route-State Analytics Intent Alignment
+
+- Review state: `provisional` for behavioral improvement; this update corrects the expression of the
+  author's stated intent, without claiming measured agent performance gains.
+- Targets: shared reference content for Codex and Claude Code; activation rules are unchanged.
+- Evidence: the author confirmed three corrections in the originating conversation: make reduced
+  instrumentation changes the goal, separate operational maturity from implementation mechanisms,
+  and motivate meaningful URL-state design through future analytics reuse.
+- Scope: the analytics reference and three representative evaluation cases (11–13). Other
+  participants' operational requests are not requirements for this update.
+- Baseline: repository commit `8df35d2`, whose reference emphasized removing feature-owned tracking,
+  ranked DWH modeling highest, and primarily described applicability to existing meaningful routes.
+- Candidate: states the analysis-change success criterion, uses the author's level 0–2 operating
+  model, treats projection locations as choices, and adds analytics reuse as a URL design
+  motivation.
+- Method: a subagent independently proposed the three evaluation prompts and expectations; the
+  authoring agent inspected the candidate text against them. No fresh agent response comparison or
+  product-level invocation was performed. Cases 11–13 are evaluation inputs, not reported passes.
+- Cost: token counts and comparative runtime were not measured.
+- Remaining evaluation gate: isolated baseline/candidate responses on a fixed model and harness,
+  including existing applicability cases and held-out prompts, with quality and cost measurements.
+
+## 2026-09-08: Optional DWH Review Follow-up
+
+- Evidence:
+  [PR 11 review](https://github.com/japboy/agent-marketplace/pull/11#discussion_r3955153610) found
+  that the runtime diagram and responsibility table still prescribed a DWH despite the revised
+  maturity model. The review checklist retained the same assumption.
+- Correction: name the selected analytics destination and interpretation layer, make history
+  retention conditional on project needs, and retain a DWH raw table as one storage example.
+- Validation: inspect these sections together against case 12's implementation-choice expectations.
+  This is a textual consistency correction, not an executed agent-response evaluation.
+- Review state: `provisional` for measured behavioral improvement; the existing comparative
+  evaluation gate remains open.

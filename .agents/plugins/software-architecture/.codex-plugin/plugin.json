@@ -1,6 +1,6 @@
 {
   "name": "software-architecture",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Applies documented architecture patterns to workspace topology and route-state product analytics.",
   "author": {
     "name": "Yu Inao",

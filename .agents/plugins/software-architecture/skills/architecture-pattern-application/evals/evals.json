@@ -106,6 +106,36 @@
         "Analytics result identifies missing canonical route semantics and a resolving artifact",
         "Does not invent either architecture, collapse the two results into one, or return not-applicable"
       ]
+    },
+    {
+      "id": 11,
+      "prompt": "Our web checkout has documented canonical route states and a common observer already retains transitions and the attributes needed for a new funnel. Each analytics request still leads developers to add track calls to feature components. How should we improve this design?",
+      "expected_output": "Derive the new funnel from the retained stream with interpretation changes only.",
+      "assertions": [
+        "Defines success as no or minimal product instrumentation changes for new analysis needs",
+        "Derives this funnel from already retained transitions and attributes rather than merely wrapping track calls",
+        "Distinguishes questions answerable from observed facts from those requiring an instrumentation extension"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Our canonical product-state stream supports declarative measurement rules. We can evaluate them in the frontend or in ETL or a DWH. Which option represents a more mature architecture?",
+      "expected_output": "Separates operational maturity from the location of semantic interpretation.",
+      "assertions": [
+        "Does not rank DWH adoption itself as higher maturity",
+        "Explains maturity through individual event implementation, consolidation or typing, and stream-based derivation",
+        "Chooses interpretation location based on project needs such as historical reinterpretation or when measurements are needed"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "We are designing the screens and URLs of a new learning app and expect to analyze the journey from choosing a lesson to starting practice. We are asking for URL design considerations, not approval to deploy analytics against an existing route contract. What should guide this design?",
+      "expected_output": "Treats future analytics reuse as a motivation for designing meaningful URL states.",
+      "assertions": [
+        "Recommends considering product-visible state detail in URLs during design, not only using already suitable routes",
+        "Connects a shared state vocabulary and observed transitions to fewer instrumentation changes for future analysis questions",
+        "Does not require every product fact to be represented in a URL or make SEO a prerequisite"
+      ]
     }
   ]
 }
