@@ -29,4 +29,29 @@
   `accepted`.
 
 The applicability wording was clarified after evaluation to express one state per matched pattern.
-The supplied cases exercise single-pattern decisions; combined-pattern behavior remains unmeasured.
+The initial seven cases exercised single-pattern decisions; mixed-state coverage was added in the
+follow-up below.
+
+## 2026-09-08: Mixed Applicability Review Follow-up
+
+- Review evidence: [PR 10 review](https://github.com/japboy/agent-marketplace/pull/10) identified
+  that request-wide stopping/output rules could suppress another pattern's applicable result. The
+  correction makes stopping and output local to each matched pattern.
+- Scope: applicability rules, output rules, three new evaluation cases, and this record. Individual
+  design references are unchanged.
+- Method: one fresh subagent generated responses for all ten prompts and checked all 36 assertions.
+  This was a qualitative smoke test using the supplied cases, not isolated product invocation or a
+  blinded comparison. Token counts and reliable elapsed duration were unavailable.
+- Result: 10/10 cases and 36/36 assertions passed for the generated responses. The original seven
+  cases retained their expected decisions and abstention behavior.
+- Case 8: layout remained applicable with a single Rust package container and membership checks;
+  analytics deferred pending canonical route semantics and a route registry.
+- Case 9: layout deferred pending package role/ownership evidence; analytics retained a canonical
+  transition model, semantic derivation, and privacy boundaries.
+- Case 10: two separately named deferrals retained their own missing facts and resolving artifacts;
+  neither architecture was invented and neither result was discarded.
+- Validation: `mise run check` passed after the rule and case changes. The follow-up record was
+  separately checked for formatting and prose compliance.
+- Review state: `provisional` for quantitative behavioral improvement. This smoke test covers the
+  reported mixed-state failure; automatic activation and repeated fixed-harness evaluation remain
+  outside the evidence collected here.

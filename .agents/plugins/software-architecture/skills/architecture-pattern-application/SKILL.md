@@ -56,15 +56,18 @@ Start by identifying the architectural level of the user's question:
 Then load only the reference files needed for that level. Do not import one reference pattern's
 assumptions into unrelated architecture decisions.
 
-For each matched pattern, choose exactly one terminal applicability state before recommending it. If
-no entry matches the task, return one `not-applicable` result:
+Match the request to catalogue entries before assessing evidence. If no entry matches, return one
+`not-applicable` result with the reason and stop without generic architecture advice.
 
-- `applicable`: the task matches a catalogue entry and the project evidence is sufficient to apply
-  it.
-- `not-applicable`: no catalogue entry matches. State that result and stop; do not turn the
-  catalogue into generic architecture advice.
-- `defer`: a catalogue entry may match, but a required project fact is missing. Name the missing
-  fact and the artifact that can resolve it, then stop.
+For each matched pattern, choose exactly one applicability state:
+
+- `applicable`: the project evidence is sufficient to apply this pattern.
+- `defer`: a required project fact is missing. Name the missing fact and the artifact that can
+  resolve it; stop recommendations for this pattern only.
+
+A deferred pattern does not suppress another pattern's supported recommendation. Keep evidence
+scoped to the decision it supports; if a missing fact is also required by another pattern, assess
+that dependency explicitly rather than assuming the other decision is ready.
 
 ## Reference Catalog
 
@@ -90,7 +93,10 @@ When applying a pattern:
 
 ## Output Shape
 
-For an `applicable` result, prefer this structure:
+For each matched pattern, return a separate result labeled with its name. With multiple matches,
+retain every result, including when all are deferred; do not collapse them into one overall state.
+
+For each `applicable` result, prefer this structure:
 
 1. **Decision**: the recommended architecture or review outcome
 2. **Why**: the architectural rationale
@@ -102,5 +108,7 @@ For an `applicable` result, prefer this structure:
 
 Keep the answer grounded in the actual project artifacts when reviewing a real codebase.
 
-For `not-applicable` or `defer`, return only the applicability state, the reason, and, for `defer`,
-the missing fact and resolving artifact.
+For each `defer` result, include only the pattern name, applicability state, reason, missing fact,
+and resolving artifact. This restriction applies to that result, not the entire response.
+
+When no catalogue entry matches, return only `not-applicable` and the reason.
