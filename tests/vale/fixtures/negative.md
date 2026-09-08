@@ -12,6 +12,8 @@ Vale 本文。
 
 <https://example.com/日本Vale>
 
+参照 <http://example.com/日本Vale?項目Vale=値Vale#節Vale> を確認。
+
 ```text
 コードVale
 ```

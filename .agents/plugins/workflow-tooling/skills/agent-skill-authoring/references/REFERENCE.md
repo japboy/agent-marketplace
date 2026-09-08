@@ -69,9 +69,9 @@ uv add --dev skills-ref
 uv run agentskills validate ./skill-name
 ```
 
-The package requires Python 3.11 or later. Some public specification examples still show
-`skills-ref validate`; prefer the package-published `agentskills` entry point when using the current
-PyPI package.
+The package requires Python 3.11 or later. Some public specification examples still show `skills-ref
+validate`; prefer the package-published `agentskills` entry point when using the current PyPI
+package.
 
 ## Codex Sources
 
@@ -125,7 +125,7 @@ Key Claude Code-only topics:
 - live change detection for `SKILL.md`
 - custom commands merged into skills
 - invocation control with `disable-model-invocation` and `user-invocable`
-- dynamic context injection with `` !`command` `` and `` ```! `` blocks
+- dynamic context injection with `` !`command` `` and ` ```! ` blocks
 - `${CLAUDE_SKILL_DIR}` for bundled file paths
 - `context: fork`, `agent`, and `background` for subagent execution
 - `allowed-tools`, `disallowed-tools`, `model`, `effort`, `hooks`, `paths`, and `shell`

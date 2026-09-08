@@ -361,13 +361,17 @@ Layout abstraction lifecycle:
 
 Foundation:
 
-- `identity_key = source_identity + ':' + subtopic + ':' + state + ':' + theme + ':' + locale + ':' + direction`
-- `merge_key = foundation_element + ':' + subtopic + ':' + state + ':' + platform + ':' + theme + ':' + locale + ':' + direction`
+- `identity_key = source_identity + ':' + subtopic + ':' + state + ':' + theme + ':' + locale +
+  ':' + direction`
+- `merge_key = foundation_element + ':' + subtopic + ':' + state + ':' + platform + ':' + theme +
+  ':' + locale + ':' + direction`
 
 Content:
 
-- `identity_key = source_identity + ':' + text_key + ':' + state + ':' + text_difficulty + ':' + auto_setting`
-- `merge_key = content_element + ':' + content_subtopic + ':' + state + ':' + audience + ':' + text_difficulty + ':' + auto_setting`
+- `identity_key = source_identity + ':' + text_key + ':' + state + ':' + text_difficulty + ':' +
+  auto_setting`
+- `merge_key = content_element + ':' + content_subtopic + ':' + state + ':' + audience + ':' +
+  text_difficulty + ':' + auto_setting`
 
 `source_identity`:
 

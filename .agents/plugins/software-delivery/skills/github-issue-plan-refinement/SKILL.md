@@ -42,9 +42,9 @@ of them leaves blocker / important / question findings behind.
   [run_batch.sh](scripts/run_batch.sh). Batch size equals `--concurrency` (minimum 1). With
   `--concurrency 1` the batch carries a single reviewer; with N ≥ 2, about 30% of the workers use a
   dissenting reviewer (see Reviewer Distribution).
-- A batch starting at `--round K` with `--concurrency N` consumes round numbers
-  `K, K+1, ..., K+N-1`. The next invocation should pass `--round (K + N)`. One round is never reused
-  by two workers: the batch atomically claims new round directories and rejects any existing one.
+- A batch starting at `--round K` with `--concurrency N` consumes round numbers `K, K+1, ...,
+  K+N-1`. The next invocation should pass `--round (K + N)`. One round is never reused by two
+  workers: the batch atomically claims new round directories and rejects any existing one.
 - Every batch persists an immutable `batch-<K>.tsv` manifest. Every round records its owning
   `batch-start` and one finite lifecycle state: `claimed`, `running`, `succeeded`, or `failed`.
 - [run_review.sh](scripts/run_review.sh) is the per-round worker that `run_batch.sh` dispatches;
@@ -194,8 +194,8 @@ failed rounds) live in
 
 ## State
 
-Per-round and per-batch artifacts persist under the OS temp directory at
-`<round_root> = <tmpdir>/github-issue-plan-refinement/<owner>-<repo>/issue-<N>/` so that:
+Per-round and per-batch artifacts persist under the OS temp directory at `<round_root> =
+<tmpdir>/github-issue-plan-refinement/<owner>-<repo>/issue-<N>/` so that:
 
 - Each round is reproducible from its inputs
 - Each batch's prior-feedback file, consolidated report, and revised body are archived alongside the
@@ -266,9 +266,8 @@ The orchestrator drives the loop:
    7. After each set of answers, append to `User decisions`.
 7. Apply auto-applied fixes and the user's selected options to the draft body.
 8. Write the complete report to `<round_root>/consolidated-for-batch-<K>.md`, write the revised body
-   to `<round_root>/revised-body-for-batch-<K>.md`, and push via
-   `gh issue edit <N> --repo <owner/name>
-    --body-file <round_root>/revised-body-for-batch-<K>.md`.
+   to `<round_root>/revised-body-for-batch-<K>.md`, and push via `gh issue edit <N> --repo
+   <owner/name> --body-file <round_root>/revised-body-for-batch-<K>.md`.
 9. Check the convergence rule. If not converged, advance `--round` by `concurrency` and loop.
 
 Do not collapse multiple batches into a single shell pipeline. Each batch is a user-visible
@@ -306,10 +305,10 @@ failure handling, disk usage, and practical concurrency guidance.
 - Never paste a round's `final.md` verbatim into the report. Summarize in the table; the Source
   column links to the file.
 - Always emit one per-finding section for **every** `BLOCKER` row, **every** `IMPORTANT` row whose
-  Disposition is `Awaiting`, and **every** `QUESTION` row. Section count must equal
-  `(BLOCKER count) + (IMPORTANT-Awaiting count) + (QUESTION count)`. Never collapse, merge, or skip
-  a required section, regardless of how short the explanation feels or how much the table Summary
-  already conveys.
+  Disposition is `Awaiting`, and **every** `QUESTION` row. Section count must equal `(BLOCKER
+  count) + (IMPORTANT-Awaiting count) + (QUESTION count)`. Never collapse, merge, or skip a required
+  section, regardless of how short the explanation feels or how much the table Summary already
+  conveys.
 - When a finding has no per-finding section (`IMPORTANT`+Auto-applied/Skipped, `SUGGESTION`, `NIT`),
   expand its `Summary` cell to about 2× a non-omitted section's prose length so the row alone
   carries the defect, the action taken or reason for skipping, and any non-obvious rationale.
