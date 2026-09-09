@@ -1,80 +1,73 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "agent-marketplace",
+  "description": "My own personal marketplace for Agent Skills & tools",
   "version": "0.1.0",
   "owner": {
     "name": "Yu Inao",
     "email": "84360+japboy@users.noreply.github.com"
   },
-  "description": "My own personal marketplace for Agent Skills & tools",
   "plugins": [
     {
       "name": "workflow-tooling",
-      "source": "./.agents/plugins/workflow-tooling",
-      "category": "Developer Tools",
       "tags": [
         "memory",
         "agent-skills",
         "handoff"
       ],
-      "strict": true
+      "category": "Developer Tools",
+      "source": "./.agents/plugins/workflow-tooling"
     },
     {
       "name": "software-delivery",
-      "source": "./.agents/plugins/software-delivery",
-      "category": "Developer Tools",
       "tags": [
         "git",
         "github",
         "planning"
       ],
-      "strict": true
+      "category": "Developer Tools",
+      "source": "./.agents/plugins/software-delivery"
     },
     {
       "name": "language-quality",
-      "source": "./.agents/plugins/language-quality",
-      "category": "Communication",
       "tags": [
         "japanese",
         "translation",
         "terminology"
       ],
-      "strict": true
+      "category": "Communication",
+      "source": "./.agents/plugins/language-quality"
     },
     {
       "name": "design-engineering",
-      "source": "./.agents/plugins/design-engineering",
-      "category": "Creativity",
       "tags": [
         "design-systems",
         "reverse-engineering",
         "documentation"
       ],
-      "strict": true
+      "category": "Creativity",
+      "source": "./.agents/plugins/design-engineering"
     },
     {
       "name": "web-engineering",
-      "source": "./.agents/plugins/web-engineering",
-      "category": "Developer Tools",
       "tags": [
         "frontend",
         "testing",
         "web-standards",
         "xstate"
       ],
-      "strict": true
+      "category": "Developer Tools",
+      "source": "./.agents/plugins/web-engineering"
     },
     {
       "name": "software-architecture",
-      "source": "./.agents/plugins/software-architecture",
-      "category": "Developer Tools",
       "tags": [
         "architecture",
         "patterns",
         "monorepo",
         "analytics"
       ],
-      "strict": true
+      "category": "Developer Tools",
+      "source": "./.agents/plugins/software-architecture"
     }
   ]
 }

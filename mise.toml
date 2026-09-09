@@ -1,4 +1,5 @@
 [tools]
+apm = "0.30.0"
 dprint = "0.57.4"
 hk = "1.58.1"
 python = "3.14.7"
@@ -21,6 +22,18 @@ run = "sh tests/vale/test.sh"
 description = "Check repository prose policy"
 run = "git ls-files --cached --others --exclude-standard -z -- '*.md' '*.mdown' '*.markdown' '*.markdn' ':(exclude)tests/vale/fixtures/**' | xargs -0 vale --no-global --config=.vale.ini"
 
+[tasks.marketplace-build]
+description = "Generate both marketplace catalogs from apm.yml"
+run = "apm pack --offline"
+
+[tasks.marketplace-check]
+description = "Verify committed marketplace catalogs match apm.yml without writing"
+run = "apm pack --offline --check-clean"
+
+[tasks.apm-test]
+description = "Verify APM catalog installation and frozen replay in isolated projects"
+run = "python tests/apm/test.py"
+
 [tasks.check]
 description = "Run every read-only repository quality gate"
-depends = ["format-check", "prose-test", "prose-check", "skills-check"]
+depends = ["format-check", "prose-test", "prose-check", "skills-check", "marketplace-check", "apm-test"]
