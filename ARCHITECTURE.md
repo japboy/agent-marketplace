@@ -7,7 +7,9 @@ This document owns repository-level architecture. Plugin package invariants are 
 
 The repository distributes the same physical Agent Skills to Claude Code and Codex. A Plugin
 directory is the package, installation, versioning, and source of truth boundary. Product catalogs
-and manifests describe that boundary but do not duplicate its Skill files.
+and manifests describe that boundary but do not duplicate its Skill files. APM provides an
+additional installation route using the same packages. Root `apm.yml` owns the marketplace
+definition.
 
 ## Project structure
 
@@ -23,6 +25,7 @@ and manifests describe that boundary but do not duplicate its Skill files.
 │           └── skills/<skill>/...
 ├── .claude-plugin/
 │   └── marketplace.json                # Claude Code catalog
+├── apm.yml                             # APM producer and catalog source of truth
 ├── mise-tasks/
 │   ├── hooks-install                   # Repository-local Git hook setup
 │   └── skills-check                    # Full or affected Agent Skills validation
@@ -42,16 +45,17 @@ and manifests describe that boundary but do not duplicate its Skill files.
 ## Data flow
 
 ```text
-.agents/plugins/<plugin>/skills/*
-             │
-             ├── .codex-plugin/plugin.json
-             │        └── .agents/plugins/marketplace.json
-             │
-             └── .claude-plugin/plugin.json
-                      └── .claude-plugin/marketplace.json
+apm.yml ── apm pack ─┬─ .agents/plugins/marketplace.json
+                     └─ .claude-plugin/marketplace.json
+                                  │
+                                  └─ .agents/plugins/<plugin>/
+                                       ├─ .codex-plugin/plugin.json
+                                       ├─ .claude-plugin/plugin.json
+                                       └─ skills/*
 ```
 
-Both catalogs resolve their sources from the repository root and point to the same
+APM generates both catalogs from the ordered `marketplace.packages` declarations in `apm.yml`. Both
+catalogs resolve their sources from the repository root and point to the same
 `./.agents/plugins/<plugin>` directories. Installed products copy or cache those self-contained
 directories; no installed Plugin depends on a path outside its own root.
 
@@ -59,7 +63,9 @@ directories; no installed Plugin depends on a path outside its own root.
 Repository Markdown/JSON/YAML ── dprint check/fmt ── structural state
 Repository Markdown ───────────── Vale check ─────── prose policy
 Plugin-owned SKILL.md ── skills-ref ───────── Agent Skills format
-Plugin topology ──────── architecture review ─ dual-marketplace contract
+Plugin topology ──────── architecture review ─ package ownership contract
+apm.yml ──────────────── apm pack --check-clean ─ generated catalog consistency
+Generated catalog ────── isolated APM install ── Skill deployment and frozen replay
 ```
 
 Dependency declarations converge into two ordinary update states regardless of their manager:
@@ -85,6 +91,8 @@ manual / CI ── all Skill roots ┘
   assets, and evaluation fixtures.
 - A Plugin contains both product manifests. Their common identity, version, description, publisher,
   repository, and keywords remain equivalent.
+- Root `apm.yml` is the source of truth for marketplace identity, publisher, ordering, source paths,
+  categories, and tags. Catalog JSON files are committed outputs of the pinned APM generator.
 - Catalogs are thin routing and classification layers. They expose the same ordered Plugin set and
   use explicit repository-relative source paths.
 - Plugin directories contain physical files, not symlinks or references to a former canonical Skill
@@ -117,8 +125,9 @@ manual / CI ── all Skill roots ┘
   contributes policy. None belongs to an application or language workspace.
 - Tool versions, remote artifacts, checksums, and supported platforms are finite repository state.
   mise resolves the independent dprint, Vale, and hk CLI versions from the native root `mise.toml`;
-  its Aqua backend verifies upstream release checksums. uv resolves `skills-ref` from the root
-  development dependency group and lockfile. CI, hooks, and local commands use the same state.
+  its Aqua backend verifies upstream release checksums. APM uses mise's GitHub backend and its
+  upstream release checksum verification. uv resolves `skills-ref` from the root development
+  dependency group and lockfile. CI, hooks, and local commands use the same state.
 - Root `renovate.json5` owns dependency discovery and update policy. Its enabled manager list is
   exhaustive for the repository: native managers own GitHub Actions, mise, and PEP 621 declarations;
   custom regex managers own uv's required version, duplicated hk versions, and dprint plugin
@@ -175,13 +184,54 @@ resolves the pinned tool environment without depending on interactive shell acti
 
 ## Validation
 
-`mise run format-check`, `mise run prose-check`, and `mise run skills-check` are independent
-read-only gates. The executable mise task enumerates every Plugin-owned Skill when called without
-arguments; hk passes only staged paths under Skill roots during pre-commit. Both paths invoke the
-locked official Agent Skills reference CLI. Cross-product directory, ownership, catalog, manifest,
-and licensing-state rules are architecture review contracts owned by
-`.agents/plugins/ARCHITECTURE.md`; no repository-specific marketplace validator enforces them. Codex
-and Claude product validators remain release checks documented in `.agents/plugins/ARCHITECTURE.md`.
+`mise run format-check`, `mise run prose-check`, `mise run skills-check`, `mise run
+marketplace-check`, and `mise run apm-test` are independent read-only gates. The executable mise
+task enumerates every Plugin-owned Skill when called without arguments; hk passes only staged paths
+under Skill roots during pre-commit. Both paths invoke the locked official Agent Skills reference
+CLI. Cross-product directory, ownership, catalog, manifest, and licensing-state rules are
+architecture review contracts owned by `.agents/plugins/ARCHITECTURE.md`; the repository does not
+reimplement product schema validation. APM catalog drift and installation checks are automated.
+Codex and Claude product validators remain release checks documented in
+`.agents/plugins/ARCHITECTURE.md`.
+
+## APM distribution
+
+`apm.yml` is a producer manifest with a `marketplace:` block, not a consumer dependency aggregator.
+Each local package source points to the existing Plugin root. No `.apm/` copy, per-Plugin APM
+manifest, or dependency on this repository itself is required. Consumer manifests and lockfiles
+remain in consuming projects; running `apm install` in this producer is not the authoring workflow.
+
+`mise run marketplace-build` invokes the pinned APM 0.30.0 `apm pack --offline`. The official Claude
+and Codex output profiles own serialization and product defaults. `mise run marketplace-check` uses
+the native `--check-clean` gate to regenerate in memory and detect semantic JSON drift without
+writing. dprint owns the committed formatting. Generation requires no network resolution because all
+catalog sources are local. YAML anchors share the marketplace version and description between
+package-level metadata and the explicit marketplace overrides needed to emit them in Claude JSON.
+
+The native generator intentionally changes these presentation details from the hand-authored
+catalogs:
+
+- Codex `interface.displayName` equals `agent-marketplace`; the installed marketplace identifier
+  remains `agent-marketplace`. APM does not support an independent display-name override.
+- Claude catalog `$schema` and explicit `strict: true` are omitted. Claude's documented default is
+  `strict: true`, so Plugin manifests retain authority for their component definitions.
+- Plugin ordering, source paths, categories, Claude tags, and Codex `AVAILABLE` / `ON_INSTALL`
+  policies are preserved. Individual Plugin versions remain owned by their manifests.
+
+The APM integration gate copies the producer into a temporary directory and reads its generated
+catalog to install every local package source in a separate consumer. It installs every entry for
+Claude and Codex, compares each Skill's files with the source bytes, and repeats installation with
+`--frozen`. No Skill scripts are executed. The test avoids `marketplace add`, which APM 0.30.0
+writes to the user-level marketplace registry even when `APM_HOME` is set. Named marketplace
+resolution was checked separately during migration. This proves packaging and deployment, not
+successful execution of every Skill or support for other agent runtimes. Skills use bare names in
+the deployed directories, so users should avoid installing the same Skill through both APM and a
+native Plugin in one project.
+
+APM warns that the existing Claude manifest SchemaStore URI is unrecognized, then classifies the
+package by its supported Claude structure. Pack also warns about absent license metadata; this is
+consistent with `LicenseUndecided` and must not be silenced by inventing license terms. Neither
+warning prevents the verified distribution workflow.
 
 ## Official references
 
@@ -204,3 +254,8 @@ and Claude product validators remain release checks documented in `.agents/plugi
 - [Agent Skills specification](https://agentskills.io/specification)
 - [Claude Code Plugins reference](https://code.claude.com/docs/en/plugins-reference)
 - [GitHub repository licensing guidance](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
+- [APM marketplace authoring](https://microsoft.github.io/apm/reference/manifest-schema/#7-marketplace-authoring-block)
+- [APM pack and read-only drift checks](https://microsoft.github.io/apm/reference/cli/pack/)
+- [APM output profiles](https://github.com/microsoft/apm/blob/v0.30.0/src/apm_cli/marketplace/output_profiles.py)
+- [APM output mapping](https://github.com/microsoft/apm/blob/v0.30.0/src/apm_cli/marketplace/output_mappers.py)
+- [Claude marketplace strict default](https://code.claude.com/docs/en/plugin-marketplaces#strict-mode)
