@@ -52,8 +52,8 @@
       "description": "Update the uv version required by pyproject.toml",
       "managerFilePatterns": ["/^pyproject\\.toml$/"],
       "matchStrings": ["required-version = \"==(?<currentValue>\\d+\\.\\d+\\.\\d+)\""],
-      "datasourceTemplate": "github-releases",
-      "packageNameTemplate": "astral-sh/uv",
+      "datasourceTemplate": "pypi",
+      "packageNameTemplate": "uv",
       "versioningTemplate": "semver",
     },
     {
