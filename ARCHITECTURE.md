@@ -131,7 +131,9 @@ manual / CI ── all Skill roots ┘
 - Root `renovate.json5` owns dependency discovery and update policy. Its enabled manager list is
   exhaustive for the repository: native managers own GitHub Actions, mise, and PEP 621 declarations;
   custom regex managers own uv's required version, duplicated hk versions, and dprint plugin
-  versions with their content digests.
+  versions with their content digests. The uv requirement uses PyPI's `uv` package name because PEP
+  621 artifact updates pass dependencies from the same file to `uv lock --upgrade-package`. GitHub
+  repository identifiers are not valid Python package requirements.
 - Ordinary dependency updates are created or updated only during the weekly Monday 00:00–03:59
   `Asia/Tokyo` window and have exactly two states across all managers: SemVer-major updates form one
   manual-review PR, while minor, patch, pin, digest, rollback, and bump updates form one non-major
