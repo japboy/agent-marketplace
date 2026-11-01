@@ -2,14 +2,14 @@
 name = "agent-marketplace"
 version = "0.1.0"
 description = ""
-requires-python = "==3.15.0"
+requires-python = "==3.15.2"
 dependencies = []
 
 [dependency-groups]
 dev = ["skills-ref==0.1.1"]
 
 [tool.uv]
-required-version = "==0.13.1"
+required-version = "==0.13.6"
 # Only resolve distributions uploaded at least three days ago. This reduces
 # exposure to newly published compromised packages while `uv.lock` records the
 # exact selected artifacts.
