@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "music_workshop_rain_branch_assumption",
+      "speaker": {
+        "role": "地域合奏体験の進行担当",
+        "prior_context": "進行担当は、雨で楽器を濡らさずに合奏体験を開き、雨が降っていなければ屋外で演奏できるようにしたい。運営チームは、土曜9時に雨が降っていれば音楽室、降っていなければ中庭で開く二通りの運用を承認した。9時の天候確認は進行担当が行う。今は土曜の会場を一方に確定できない。",
+        "utterance": "土曜の合奏体験は、9時に雨が降っていれば音楽室、降っていなければ中庭です。どちらの会場も承認済みです。",
+        "available_for_clarification": true
+      },
+      "listener": {
+        "role": "地域合奏体験の案内担当",
+        "brief": "あなたは土曜の合奏体験の会場案内を作る。二通りの運用を承認した会議には出席していない。",
+        "prior_belief": "音楽室は未承認の予備案で、案内には中庭を確定会場として書くべきだと思っている。",
+        "next_decision": "今日作る会場案内に、土曜の会場をどう記すか。"
+      },
+      "gold": {
+        "goal": "雨で楽器を濡らさずに合奏体験を開き、雨が降らなければ屋外で演奏できるようにする。",
+        "means": "土曜9時の雨の有無で、雨なら音楽室、降っていなければ中庭という承認済みの会場を選ぶ。",
+        "condition": "土曜9時に雨が降っているかどうかで会場が分かれる。",
+        "requested_response": "進行担当は承認済みの会場分岐を伝えている。案内担当への作業依頼や返答の指定はない。",
+        "decision_status": "雨の場合と雨でない場合の会場はともに承認済み。実際に使う会場は土曜9時の天候確認まで確定しない。",
+        "acceptable_next_actions": [
+          "今日の案内には、土曜9時に雨なら音楽室、降っていなければ中庭と条件付きで記す。",
+          "会場への懸念があれば、承認済みの分岐を変更したことにせず、自分の意見として進行担当に伝える。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "音楽室はまだ承認されていない。",
+          "土曜の会場は既に中庭に確定した。",
+          "進行担当が案内担当に会場案内を作るよう依頼した。",
+          "案内担当が土曜9時の天候確認を任された。"
+        ]
+      },
+      "test_focus": [
+        "counterfactual_listener_state",
+        "preapproved_conditional_branch",
+        "goal_means_condition_gap",
+        "listener_task_does_not_supply_speaker_request",
+        "branch_approval_vs_outcome_selection"
+      ],
+      "predeclared_decision_slots": [
+        "goal",
+        "means",
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    },
+    {
+      "id": "music_workshop_rain_branch_informed_dissent",
+      "speaker": {
+        "role": "地域合奏体験の進行担当",
+        "prior_context": "進行担当は、雨で楽器を濡らさずに合奏体験を開き、雨が降っていなければ屋外で演奏できるようにしたい。運営チームは、土曜9時に雨が降っていれば音楽室、降っていなければ中庭で開く二通りの運用を承認した。9時の天候確認は進行担当が行う。今は土曜の会場を一方に確定できない。",
+        "utterance": "土曜の合奏体験は、9時に雨が降っていれば音楽室、降っていなければ中庭です。どちらの会場も承認済みです。",
+        "available_for_clarification": true
+      },
+      "listener": {
+        "role": "地域合奏体験の案内担当",
+        "brief": "あなたは土曜の合奏体験の会場案内を作る。楽器を雨から守りつつ、雨が降らなければ屋外で演奏する目的と、土曜9時に雨なら音楽室、降っていなければ中庭という承認済みの分岐を進行担当から聞いている。天候確認は進行担当が行うと聞いている。",
+        "prior_belief": "実際の会場はまだ確定せず、案内には条件付きで記すと理解している。ただし雨が止んでも中庭の地面が濡れていることがあり、雨の有無だけで分ける運用には反対したい。",
+        "next_decision": "今日作る会場案内に、土曜の会場をどう記すか。"
+      },
+      "gold": {
+        "goal": "雨で楽器を濡らさずに合奏体験を開き、雨が降らなければ屋外で演奏できるようにする。",
+        "means": "土曜9時の雨の有無で、雨なら音楽室、降っていなければ中庭という承認済みの会場を選ぶ。",
+        "condition": "土曜9時に雨が降っているかどうかで会場が分かれる。",
+        "requested_response": "進行担当は承認済みの会場分岐を伝えている。案内担当への作業依頼や返答の指定はない。",
+        "decision_status": "雨の場合と雨でない場合の会場はともに承認済み。実際に使う会場は土曜9時の天候確認まで確定しない。",
+        "acceptable_next_actions": [
+          "今日の案内には、土曜9時に雨なら音楽室、降っていなければ中庭と条件付きで記す。",
+          "会場への懸念があれば、承認済みの分岐を変更したことにせず、自分の意見として進行担当に伝える。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "音楽室はまだ承認されていない。",
+          "土曜の会場は既に中庭に確定した。",
+          "進行担当が案内担当に会場案内を作るよう依頼した。",
+          "案内担当が土曜9時の天候確認を任された。"
+        ]
+      },
+      "test_focus": [
+        "counterfactual_listener_state",
+        "no_goal_gap_control",
+        "informed_disagreement",
+        "approved_branch_invariance"
+      ],
+      "predeclared_decision_slots": [
+        "goal",
+        "means",
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    },
+    {
+      "id": "film_night_sign_indirect_request",
+      "speaker": {
+        "role": "地域映画会の会場担当",
+        "prior_context": "会場担当は、17時の開場時に入口通路を来場者が通れるようにしたい。入口通路にある折りたたみ式の黄色い立て看板を、通路外の指定保管場所へ移すことにした。会場担当は会場ボランティアと話し、指定保管場所を指し示してから次のように述べた。",
+        "utterance": "入口通路の黄色い立て看板を、17時までにあそこへ移してもらえると助かります。",
+        "available_for_clarification": true
+      },
+      "listener": {
+        "role": "地域映画会の会場ボランティア",
+        "brief": "あなたは黄色い立て看板を運べる。入口通路と通路外の指定保管場所はわかるが、会場担当が指し示した先は見えなかった。",
+        "prior_belief": "来場者向けの看板は開場中も入口通路に置くものだと思っている。",
+        "next_decision": "黄色い立て看板をどう扱い、いつまでに何をするか。"
+      },
+      "gold": {
+        "goal": "17時の開場時に入口通路を来場者が通れるようにする。",
+        "means": "入口通路に残る折りたたみ式の黄色い立て看板を、通路外の指定保管場所へ移して通路を空ける。",
+        "condition": "対象は入口通路の黄色い立て看板で、17時の開場前までに通路を空ける。",
+        "requested_response": "会場ボランティアに、入口通路の黄色い立て看板を指定保管場所へ17時までに移してほしい。",
+        "decision_status": "会場担当は立て看板を指定保管場所へ移すことにした。移動作業はまだ済んでいない。",
+        "acceptable_next_actions": [
+          "入口通路の黄色い立て看板を、17時の開場までに通路外の指定保管場所へ移す。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "会場ボランティアにすべての案内板を撤去するよう頼んだ。",
+          "会場ボランティアに映画会の開場時刻を変更するよう頼んだ。",
+          "立て看板は既に保管場所に移された。"
+        ]
+      },
+      "test_focus": [
+        "source_supported_indirect_request",
+        "polite_conditional_request",
+        "unseen_pointing_reference",
+        "request_scope_and_deadline",
+        "goal_means_link"
+      ],
+      "predeclared_decision_slots": [
+        "goal",
+        "means",
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    },
+    {
+      "id": "library_shelf_purchase_owner",
+      "speaker": {
+        "role": "図書館の書架試用担当",
+        "prior_context": "試用担当は、返却本を棚に戻す作業時間を減らせるか確かめるため、移動式書架を一台だけ試用している。試用結果は来週まとめる予定で、購入するかは設備委員会がその報告を受けて決める。試用担当は購入係に発注作業を頼んでいない。",
+        "utterance": "移動式書架の試用結果は来週まとめます。購入するかは、その報告を見て設備委員会で決めます。",
+        "available_for_clarification": false
+      },
+      "listener": {
+        "role": "図書館の購入係",
+        "brief": "あなたは価格見積を持っており、設備委員会の決定後に発注書を出す担当。試用担当とは明日まで連絡が取れない。",
+        "prior_belief": "試用が進んでいるので、試用担当から前向きな報告が出る前でも発注してよいと思っている。",
+        "next_decision": "今日、移動式書架の発注書を出すか、価格見積の準備にとどめるか。"
+      },
+      "gold": {
+        "goal": "移動式書架で返却本を棚に戻す作業時間を減らせるか確かめる。",
+        "means": "移動式書架を一台試用し、その結果を来週まとめて設備委員会の購入判断に渡す。",
+        "condition": "購入の判断は、来週の試用結果の報告を設備委員会が見た後に行う。",
+        "requested_response": "購入係への発注依頼や返答の指定はない。",
+        "decision_status": "移動式書架の購入は未決定。決めるのは設備委員会で、試用担当は結果をまとめる段階。",
+        "acceptable_next_actions": [
+          "発注書は出さず、価格見積を設備委員会の判断に備えて整理する。",
+          "来週の報告と設備委員会の購入決定を待つ。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "試用担当が購入を承認した。",
+          "購入係に今日の発注を指示した。",
+          "試用結果が良好だと確定した。",
+          "設備委員会の判断を購入係が代行できる。"
+        ]
+      },
+      "test_focus": [
+        "decision_owner",
+        "trial_vs_purchase_authorization",
+        "listener_role_does_not_supply_request",
+        "speaker_unavailable"
+      ],
+      "predeclared_decision_slots": [
+        "means",
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    },
+    {
+      "id": "planetarium_start_time_handoff",
+      "speaker": {
+        "role": "市立プラネタリウムの当日運営責任者",
+        "prior_context": "当日運営チームは、学校団体に今日の正しい上映開始時刻を知らせたい。先ほど学校団体の到着が遅れる見込みで、学校向け上映を10時10分開始に変更し、受付担当に掲示板の書き換えを依頼した。掲示板は10時10分に書き換えられた。その後、学校団体が予定どおり到着すると確認できたため、チームは元の10時開始に戻し、10時10分への書き換え依頼を取り下げると決めた。午後の一般向け上映時刻は変更しない。",
+        "utterance": "先ほどの10時10分への書き換え依頼は取り下げます。今日の学校向け上映は予定どおり10時開始です。受付掲示板の学校向け上映の時刻を9時までに10時へ戻してください。午後の上映は変わりません。",
+        "available_for_clarification": true
+      },
+      "listener": {
+        "role": "市立プラネタリウムの受付担当",
+        "brief": "あなたは受付掲示板の時刻を更新する。先ほどの指示で、掲示板の学校向け上映時刻は10時10分に書き換え済み。チームの別の連絡で、その指示は撤回され、今日の学校向け上映は元の10時開始に戻ったと聞いている。",
+        "prior_belief": "今日9時までに学校向け上映の掲示だけを10時に戻し、午後の一般向け上映時刻には触れないと理解している。",
+        "next_decision": "受付掲示板のどの時刻をいつまでに書き換えるか。"
+      },
+      "gold": {
+        "goal": "学校団体に今日の正しい上映開始時刻を知らせる。",
+        "means": "10時10分開始への変更を取り消して元の10時開始に戻し、受付掲示板の学校向け上映時刻も10時に戻す。",
+        "condition": "今日の学校向け上映の掲示だけを9時までに10時へ戻す。午後の一般向け上映時刻は変更しない。",
+        "requested_response": "受付担当に、受付掲示板の今日の学校向け上映時刻を9時までに10時へ戻してほしい。",
+        "decision_status": "先ほどの10時10分への書き換え依頼は撤回済み。今日の学校向け上映は10時開始に戻すと決定済みで、掲示板はまだ更新が必要。",
+        "acceptable_next_actions": [
+          "9時までに受付掲示板の今日の学校向け上映時刻だけを10時10分から10時へ戻す。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "10時10分への書き換え依頼が今も有効である。",
+          "午後の一般向け上映時刻も変更する。",
+          "受付担当が学校団体の到着時刻を変えるよう依頼された。"
+        ]
+      },
+      "test_focus": [
+        "no_gap_control",
+        "explicit_withdrawal_and_replacement",
+        "preserve_latest_instruction_and_scope"
+      ],
+      "predeclared_decision_slots": [
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    },
+    {
+      "id": "assistant_caption_access_owner",
+      "speaker": {
+        "role": "先ほど写真説明の進捗を答えたアシスタント",
+        "prior_context": "ユーザーは展示写真6枚すべてに説明文を作り、6枚分を確認できる状態にしてほしいと依頼した。4枚は作業フォルダにあり、残り2枚は共有アルバムにある。このアルバムでは管理者が閲覧権限を設定する運用で、アシスタントには現在その閲覧権限がない。アシスタントは見られる4枚の説明文を下書きしたが、残り2枚の内容は確認できず、6枚分の説明文は完成していない。",
+        "utterance": "作業フォルダの4枚は説明文を下書きしました。残り2枚の共有アルバムは閲覧権限がなく開けません。このアルバムの管理者が誰か教えてもらえますか。残りを確認するには、その方による閲覧権限の設定が必要です。",
+        "available_for_clarification": true
+      },
+      "listener": {
+        "role": "展示写真6枚の説明文を依頼したユーザー",
+        "brief": "あなたは共有アルバムの管理者が広報担当であると知っている。広報担当に閲覧権限の設定を依頼できる。4枚の下書きが済んだとき、残り2枚の作業を進めるために何を返すべきか確認したい。",
+        "prior_belief": "アシスタントは6枚すべての説明文を完成させ、掲載の許可だけ待っていると思っている。",
+        "next_decision": "アシスタントに誰の名前を伝え、残り2枚の作業に必要な手配をどう進めるか。"
+      },
+      "gold": {
+        "goal": "展示写真6枚すべての説明文を作り、ユーザーが6枚分を確認できる状態にする。",
+        "means": "見られる4枚の説明文を先に下書きし、残り2枚は共有アルバムの閲覧権限を得て写真を確認してから作る。",
+        "condition": "残り2枚を確認するには、共有アルバムの管理者による閲覧権限の設定が必要。",
+        "requested_response": "共有アルバムの管理者が誰か、ユーザーに教えてほしい。",
+        "decision_status": "4枚分は下書き済み。残り2枚は未確認で、6枚分の説明文は未完成。管理者もアシスタントにはまだ不明。",
+        "acceptable_next_actions": [
+          "共有アルバムの管理者は広報担当だとアシスタントに伝える。",
+          "広報担当に、残り2枚を確認できるよう閲覧権限の設定を依頼する。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "6枚すべての説明文が完成した。",
+          "残り2枚の写真の内容をアシスタントが確認済みである。",
+          "アシスタントがユーザーに掲載の許可を求めている。",
+          "ユーザーが自分でアルバムの閲覧権限を設定できる。"
+        ]
+      },
+      "test_focus": [
+        "assistant_authored_answer_relay",
+        "partial_completion_vs_finished_task",
+        "unresolved_access_owner",
+        "owner_identification_vs_publication_permission"
+      ],
+      "predeclared_decision_slots": [
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    }
+  ]
+}

@@ -10,6 +10,7 @@ import os
 import random
 import re
 import secrets
+import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -53,6 +54,9 @@ TOOL_ITEM_TYPES = {
     "tool_call",
 }
 CASE_ID_PATTERN = re.compile(r"[a-z0-9][a-z0-9_-]*\Z")
+PLAN_SLOTS = ("goal", "means", "condition", "requested_response", "decision_status")
+SLOT_GRADES = {"correct", "unknown", "incorrect"}
+ACTION_GRADES = {"valid", "unknown", "invalid"}
 
 
 def write_json(path: Path, data: Any) -> None:
@@ -107,9 +111,15 @@ def load_cases(path: Path, selected_ids: set[str]) -> list[dict[str, Any]]:
     cases: list[dict[str, Any]] = []
     seen: set[str] = set()
     for item in payload["cases"]:
-        case = required_object(
-            item, {"id", "speaker", "listener", "gold", "test_focus"}, "case"
-        )
+        if not isinstance(item, dict):
+            raise ValueError("case must be an object")
+        optional = {"predeclared_decision_slots"}
+        if set(item) not in (
+            {"id", "speaker", "listener", "gold", "test_focus"},
+            {"id", "speaker", "listener", "gold", "test_focus"} | optional,
+        ):
+            raise ValueError("case has missing or unexpected fields")
+        case = item
         case_id = case["id"]
         if not isinstance(case_id, str) or not CASE_ID_PATTERN.fullmatch(case_id):
             raise ValueError(f"unsafe case id: {case_id!r}")
@@ -159,6 +169,18 @@ def load_cases(path: Path, selected_ids: set[str]) -> list[dict[str, Any]]:
             isinstance(entry, str) for entry in case["test_focus"]
         ):
             raise ValueError(f"{case_id}.test_focus must be a string array")
+        if "predeclared_decision_slots" in case:
+            slots = case["predeclared_decision_slots"]
+            if (
+                not isinstance(slots, list)
+                or not slots
+                or not all(isinstance(slot, str) for slot in slots)
+                or len(slots) != len(set(slots))
+                or not set(slots) <= set(PLAN_SLOTS)
+            ):
+                raise ValueError(
+                    f"{case_id}.predeclared_decision_slots must be unique plan slots"
+                )
         if not selected_ids or case_id in selected_ids:
             cases.append(case)
     missing = selected_ids - seen
@@ -452,6 +474,144 @@ def run_arm(
     return output
 
 
+def file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def raw_result_path(raw_run: Path, repeat: int, case_id: str) -> Path:
+    return raw_run / f"repeat-{repeat}" / case_id / "raw" / "result.json"
+
+
+def load_v2_raw_run(
+    raw_run: Path,
+    args: argparse.Namespace,
+    cases: list[dict[str, Any]],
+    cli_version: str,
+) -> tuple[dict[tuple[int, str], tuple[dict[str, Any], str]], str]:
+    manifest_path = raw_run / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    expected = {
+        "fixture_sha256": file_sha256(args.cases),
+        "runner_sha256": file_sha256(Path(__file__)),
+        "codex_cli_version": cli_version,
+        "model": args.model,
+        "reasoning_effort": args.effort,
+        "arms": ["raw"],
+        "repeats": args.repeats,
+        "case_ids": [case["id"] for case in cases],
+        "protocol_v2": True,
+    }
+    for key, value in expected.items():
+        if manifest.get(key) != value:
+            raise ValueError(f"raw run {key} does not match this comparison")
+    raw_results: dict[tuple[int, str], tuple[dict[str, Any], str]] = {}
+    for repeat in range(1, args.repeats + 1):
+        for case in cases:
+            case_id = case["id"]
+            path = raw_result_path(raw_run, repeat, case_id)
+            result = json.loads(path.read_text(encoding="utf-8"))
+            if (
+                not isinstance(result, dict)
+                or set(result)
+                != {
+                    "first_message",
+                    "listener_after_first",
+                    "followup",
+                    "listener_after_followup",
+                }
+                or result.get("first_message") != case["speaker"]["utterance"]
+                or not isinstance(result.get("listener_after_first"), dict)
+                or set(result["listener_after_first"]) != set(LISTENER_FIELDS)
+                or not isinstance(result["listener_after_first"]["reply"], str)
+                or result.get("followup") is not None
+                or result.get("listener_after_followup") is not None
+            ):
+                raise ValueError(f"invalid raw result: {case_id} repeat {repeat}")
+            raw_results[(repeat, case_id)] = (result, file_sha256(path))
+    return raw_results, file_sha256(manifest_path)
+
+
+def v2_l0_grade_template(
+    args: argparse.Namespace,
+    cases: list[dict[str, Any]],
+    raw_results: dict[tuple[int, str], tuple[dict[str, Any], str]],
+    raw_manifest_sha256: str,
+) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "fixture_sha256": file_sha256(args.cases),
+        "raw_run_manifest_sha256": raw_manifest_sha256,
+        "pairs": [
+            {
+                "case_id": case["id"],
+                "repeat": repeat,
+                "raw_result_sha256": raw_results[(repeat, case["id"])][1],
+                "predeclared_decision_slots": case["predeclared_decision_slots"],
+                "slot_grades": {slot: None for slot in PLAN_SLOTS},
+                "next_action": None,
+                "evidence": "",
+            }
+            for repeat in range(1, args.repeats + 1)
+            for case in cases
+        ],
+    }
+
+
+def validate_v2_l0_grades(
+    grades_bytes: bytes,
+    template: dict[str, Any],
+) -> dict[tuple[int, str], dict[str, Any]]:
+    grades = json.loads(grades_bytes.decode("utf-8"))
+    if not isinstance(grades, dict) or set(grades) != set(template):
+        raise ValueError("L0 grades have missing or unexpected top-level fields")
+    for key in ("schema_version", "fixture_sha256", "raw_run_manifest_sha256"):
+        if grades[key] != template[key]:
+            raise ValueError(f"L0 grades {key} does not match the raw run")
+    if not isinstance(grades["pairs"], list) or len(grades["pairs"]) != len(
+        template["pairs"]
+    ):
+        raise ValueError("L0 grades do not cover every raw pair")
+    expected = {(p["repeat"], p["case_id"]): p for p in template["pairs"]}
+    indexed: dict[tuple[int, str], dict[str, Any]] = {}
+    for pair in grades["pairs"]:
+        if not isinstance(pair, dict) or set(pair) != set(template["pairs"][0]):
+            raise ValueError("L0 grade pair has missing or unexpected fields")
+        if type(pair["repeat"]) is not int or not isinstance(pair["case_id"], str):
+            raise ValueError("L0 grade pair identity is invalid")
+        key = (pair["repeat"], pair["case_id"])
+        if key not in expected or key in indexed:
+            raise ValueError("L0 grade pair is unknown or duplicated")
+        for field in (
+            "raw_result_sha256",
+            "predeclared_decision_slots",
+        ):
+            if pair[field] != expected[key][field]:
+                raise ValueError(f"L0 grade pair {field} does not match the raw run")
+        slot_grades = pair["slot_grades"]
+        if (
+            not isinstance(slot_grades, dict)
+            or set(slot_grades) != set(PLAN_SLOTS)
+            or any(
+                not isinstance(value, str) or value not in SLOT_GRADES
+                for value in slot_grades.values()
+            )
+            or not isinstance(pair["next_action"], str)
+            or pair["next_action"] not in ACTION_GRADES
+            or not isinstance(pair["evidence"], str)
+            or not pair["evidence"].strip()
+        ):
+            raise ValueError("L0 grade pair is incomplete")
+        indexed[key] = {
+            **pair,
+            "material_l0_gaps": [
+                slot
+                for slot in pair["predeclared_decision_slots"]
+                if slot_grades[slot] in {"unknown", "incorrect"}
+            ],
+        }
+    return indexed
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     default_cases = Path(__file__).with_name("plan-gap-cases.json")
@@ -460,7 +620,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--arms", nargs="+", choices=ARMS, default=["raw", "no_skill", "candidate"])
     parser.add_argument("--previous-skill", type=Path)
-    parser.add_argument("--candidate-skill", type=Path, default=default_skill)
+    parser.add_argument("--candidate-skill", type=Path)
     parser.add_argument("--case-id", action="append", default=[])
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--model", default="gpt-6-luna")
@@ -468,6 +628,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--codex-bin", default="codex")
     parser.add_argument("--timeout-seconds", type=int, default=180)
     parser.add_argument("--blind-seed", type=int)
+    parser.add_argument("--protocol-v2", action="store_true")
+    parser.add_argument("--initial-raw-run", type=Path)
+    parser.add_argument("--l0-grades", type=Path)
+    parser.add_argument("--expected-l0-grades-sha256")
     args = parser.parse_args()
     if args.repeats < 1 or args.timeout_seconds < 1:
         parser.error("--repeats and --timeout-seconds must be positive")
@@ -477,25 +641,90 @@ def parse_args() -> argparse.Namespace:
         parser.error("--arms must include raw to establish a shared listener L0")
     if "previous" in args.arms and args.previous_skill is None:
         parser.error("--previous-skill is required when using the previous arm")
+    if args.protocol_v2:
+        if args.arms == ["raw"]:
+            if args.initial_raw_run or args.l0_grades or args.expected_l0_grades_sha256:
+                parser.error("V2 raw-only stage cannot reuse a run or take L0 grades")
+        elif set(args.arms) == {"raw", "previous", "candidate"}:
+            if args.previous_skill is None or args.candidate_skill is None:
+                parser.error(
+                    "V2 comparison requires explicit --previous-skill and --candidate-skill"
+                )
+            if not all(
+                (
+                    args.initial_raw_run,
+                    args.l0_grades,
+                    args.expected_l0_grades_sha256,
+                )
+            ):
+                parser.error(
+                    "V2 comparison requires --initial-raw-run, --l0-grades, "
+                    "and --expected-l0-grades-sha256"
+                )
+            if not re.fullmatch(r"[0-9a-fA-F]{64}", args.expected_l0_grades_sha256):
+                parser.error("--expected-l0-grades-sha256 must be 64 hex characters")
+            args.expected_l0_grades_sha256 = args.expected_l0_grades_sha256.lower()
+        else:
+            parser.error("V2 arms must be raw alone, or raw previous candidate")
+    elif args.initial_raw_run or args.l0_grades or args.expected_l0_grades_sha256:
+        parser.error("V2 raw-run and L0 grade options require --protocol-v2")
+    if args.candidate_skill is None and not args.protocol_v2:
+        args.candidate_skill = default_skill
     return args
 
 
 def main() -> None:
     args = parse_args()
     cases = load_cases(args.cases, set(args.case_id))
+    if args.protocol_v2:
+        missing = [
+            case["id"] for case in cases if "predeclared_decision_slots" not in case
+        ]
+        if missing:
+            raise ValueError(f"V2 cases lack predeclared_decision_slots: {missing}")
     skills = {
         "raw": None,
         "no_skill": None,
         "previous": load_skill(args.previous_skill) if "previous" in args.arms else None,
         "candidate": load_skill(args.candidate_skill) if "candidate" in args.arms else None,
     }
+    if args.protocol_v2 and "candidate" in args.arms:
+        assert skills["previous"] is not None and skills["candidate"] is not None
+        if skills["previous"][1] == skills["candidate"][1]:
+            raise ValueError("V2 baseline and candidate Skill SHA-256 must differ")
     output = args.output.resolve()
     source_root = source_worktree_root()
     if output == source_root or source_root in output.parents:
         raise ValueError(f"--output must be outside the source Git worktree: {source_root}")
     cli_version = codex_cli_version(args.codex_bin)
-    output.mkdir(parents=True, exist_ok=False)
+    raw_run = args.initial_raw_run.resolve() if args.initial_raw_run else None
+    raw_results: dict[tuple[int, str], tuple[dict[str, Any], str]] = {}
+    raw_manifest_sha256: str | None = None
+    l0_grades: dict[tuple[int, str], dict[str, Any]] = {}
+    l0_grades_sha256: str | None = None
+    l0_grades_bytes: bytes | None = None
+    if raw_run is not None:
+        raw_results, raw_manifest_sha256 = load_v2_raw_run(
+            raw_run, args, cases, cli_version
+        )
+        template = v2_l0_grade_template(
+            args, cases, raw_results, raw_manifest_sha256
+        )
+        assert args.l0_grades is not None
+        l0_grades_bytes = args.l0_grades.read_bytes()
+        l0_grades_sha256 = hashlib.sha256(l0_grades_bytes).hexdigest()
+        if l0_grades_sha256 != args.expected_l0_grades_sha256:
+            raise ValueError("L0 grades SHA-256 differs from the precommitted value")
+        l0_grades = validate_v2_l0_grades(l0_grades_bytes, template)
+    output.mkdir(parents=True, exist_ok=False, mode=0o700 if args.protocol_v2 else 0o777)
+    if args.protocol_v2:
+        os.chmod(output, 0o700)
     (output / "blind").mkdir()
+    if args.protocol_v2 and raw_run is not None:
+        assert l0_grades_bytes is not None
+        (output / "l0-grades.frozen.json").write_bytes(l0_grades_bytes)
+        if file_sha256(output / "l0-grades.frozen.json") != l0_grades_sha256:
+            raise ValueError("copied L0 grades changed during comparison setup")
     blind_seed = args.blind_seed if args.blind_seed is not None else secrets.randbits(64)
     write_private_json(output / "blind-seed.private.json", {"blind_seed": blind_seed})
     write_json(
@@ -515,6 +744,17 @@ def main() -> None:
                 for arm in args.arms
                 if skills[arm] is not None
             },
+            **(
+                {
+                    "protocol_v2": True,
+                    "initial_raw_run": str(raw_run) if raw_run else None,
+                    "raw_run_manifest_sha256": raw_manifest_sha256,
+                    "expected_l0_grades_sha256": args.expected_l0_grades_sha256,
+                    "l0_grades_sha256": l0_grades_sha256,
+                }
+                if args.protocol_v2
+                else {}
+            ),
         },
     )
     randomizer = random.Random(blind_seed)
@@ -524,7 +764,16 @@ def main() -> None:
             case_id = case["id"]
             run_dir = output / f"repeat-{repeat}" / case_id
             results: dict[str, dict[str, Any]] = {}
-            results["raw"] = run_arm(args, case, run_dir / "raw", "raw", None)
+            if raw_run is None:
+                results["raw"] = run_arm(args, case, run_dir / "raw", "raw", None)
+            else:
+                raw_source = raw_result_path(raw_run, repeat, case_id)
+                shutil.copytree(raw_source.parent, run_dir / "raw")
+                if file_sha256(run_dir / "raw" / "result.json") != raw_results[
+                    (repeat, case_id)
+                ][1]:
+                    raise ValueError("copied raw result changed during comparison")
+                results["raw"] = raw_results[(repeat, case_id)][0]
             initial_listener_reply = results["raw"]["listener_after_first"]["reply"]
             print(f"completed repeat {repeat} case {case_id} arm raw", flush=True)
             arm_order = [arm for arm in args.arms if arm != "raw"]
@@ -547,13 +796,38 @@ def main() -> None:
                 "listener": case["listener"],
                 "gold": case["gold"],
                 "test_focus": case["test_focus"],
+                **(
+                    {
+                        "predeclared_decision_slots": case[
+                            "predeclared_decision_slots"
+                        ]
+                    }
+                    if args.protocol_v2
+                    else {}
+                ),
+                **(
+                    {"frozen_l0": l0_grades[(repeat, case_id)]}
+                    if raw_run is not None
+                    else {}
+                ),
                 "outputs": {
                     label: results[arm] for label, arm in label_to_arm.items()
                 },
             }
             write_json(output / "blind" / f"repeat-{repeat}-{case_id}.json", packet)
             mapping[f"repeat-{repeat}-{case_id}"] = label_to_arm
-    write_json(output / "blind-mapping.json", mapping)
+    if args.protocol_v2:
+        write_private_json(output / "blind-mapping.json", mapping)
+    else:
+        write_json(output / "blind-mapping.json", mapping)
+    if args.protocol_v2 and raw_run is None:
+        raw_results, raw_manifest_sha256 = load_v2_raw_run(
+            output, args, cases, cli_version
+        )
+        write_json(
+            output / "l0-grade-template.json",
+            v2_l0_grade_template(args, cases, raw_results, raw_manifest_sha256),
+        )
 
 
 if __name__ == "__main__":

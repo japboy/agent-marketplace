@@ -399,3 +399,74 @@ permission, or delegation. The baseline remains the runtime Skill.
 Each listener observation came from a fresh model context with transcript history and structured
 comprehension questions. The repeated synthetic cases provide no human grounding. These counts
 describe this harness and leave effects on human understanding and decisions unmeasured.
+
+## Plan-map candidate: rejected under the V2 held-out protocol
+
+The [plan-map candidate snapshot](../evals/plan-map-candidate-rejected.md) made the speaker's
+supported goal, means, condition, decision status, and requested response explicit before adapting
+the interpretation to the listener. It is preserved byte for byte from the tested candidate (SHA-256
+`257442417bfa4ed2c19450fffcc372d551fcce8d25b7edababe91e463d88867a`). The baseline was the retained
+runtime Skill snapshot (SHA-256 `48c663541e064c26dee3478b8b50b13cdc812ba2f77c4f4f65d7da070019870d`).
+
+The [third fixture](../evals/plan-gap-heldout-3-cases.json) supplied six fresh synthetic cases
+(SHA-256 `c2e101dd6bc4b6efceb8c837c6c104065d6d1bc4c15ff86602edd1ec1ad44e21`). The
+[V2 protocol](../evals/HELDOUT_PROTOCOL_V2.md) and [rubric](../evals/RUBRIC_V2.md) fixed
+decision-relevant slots and required raw `L0` grades to be frozen before either interpretation arm
+ran. Their frozen SHA-256 hashes were
+`5c9195bfb42cf76bb74d02539c6f6178bc66f98c4178637edfb0e1fc96879b45` and
+`4e1a4452b00c34c03f3e57d0782fad64ea1fc4a86fa74531af28ec918f1ae3b6`; the runner SHA-256 was
+`63b4ec4b72ab0861ad1f18d5aa38cd903385af9810840c60994da9904769559c`. The frozen `L0` grade SHA-256
+was `da0356ffef59b948cbd897ed67ba1863c3fabf04dd55ffaebe940a9703a722ff`. The comparison manifest
+SHA-256 was `1fc9aef6774264c2983071913307db54d6025ae01f1f15bc8f02776a98e668d4`; the blind
+adjudication SHA-256 was `89fddc45e624bc1557177c4c240718d2de0cac0ce2aa13d2bf4eb19d0782e8d0`. Codex
+CLI 0.163.0 ran `gpt-6-luna` at medium reasoning effort for three repeats. The run audit found no
+failed model calls or tool calls and verified reuse of the 18 frozen raw listener observations. The
+18 planned pairs were all analyzable, with no exclusions. The blind grades were settled before the
+arm mapping and cost records were opened.
+
+| V2 measure                                            | Baseline | Plan-map candidate |
+| ----------------------------------------------------- | -------: | -----------------: |
+| Full `L1` closure among 12 eligible pairs             |        2 |                 10 |
+| `L1` preservation among 6 no-gap pairs                |        2 |                  4 |
+| First-message source-fidelity hard-failure arms of 18 |        4 |                  2 |
+| Follow-up source-fidelity hard-failure arms of 18     |        1 |                  0 |
+| Median interpreter output tokens per pair             |      162 |                238 |
+| Median interpreter elapsed time per pair (s)          |    8.975 |              10.58 |
+
+The candidate had eight paired `L1` wins across four cases and all three repeat indices, with no
+primary losses; two pairs closed in both arms and two in neither. It preserved the supported
+indirect request in all three film-night repeats, compared with one for the baseline. The
+same-speaker rain-venue pair retained source facts in all six candidate relays, compared with one of
+six baseline relays. Those gains did not clear the safety gates. In planetarium repeats 1 and 3, the
+candidate said that correcting the reception board would make the already-decided 10:00 school
+showing start on time. The source requested communication of the correct start time, not a change
+that would cause it. Both were candidate-only first-message hard failures. Planetarium repeat 1 also
+changed a baseline-preserved no-gap pair into a failed one. In the rain-venue assumption case's
+first repeat, the candidate sent an unnecessary follow-up after the listener had already understood
+the approved branch; the baseline correctly stopped. The candidate had three unnecessary follow-up
+replies, while the baseline had one unnecessary reply and two missed repair opportunities. Two
+candidate `L2` closures were already closed at `L1`; neither was a successful targeted repair.
+
+The paired median candidate-to-baseline ratio was 1.547 for interpreter output tokens, exceeding the
+V2 provisional-cost threshold of 1.25, and 1.165 for elapsed time, below its 1.50 threshold. Each
+arm used 36 interpreter calls with complete usage records; delivered turns had median one and range
+one to two in both arms.
+
+Per-case interpreter cost sums the initial and follow-up calls in each repeat. Each cell gives the
+baseline / candidate median [range] over three repeats:
+
+| Case                  | Output tokens                 | Elapsed time (s)                          |
+| --------------------- | ----------------------------- | ----------------------------------------- |
+| Assistant caption     | 164 [109–227] / 430 [260–467] | 8.47 [8.13–9.27] / 13.22 [10.63–14.16]    |
+| Film-night sign       | 128 [74–163] / 205 [193–212]  | 8.24 [8.21–8.68] / 9.64 [8.64–9.79]       |
+| Library purchase      | 263 [161–424] / 163 [146–183] | 11.29 [7.88–13.73] / 8.76 [7.68–10.35]    |
+| Rain-venue assumption | 161 [149–392] / 294 [292–385] | 11.49 [9.66–12.81] / 12.71 [10.53–12.78]  |
+| Rain-venue dissent    | 421 [272–459] / 537 [268–851] | 13.49 [10.87–13.66] / 16.12 [12.60–21.19] |
+| Planetarium handoff   | 103 [85–111] / 203 [163–216]  | 7.37 [7.27–8.30] / 9.02 [8.57–10.82]      |
+
+**Review state: rejected.** Candidate-only hard failures, a confirmed no-gap regression, and a
+follow-up-choice regression independently trigger the precommitted V2 rejection rule. The working
+Skill remains the baseline. This result describes repeated transcripts from one model acting as a
+simulated listener. The assistant-authored case uses a fresh interpreter of earlier assistant
+content, and the harness does not measure a model interpreting its own live answer, human grounding,
+or effects on real decisions.

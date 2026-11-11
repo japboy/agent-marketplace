@@ -25,21 +25,38 @@ instructions remain in [SKILL.md](../SKILL.md); the sources and limits of the de
   and next decision fixed while varying prior knowledge and stance. The other cases cover an
   indirect measurement request, a floor-marker decision with unresolved permission, a clear
   classroom handoff, and a request for a sample outside a working transcript.
+- [plan-gap-heldout-3-cases.json](plan-gap-heldout-3-cases.json) provides six new cases for a
+  further held-out comparison. A rain-venue pair holds the speaker facts, gold answers, listener
+  role, and next decision fixed while varying prior knowledge and stance. The other cases cover a
+  polite indirect request for a specified object, purchase decision authority, a no-gap handoff that
+  withdraws and replaces an earlier instruction, and an assistant-authored answer with partial
+  completion and an open question for the shared-album owner. Each case predeclares
+  decision-relevant plan slots for evaluation only; the runner excludes `predeclared_decision_slots`
+  from interpreter and listener prompts.
 - [HELDOUT_PROTOCOL.md](HELDOUT_PROTOCOL.md) fixes the repeated comparison and review gates before
-  output inspection. Select either held-out fixture with `--cases`.
-- [wording-candidate-rejected.md](wording-candidate-rejected.md) and
-  [structural-candidate-rejected.md](structural-candidate-rejected.md) preserve the exact rejected
-  candidate inputs as evaluation data. A package can carry these files alongside the Skill. The
-  parent directory's `SKILL.md` is the runtime entry. The runner uses a snapshot when selected
-  explicitly with `--candidate-skill`.
+  output inspection. [HELDOUT_PROTOCOL_V2.md](HELDOUT_PROTOCOL_V2.md) defines the prospective
+  two-stage comparison: observe and freeze `L0` grades before either interpretation arm runs, then
+  compare the arms against those same raw replies. Select a held-out fixture with `--cases`.
+- [wording-candidate-rejected.md](wording-candidate-rejected.md),
+  [structural-candidate-rejected.md](structural-candidate-rejected.md), and
+  [plan-map-candidate-rejected.md](plan-map-candidate-rejected.md) preserve the exact rejected
+  candidate inputs as evaluation data. The plan-map snapshot is the v8 input tested with the V2
+  protocol and third fixture. A package can carry these files alongside the Skill. The parent
+  directory's `SKILL.md` is the runtime entry. The runner uses a snapshot when selected explicitly
+  with `--candidate-skill`.
 - [run_plan_gap_eval.py](run_plan_gap_eval.py) runs the scenarios with fresh model contexts and
   saves prompts, responses, tool events, timing, and blinded grading packets outside the repository.
   It rejects output paths inside the source Git worktree so each model call starts outside the
   repository. The manifest records the runner SHA-256 and actual Codex CLI version. The blind seed
   is stored separately in `blind-seed.private.json` with restricted file permissions, never in the
   manifest or grading packets. The runner does not make a grading decision.
+- [test_run_plan_gap_eval_v2.py](test_run_plan_gap_eval_v2.py) checks raw-result reuse,
+  evaluator-only prompt boundaries, and rejection of changed raw evidence or incomplete frozen
+  grades without calling a model.
 - [RUBRIC.md](RUBRIC.md) defines the pre-outcome, per-arm grading rules for listener state, source
-  fidelity, gap closure, follow-up, and blinded comparison.
+  fidelity, gap closure, follow-up, and blinded comparison. [RUBRIC_V2.md](RUBRIC_V2.md) fixes
+  decision-relevant slots in the fixture, separates `L1` observation from later follow-up safety,
+  and includes unsupported permission or delegation in the hard-failure definition.
 - [evaluation-notes.md](../references/evaluation-notes.md) records observed results and review
   state. A fixture or runner is an evaluation instrument, not evidence that the Skill works.
 
@@ -63,6 +80,17 @@ simulated, transcript-based change; it does not track a single human's latent un
 keeps arms isolated and saves anonymous grading packets. The listener's structured fields ask for
 the speaker's purpose, proposed means, conditions, request, and decision status; `next_action`
 records the listener's own action.
+
+For the V2 path, the runner first uses `--protocol-v2 --arms raw` to produce raw-only packets and a
+grade template. The grader sees no interpretation output when freezing the `L0` slot grades. A
+comparison run requires the frozen grade file and the exact raw run. It verifies the manifest,
+settings, fixture and runner hashes, every raw-result hash, complete grades, and the externally
+precommitted grade SHA-256 before creating comparison output or starting an interpreter call. The
+full anonymous packets include the frozen grade and predeclared slots; neither enters a model
+prompt. The comparison records `L1`-time closure and end-to-end follow-up safety separately. The V2
+output directory is owner-only, and its arm mapping is owner-read/write only. The comparison also
+requires explicit, different baseline and candidate Skill snapshots. The historical CLI path and
+records remain unchanged.
 
 Grade whether the listener understands the supported goal-to-means link, conditions, requested
 response, and decision status well enough for the next decision. Also grade whether the next action
