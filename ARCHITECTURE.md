@@ -68,12 +68,12 @@ apm.yml ──────────────── apm pack --check-clean 
 Generated catalog ────── isolated APM install ── Skill deployment and frozen replay
 ```
 
-Dependency declarations converge into two ordinary update states regardless of their manager:
+Renovate validates each ordinary dependency update on its own candidate branch:
 
 ```text
-GitHub Actions / mise / Python / custom declarations ── weekly Renovate ── major PR ─ manual review
-                                                                  └── non-major PR ─ CI ─ automerge
-uv.lock ───────────────────────── weekly lock-file maintenance PR ─────────────── manual review
+Dependency declarations ── weekly candidate branches ── push CI
+                                                          ├── failing ── Dependency Dashboard
+                                                          └── passing ── PR ── main ruleset
 ```
 
 For Agent Skill validation, the two finite entry paths converge before invoking the validator:
@@ -134,11 +134,16 @@ manual / CI ── all Skill roots ┘
   versions with their content digests. The uv requirement uses PyPI's `uv` package name because PEP
   621 artifact updates pass dependencies from the same file to `uv lock --upgrade-package`. GitHub
   repository identifiers are not valid Python package requirements.
-- Ordinary dependency updates are created or updated only during the weekly Monday 00:00–03:59
-  `Asia/Tokyo` window and have exactly two states across all managers: SemVer-major updates form one
-  manual-review PR, while minor, patch, pin, digest, rollback, and bump updates form one non-major
-  PR. Non-major PRs use Renovate-managed automerge only after required status checks pass; major PRs
-  never automerge. Pre-1.0 minor and patch releases remain non-major by this policy.
+- Renovate creates ordinary update branches and PRs during the weekly Monday 00:00–03:59
+  `Asia/Tokyo` window. Open PR branches may rebase outside that window to rerun CI against the
+  latest `main`. Independent dependencies, including APM, have separate branches. Explicit groups
+  cover the dprint CLI and its format plugins, hk and its Pkl declarations, the CI mise action and
+  binary, and the Python and uv pins used to maintain the workspace lockfile.
+- Renovate opens ordinary PRs after the candidate branch's checks pass. Internal checks such as
+  minimum release age cannot substitute for CI. Failed candidates remain visible through the
+  Dependency Dashboard and Actions. Major candidates have separate branches and require manual
+  review. Minor, patch, pin, digest, rollback, and bump updates use Renovate-managed automerge after
+  checks pass. Pre-1.0 minor and patch releases remain non-major by this policy.
 - PyPI releases must be at least three days old before Renovate creates an update branch, matching
   uv's `exclude-newer` resolution policy. Lock-file maintenance uses the same weekly window in a
   separate manual PR. Dependency replacements also remain separate because Renovate does not combine
@@ -196,6 +201,10 @@ reimplement product schema validation. APM catalog drift and installation checks
 Codex and Claude product validators remain release checks documented in
 `.agents/plugins/ARCHITECTURE.md`.
 
+The Quality workflow runs on pushes, including Renovate candidate branches before a PR exists. The
+GitHub ruleset for `main` requires the format, prose, Skill, and APM distribution jobs to pass and
+requires PR branches to be up to date with `main` before merge.
+
 ## APM distribution
 
 `apm.yml` is a producer manifest with a `marketplace:` block, not a consumer dependency aggregator.
@@ -203,12 +212,13 @@ Each local package source points to the existing Plugin root. No `.apm/` copy, p
 manifest, or dependency on this repository itself is required. Consumer manifests and lockfiles
 remain in consuming projects; running `apm install` in this producer is not the authoring workflow.
 
-`mise run marketplace-build` invokes the pinned APM 0.30.0 `apm pack --offline`. The official Claude
-and Codex output profiles own serialization and product defaults. `mise run marketplace-check` uses
-the native `--check-clean` gate to regenerate in memory and detect semantic JSON drift without
-writing. dprint owns the committed formatting. Generation requires no network resolution because all
-catalog sources are local. YAML anchors share the marketplace version and description between
-package-level metadata and the explicit marketplace overrides needed to emit them in Claude JSON.
+`mise run marketplace-build` uses the APM version pinned in `mise.toml` to run `apm pack --offline`.
+The official Claude and Codex output profiles own serialization and product defaults. `mise run
+marketplace-check` uses the native `--check-clean` gate to regenerate in memory and detect semantic
+JSON drift without writing. dprint owns the committed formatting. Generation requires no network
+resolution because all catalog sources are local. YAML anchors share the marketplace version and
+description between package-level metadata and the explicit marketplace overrides needed to emit
+them in Claude JSON.
 
 The native generator intentionally changes these presentation details from the hand-authored
 catalogs:
