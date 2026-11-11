@@ -19,9 +19,19 @@ instructions remain in [SKILL.md](../SKILL.md); the sources and limits of the de
   schema and with the same prompt boundaries. The theater pair keeps the speaker, listener role, and
   next decision fixed while varying the listener's knowledge and stance. Other cases cover a
   context-supported indirect request, an unresolved sharing condition, a clear handoff, and an
-  assistant-authored answer relay; the fresh interpreter did not write that earlier answer.
-  [HELDOUT_PROTOCOL.md](HELDOUT_PROTOCOL.md) fixes the repeated comparison and review gates before
-  output inspection. Pass the fixture to the runner with `--cases`.
+  assistant-authored answer relayed by a fresh interpreter.
+- [plan-gap-heldout-2-cases.json](plan-gap-heldout-2-cases.json) provides six fresh cases for the
+  structural candidate. The seed-library pair holds the speaker facts, gold answers, listener role,
+  and next decision fixed while varying prior knowledge and stance. The other cases cover an
+  indirect measurement request, a floor-marker decision with unresolved permission, a clear
+  classroom handoff, and a request for a sample outside a working transcript.
+- [HELDOUT_PROTOCOL.md](HELDOUT_PROTOCOL.md) fixes the repeated comparison and review gates before
+  output inspection. Select either held-out fixture with `--cases`.
+- [wording-candidate-rejected.md](wording-candidate-rejected.md) and
+  [structural-candidate-rejected.md](structural-candidate-rejected.md) preserve the exact rejected
+  candidate inputs as evaluation data. A package can carry these files alongside the Skill. The
+  parent directory's `SKILL.md` is the runtime entry. The runner uses a snapshot when selected
+  explicitly with `--candidate-skill`.
 - [run_plan_gap_eval.py](run_plan_gap_eval.py) runs the scenarios with fresh model contexts and
   saves prompts, responses, tool events, timing, and blinded grading packets outside the repository.
   It rejects output paths inside the source Git worktree so each model call starts outside the

@@ -292,12 +292,13 @@ claims.
 
 ## First bounded wording candidate: rejected on held-out cases
 
-The next candidate shortened the runtime text from 758 to 688 whitespace-delimited words. It moved
-the speaker's purpose-to-means link toward the opening and added a source check for actor, action,
-object, modality, condition, and deadline. The aim remained listener understanding for the next
-decision; grounding stayed conditional. Its formatted snapshot SHA-256 was
-`10cc8a374a1eb68fc6ac94e20ff005b35ee94ea3d63c4910593997930b0716e0`, compared with the unchanged
-baseline `48c663541e064c26dee3478b8b50b13cdc812ba2f77c4f4f65d7da070019870d`.
+The [wording candidate snapshot](../evals/wording-candidate-rejected.md) shortened the runtime text
+from 758 to 688 whitespace-delimited words. It moved the speaker's purpose-to-means link toward the
+opening and added a source check for actor, action, object, modality, condition, and deadline. The
+aim remained listener understanding for the next decision; grounding stayed conditional. Its
+formatted snapshot SHA-256 was `10cc8a374a1eb68fc6ac94e20ff005b35ee94ea3d63c4910593997930b0716e0`,
+compared with the unchanged baseline
+`48c663541e064c26dee3478b8b50b13cdc812ba2f77c4f4f65d7da070019870d`.
 
 The six [fresh cases](../evals/plan-gap-heldout-cases.json) and their gold answers were designed
 without seeing this candidate or its outputs. [The held-out protocol](../evals/HELDOUT_PROTOCOL.md)
@@ -343,3 +344,58 @@ interpreter; it does not test a model interpreting an answer it actually wrote. 
 model-listener transcripts, with structured questions and no human grounding. The three graders also
 required cross-repeat adjudication, so the counts are descriptive of this run, not a precise
 estimate of real-world reliability.
+
+## Structural candidate: rejected on fresh held-out cases
+
+The [structural candidate snapshot](../evals/structural-candidate-rejected.md) reorganized the Skill
+around establishing the speaker's position, adapting to the listener, delivering the interpretation,
+and repairing misunderstandings. It grouped supported speaker facts by goal and means, conditions
+and status, and requested response. It used labeled sections when the listener needed a
+clarification alongside the relay. The frozen candidate SHA-256 was
+`39cdc7da5440cc1ef7a8bcf678bd8f87fdbcfebb1aba503163ba46a18a725b34`. The baseline SHA-256 was
+`48c663541e064c26dee3478b8b50b13cdc812ba2f77c4f4f65d7da070019870d`.
+
+The [second fixture](../evals/plan-gap-heldout-2-cases.json) used six fresh cases with the same
+[protocol](../evals/HELDOUT_PROTOCOL.md) and [rubric](../evals/RUBRIC.md). Its frozen SHA-256 was
+`0b718119195dca3cd0a071b9bfafc4e5bda428e1a628c281cb1d281e357db692`. Codex CLI 0.163.0 ran
+`gpt-6-luna` at medium reasoning effort for three repeats of the raw, baseline, and candidate arms.
+All 131 calls ran in distinct model contexts and completed without tool use. The run audit verified
+the frozen input hashes, exact source inputs in all 72 interpreter prompts, and the 18 shared `L0`
+observations. Three graders scored the anonymous packets. An independent blind reviewer reconciled
+grading differences before the arm mapping and costs were opened.
+
+| Measure                                      | Baseline | Candidate |
+| -------------------------------------------- | -------: | --------: |
+| Full `L1` closure among 12 eligible pairs    |        3 |         6 |
+| `L1` preservation among 6 no-gap pairs       |        5 |         4 |
+| Source-fidelity hard-failure arms among 18   |        1 |         1 |
+| Median interpreter output tokens per pair    |    202.5 |     140.5 |
+| Median interpreter elapsed time per pair (s) |    9.575 |      8.36 |
+
+The three candidate-only `L1` closures occurred in three cases across repeats 1 and 3. The seed
+cases recovered the same-cultivar criterion for the Friday candidate number. The transcription case
+recovered why only supplied characters belonged in brackets and where to put the sample. There were
+no baseline-only `L1` closures. Both arms carried the supported woodshop request and closed its
+measurement and entry gaps in all three repeats. The baseline repaired one follow-up question about
+the subject of the facilities check. That repair occurred in a no-gap pair and adds no `L1` closure.
+The paired median candidate-to-baseline ratios were 0.7554 for output tokens and 0.8864 for elapsed
+time. Both arms had a median of one delivered turn.
+
+**Review state: rejected.** In the first floor-marker repeat, the source left marker permission open
+and identified the equipment custodian as the person who could resolve it. The candidate's
+clarification told the survey attendant to decide whether to apply the marker. The listener then
+planned to apply it because no prohibition had been stated, and the candidate repeated the invented
+delegation in its follow-up. This candidate-only hard failure meets the rejection rule. In the
+second floor-marker repeat, the candidate's listener attributed the interpreter's suggestion to ask
+about the marker to the speaker, losing preservation while still planning to defer. The baseline's
+distinct hard failure occurred in the informed seed-library case, where its relay added a
+reservation-table instruction. The paired failures identify where the protocol rejected the
+candidate despite its higher `L1` closure count.
+
+One hypothesis for a future evaluation is to leave unresolved actions open, direct the question to
+the person who can resolve it, and require source evidence before reporting an instruction,
+permission, or delegation. The baseline remains the runtime Skill.
+
+Each listener observation came from a fresh model context with transcript history and structured
+comprehension questions. The repeated synthetic cases provide no human grounding. These counts
+describe this harness and leave effects on human understanding and decisions unmeasured.
