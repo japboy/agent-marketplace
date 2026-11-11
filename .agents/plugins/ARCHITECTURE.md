@@ -10,13 +10,19 @@ This document owns the structure and release invariants shared by every Plugin u
 | ----------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | `workflow-tooling`      | Maintain and extend agent workflows                      | `agent-memory`, `agent-skill-authoring`, `handoff-context-summarization`                      |
 | `software-delivery`     | Refine plans and record delivered changes                | `git-commit-creation`, `github-pull-request-creation`, `github-issue-plan-refinement`         |
-| `language-quality`      | Research terminology and improve Japanese output         | `japanese-naturalization`, `term-translation-research`                                        |
+| `language-quality`      | Research terms, improve Japanese, and interpret remarks  | `japanese-naturalization`, `term-translation-research`, `interpretation`                      |
 | `design-engineering`    | Reconstruct design systems from evidence                 | `design-system-reverse-engineering`                                                           |
 | `web-engineering`       | Review Web implementation, tests, and state architecture | `web-design-standards-review`, `frontend-test-value-assessment`, `xstate-architecture-review` |
 | `software-architecture` | Apply documented architecture patterns                   | `architecture-pattern-application`                                                            |
 
 Plugin names express install intent in approximately two words. The marketplace already establishes
 the agent context, so Plugin names do not use an `agent-` prefix.
+
+In `language-quality`, `japanese-naturalization` revises the wording of an assistant response,
+`term-translation-research` selects terminology from evidence, and `interpretation` relays one
+participant's remarks to another so they can understand the speaker's purpose, conditions, and
+expected response. Interpreting can take place within the same language or between the agent and its
+user.
 
 ## Canonical package shape
 
