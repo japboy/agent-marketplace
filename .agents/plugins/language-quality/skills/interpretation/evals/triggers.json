@@ -1,0 +1,38 @@
+[
+  {
+    "query": "営業が判断できるように、SRE の『切り戻し確認が済むまで段階公開は待ちたい』を取り次いで。会議で出た背景も伝えて。",
+    "should_trigger": true
+  },
+  {
+    "query": "Interpret the vendor's English reply for our Japanese purchasing lead. She needs to understand why the vendor is proposing staggered shipments and whether she needs to approve anything.",
+    "should_trigger": true
+  },
+  {
+    "query": "開発と営業のチャットを仲介中です。営業は金曜の公開が確定したと読んでいます。開発の提案と営業の受け取り方を分けて、開発への聞き返しを作って。",
+    "should_trigger": true
+  },
+  {
+    "query": "自分が今書いた進捗報告を、私が次に何を判断すればよいか分かるように通訳して。",
+    "should_trigger": true
+  },
+  {
+    "query": "前の回答の日本語が直訳っぽいので、内容はそのまま自然な日本語に直して。",
+    "should_trigger": false
+  },
+  {
+    "query": "営業向けの製品資料で使う entitlement の定訳を、公式資料を根拠に選んで。",
+    "should_trigger": false
+  },
+  {
+    "query": "Translate 'We could move the delivery to Tuesday' into Japanese. Just give me a literal translation.",
+    "should_trigger": false
+  },
+  {
+    "query": "営業向けに段階公開の仕組みをやさしく説明して。",
+    "should_trigger": false
+  },
+  {
+    "query": "前の回答の語尾だけ自然な日本語に整えて。",
+    "should_trigger": false
+  }
+]

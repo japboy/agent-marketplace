@@ -5,14 +5,14 @@ Code and Codex, including installation through Agent Package Manager (APM).
 
 ## Overview
 
-| Plugin                  | Purpose                                            |
-| ----------------------- | -------------------------------------------------- |
-| `workflow-tooling`      | Maintain and extend agent workflows                |
-| `software-delivery`     | Refine plans and record delivered changes          |
-| `language-quality`      | Research terminology and improve Japanese output   |
-| `design-engineering`    | Reconstruct design systems from evidence           |
-| `web-engineering`       | Review Web implementation, tests, and architecture |
-| `software-architecture` | Apply documented architecture patterns             |
+| Plugin                  | Purpose                                                 |
+| ----------------------- | ------------------------------------------------------- |
+| `workflow-tooling`      | Maintain and extend agent workflows                     |
+| `software-delivery`     | Refine plans and record delivered changes               |
+| `language-quality`      | Research terms, improve Japanese, and interpret remarks |
+| `design-engineering`    | Reconstruct design systems from evidence                |
+| `web-engineering`       | Review Web implementation, tests, and architecture      |
+| `software-architecture` | Apply documented architecture patterns                  |
 
 ## Installation
 

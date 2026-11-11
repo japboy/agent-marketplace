@@ -1,7 +1,7 @@
 {
   "name": "language-quality",
-  "version": "0.1.0",
-  "description": "Provides evidence-backed terminology research and natural Japanese rewriting workflows.",
+  "version": "0.2.0",
+  "description": "Research established terminology, rewrite Japanese naturally, and interpret remarks across languages and roles.",
   "author": {
     "name": "Yu Inao",
     "email": "84360+japboy@users.noreply.github.com",
@@ -13,14 +13,16 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Language Quality",
-    "shortDescription": "Japanese language workflows",
-    "longDescription": "Research established English and Japanese terminology, then naturalize Japanese writing without changing meaning.",
+    "shortDescription": "Terminology, Japanese writing, and interpreting",
+    "longDescription": "Research established English and Japanese terminology, naturalize Japanese writing, and interpret participant or agent responses for the listener's next decision.",
     "developerName": "Yu Inao",
     "category": "Communication",
     "capabilities": [],
     "defaultPrompt": [
       "Research the established Japanese translation for this term.",
-      "Rewrite the previous response as natural Japanese."
+      "Rewrite the previous response as natural Japanese.",
+      "Relay the engineer's proposal to Sales so they understand the goal, conditions, and any requested response.",
+      "Interpret your draft answer for me so I can tell what was verified and what decision you need."
     ]
   }
 }
