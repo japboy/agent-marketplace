@@ -164,3 +164,182 @@ The new regression case records this as an open check.
 paired tests improved the documented failures. The low-capability native invocation still invented a
 listener action in one scenario. Claude Code behavior was not tested because the local CLI reported
 that it was not logged in.
+
+## English-wording revision and paired re-evaluation on 2026-11-12
+
+The revision clarifies when the agent's own output can be the source, which speaker a contextual
+goal belongs to, whose reply is available, and who should answer a question about a condition's
+scope. It also replaces the noun *relay* with *interpretation* and makes the grounding heading
+procedural. The baseline was the previous `SKILL.md` (SHA-256
+`943f59008f796fad10d4b450c05ff622b6818426c3a23165526c9236d200a3fc`); the candidate was the revised
+file (SHA-256 `48c663541e064c26dee3478b8b50b13cdc812ba2f77c4f4f65d7da070019870d`).
+
+Both arms received the same wrapper, skill-body placement, and exact prompt for each case. Runs used
+Codex CLI 0.163.0, `gpt-6-luna` at medium reasoning effort, fresh temporary working directories,
+`codex exec --ignore-user-config --ignore-rules --ephemeral -s read-only --skip-git-repo-check
+--json`, and an instruction to use only the scenario without tools. All runs exited successfully and
+recorded no tool calls. The first pass used the eight existing prompts in
+[evals.json](../evals/evals.json) plus two probes for goal attribution and an unavailable speaker,
+defined before the candidate runs and now retained as cases 9 and 10. Each arm ran once per case. A
+separate reviewer graded outputs under randomized A/B labels against the fixed assertions without
+seeing the arm mapping.
+
+| Case                                | Baseline | Candidate | Observed difference                                                                                           |
+| ----------------------------------- | -------: | --------: | ------------------------------------------------------------------------------------------------------------- |
+| 1. Development to Sales             |      3/3 |       2/3 | Candidate omitted a separate question to Development about the customer notice.                               |
+| 2. Supplier to warehouse            |      3/4 |       3/4 | Baseline rendered “before 10” as “by 10”; candidate repeated the stated reply request as a separate question. |
+| 3. Ambiguous Operations remark      |      2/3 |       2/3 | Both omitted at least one needed question to Operations.                                                      |
+| 4. Sales reply to Development       |      2/3 |       3/3 | Candidate explicitly retained Sales' understanding of the conditional proposal.                               |
+| 5. Agent's own draft                |      3/3 |       3/3 | Both separated test success from the proposed release hold.                                                   |
+| 6. User's mistaken approval reading |      3/3 |       2/3 | Candidate's “Is this understanding correct?” did not check the condition and undecided state specifically.    |
+| 7. User understands but disagrees   |      3/3 |       3/3 | Both treated disagreement as compatible with understanding.                                                   |
+| 8. Unsupported Sales action         |      2/4 |       3/4 | Both invented a request for Sales to help arrange the first-response desk.                                    |
+| 9. Goal from another document       |      3/3 |       3/3 | Neither attributed Sales' revenue goal to Quality Assurance.                                                  |
+| 10. Analyst unavailable             |      2/3 |       3/3 | Candidate directly corrected Accounting's mistaken reading and kept the analyst question open.                |
+
+The candidate passed 27/32 assertions versus 26/32 for the baseline; each passed every assertion in
+5/10 cases. The extra question in candidate case 2 was a repeated request, not a request for new
+information, so that assertion is a borderline judgment. To check the two candidate regressions,
+cases 1 and 6 were each repeated twice per arm with the same prompt and fresh contexts. Across three
+runs per arm, case 1 passed 8/9 baseline versus 7/9 candidate assertions; case 6 passed 7/9 in both
+arms. Both versions sometimes omitted the Development question or asked only a generic understanding
+check. The repeated outputs do not establish a consistent benefit for the revised wording.
+
+In the first ten pairs, total elapsed time was 49.31 seconds baseline versus 58.94 seconds
+candidate, and output tokens were 1,089 versus 1,318. The complete skill text grew from 701 to 758
+whitespace-delimited words. Timing and token totals are observations from single runs, not estimates
+of general cost; reported input tokens include CLI context and cache variation. The preceding
+evaluation record does not preserve its five lower-model prompts verbatim, so this comparison used
+the preserved fixture prompts instead. Native skill discovery and Claude Code behavior were not
+rerun.
+
+**Review state: provisional.** The revised English is clearer about the intended roles and sources,
+but the paired outputs do not demonstrate a reliable behavioral improvement. The unsupported Sales
+request remains an open failure on case 8. Retain the wording as a scoped clarification, with no
+claim of improved reliability pending broader testing.
+
+## Plan-knowledge gap evaluation on 2026-11-12
+
+The new [role-pair cases](../evals/plan-gap-cases.json), [runner](../evals/run_plan_gap_eval.py),
+[architecture](../evals/ARCHITECTURE.md), and pre-outcome [rubric](../evals/RUBRIC.md) measure a
+specific question: after a speaker's remark, can the listener identify the speaker's purpose, the
+means and condition, the actual request, and the decision state well enough to take a supported next
+step? The cases cover manager to subordinate, engineer to designer, and director to engineer. An
+informed-dissent control uses the same engineer remark with a listener who already understands the
+proposal but has a reason to object. The case premises and gold answers are synthetic; the
+application of program plan knowledge to conversation is a design analogy described in
+[REFERENCE.md](REFERENCE.md).
+
+Each case begins with one simulated listener response to the raw remark (`L0`). The `no_skill`,
+`previous`, and `candidate` interpreters see the same speaker context, listener role and next
+decision, and natural `L0` reply. They do not see the listener's private brief or prior belief, or
+the gold answers. A fresh simulated listener receives each interpretation and the common history
+(`L1`); the interpreter then sees only its natural reply and may stop or send a repair (`L2`). The
+rubric grades the listener's stated plan knowledge and next action, source fidelity, open questions,
+and whether an actual reply warrants repair. It does not count agreement as a requirement.
+
+The first full run used a generic listener prompt that left `goal` ambiguous between the speaker's
+purpose and the listener's own work. Its 45 calls and blind grades are retained as a measurement
+pilot, not used to compare skill versions. The final runner asks every listener the same generic
+speaker-purpose and goal-to-means questions, and preserves the listener's documented stance unless
+the exchange addresses it. The runner also rejects output inside the source worktree, separates the
+private blind seed from the manifest, and records its hash and the CLI version. The pilot runner
+SHA-256 was `dcb36d5ccf4a9092397c33277f6d0f78647c6cc64069f9a202005db985b0d2cd`; the final runner
+SHA-256 was `6bfcd0732321b20301f0d7a69a397095e1cafcf5dfba5728efb662768d37d49d`.
+
+The final run used Codex CLI 0.163.0 and `gpt-6-luna` at medium reasoning effort. The previous skill
+body had SHA-256 `943f59008f796fad10d4b450c05ff622b6818426c3a23165526c9236d200a3fc`; the candidate
+had SHA-256 `48c663541e064c26dee3478b8b50b13cdc812ba2f77c4f4f65d7da070019870d`. All 42 calls used
+fresh contexts, exited successfully, and made no tool calls. A reviewer graded all four packets
+under anonymous labels before the arm mapping was opened. A separate protocol review challenged two
+hard-failure flags; the blind reviewer recorded an addendum without changing the frozen original
+grades. The two corrections offset, leaving eight hard-failure arms in total.
+
+| Case                     | Observed raw `L0` gap                                                                    | `no_skill`                                                   | Previous body                                                                 | Candidate body                                                                                                                   |
+| ------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Manager to subordinate   | Speaker purpose and means missing.                                                       | No closure; turns the proposed release hold into a decision. | No closure; purpose and means still missing.                                  | No closure; purpose and means still missing, and the proposed hold is stated as operative. The customer-notice scope stays open. |
+| Engineer to designer     | Purpose and goal-to-means link missing; review request misread as an availability reply. | No closure; wrong review reply remains.                      | No closure; adds an availability request.                                     | No closure; adds the same request. A follow-up corrects the review request, but purpose and means remain missing.                |
+| Director to engineer     | Purpose and goal-to-means link missing.                                                  | No closure; adds an instruction to start the estimate today. | Recovers purpose and means but adds an unsupported reply about starting work. | All material gaps close at `L1`; the listener estimates feasibility and effort and does not start implementation.                |
+| Informed dissent control | No observed gap; the listener understands the proposal and keeps a scope concern.        | Adds new errors.                                             | Adds a new scope deliverable.                                                 | Adds a new scope deliverable. None fully preserves the already adequate understanding.                                           |
+
+Full `L1` closure occurred in **1 of 9** interpreted outputs from the three cases with an observed
+`L0` gap: candidate 1/3, previous 0/3, and no-skill 0/3. The candidate's two follow-up attempts
+produced one repair of the review-request slot and no full `L2` closure. The informed-dissent case
+had no gap to close and none of the three interpreters preserved it without a new material error.
+Source-fidelity hard failures affected candidate 3/4 cases, previous 2/4, and no-skill 3/4. One
+no-skill focus output also made a first-person role error that changed the listener's requested
+response; the adjudication kept its listener-side error but did not count it as a speaker-request
+hard failure.
+
+| Arm            | Model calls | Input tokens | Output tokens | Summed call time (s) |
+| -------------- | ----------: | -----------: | ------------: | -------------------: |
+| Raw `L0`       |           4 |       62,452 |         1,457 |                37.55 |
+| No skill       |          12 |      181,540 |         1,680 |                65.76 |
+| Previous body  |          12 |      186,570 |         2,276 |                77.45 |
+| Candidate body |          14 |      217,172 |         3,500 |               100.61 |
+
+Input totals include CLI context and cached tokens; the candidate also made two extra listener
+calls. The times are sums of observed calls in this run, not latency estimates.
+
+**Review state: provisional.** The candidate closed one constructed gap, but it also introduced
+unsupported requests or decision status in three of four cases and cost more tokens and calls. The
+run has one repeat per case. `L1` and `L2` reconstruct a listener from a private brief and the
+transcript rather than track one person's understanding. The structured questions prompt explicit
+analysis, and no actual speaker answer was supplied for two-way grounding. These outputs support
+only a within-harness comparison; they do not establish improvement in human understanding or
+reliable skill benefit. A separate human-listener study and held-out cases would be needed for those
+claims.
+
+## First bounded wording candidate: rejected on held-out cases
+
+The next candidate shortened the runtime text from 758 to 688 whitespace-delimited words. It moved
+the speaker's purpose-to-means link toward the opening and added a source check for actor, action,
+object, modality, condition, and deadline. The aim remained listener understanding for the next
+decision; grounding stayed conditional. Its formatted snapshot SHA-256 was
+`10cc8a374a1eb68fc6ac94e20ff005b35ee94ea3d63c4910593997930b0716e0`, compared with the unchanged
+baseline `48c663541e064c26dee3478b8b50b13cdc812ba2f77c4f4f65d7da070019870d`.
+
+The six [fresh cases](../evals/plan-gap-heldout-cases.json) and their gold answers were designed
+without seeing this candidate or its outputs. [The held-out protocol](../evals/HELDOUT_PROTOCOL.md)
+and [rubric](../evals/RUBRIC.md) were fixed before the complete run. The case SHA-256 was
+`733b88a61a26ba8412955e1760907fade59f46263f7ee59a6fcdd8eefe548dee`; the protocol SHA-256 was
+`d37e0574244046fe584dad3f2606465303a9f940cf90f11890cbaad2904b254a`. An initial attempt was stopped
+during its first raw-listener call to format the candidate snapshot; it produced no listener result
+and is excluded. The complete run used Codex CLI 0.163.0, `gpt-6-luna` at medium reasoning effort,
+three repeats of all six cases, and `raw`, baseline, and candidate arms. All 135 fresh calls
+completed with no tool use or failures. Each case/repeat shared one raw `L0` reply, and the 72
+interpreter prompts were checked for direct leakage of private listener facts or gold.
+
+Three separate graders scored one repeat each under anonymous packet-local labels. A fourth,
+still-blind reviewer applied the same materiality rule across repeats and recorded corrections
+without changing the original grades. Only then were labels and cost records opened. Of 18 paired
+case/repeats, seven had a decision-relevant gap at `L0`; the other 11 were no-gap preservation
+checks. The normalized results were:
+
+| Measure                                      | Baseline | Candidate |
+| -------------------------------------------- | -------: | --------: |
+| Full `L1` closure among 7 eligible pairs     |        1 |         0 |
+| `L1` preservation among 11 no-gap pairs      |        5 |         5 |
+| Source-fidelity hard-failure arms among 18   |        6 |        10 |
+| Median interpreter output tokens per pair    |      281 |     133.5 |
+| Median interpreter elapsed time per pair (s) |   10.115 |     8.165 |
+
+There were six candidate-only and two baseline-only hard-failure pairs. In the theater cases the
+candidate repeatedly turned a listener-side work-table action into a request attributed to the
+caption lead. In the recording case it turned an unresolved preference about sharing into a
+staff-link stop instruction. Both violate source fidelity regardless of the score of the indirect
+request case. The only primary loss was a roster pair: both `L1` listeners understood the request,
+but the candidate's later message treated a placeholder name as delivered and promised to update the
+table without a speaker answer. The precommitted protocol disqualifies closure after a
+source-fidelity hard failure in a follow-up, so this is a protocol-level loss rather than a
+difference in the two `L1` comprehension fields. The paired median candidate-to-baseline ratios were
+0.731 for output tokens and 0.853 for elapsed time; the shorter candidate was cheaper but less
+faithful.
+
+**Review state: rejected.** Candidate-only hard failures independently satisfy the precommitted
+rejection rule. The working-tree `SKILL.md` was restored to the frozen baseline before another
+revision. The assistant-authored answer case relays earlier assistant content through a fresh
+interpreter; it does not test a model interpreting an answer it actually wrote. These are synthetic
+model-listener transcripts, with structured questions and no human grounding. The three graders also
+required cross-repeat adjudication, so the counts are descriptive of this run, not a precise
+estimate of real-world reliability.
