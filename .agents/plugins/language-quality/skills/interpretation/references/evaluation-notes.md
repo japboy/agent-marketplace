@@ -2,10 +2,10 @@
 
 ## Design basis
 
-The conceptual sources, the points they support, and the boundaries of their application are mapped
-in [REFERENCE.md](REFERENCE.md). In particular, applying program-comprehension plan knowledge to
-conversation and separating the speaker's goal from the listener's requested action are choices made
-for this skill.
+The research and professional-practice sources, the points they support, and the boundaries of their
+application are mapped in [REFERENCE.md](REFERENCE.md). In particular, applying
+program-comprehension plan knowledge to conversation and separating the speaker's goal from the
+listener's requested action are choices made for this skill.
 
 All evaluation prompts are constructed scenarios, not records of actual conversations. Case 1 adapts
 the release example supplied in the request. The prior explanation about customer inquiries, the
