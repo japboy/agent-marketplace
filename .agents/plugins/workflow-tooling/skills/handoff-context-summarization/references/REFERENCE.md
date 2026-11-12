@@ -18,11 +18,11 @@ LLM-based planning tasks, MFR is adapted here for agent-to-agent context handoff
 LLM failures in complex tasks often arise from **representational deficiencies** rather than
 reasoning deficiencies:
 
-| Problem               | Cause                       | MFR Solution                    |
-| --------------------- | --------------------------- | ------------------------------- |
-| Constraint violations | Implicit state tracking     | Explicit constraint definition  |
-| Inconsistent plans    | Unstated assumptions        | Externalized entity/state model |
-| Brittle solutions     | Latent representation drift | Stable, inspectable structure   |
+| Problem | Cause | MFR Solution |
+| - | - | - |
+| Constraint violations | Implicit state tracking | Explicit constraint definition |
+| Inconsistent plans | Unstated assumptions | Externalized entity/state model |
+| Brittle solutions | Latent representation drift | Stable, inspectable structure |
 
 ### Two-Phase Structure
 
@@ -84,8 +84,8 @@ availability, location, status)."
 ```markdown
 ## States
 
-| Entity | State            | Details                     |
-| ------ | ---------------- | --------------------------- |
+| Entity | State | Details |
+| - | - | - |
 | [Name] | [Current status] | [Explanation with evidence] |
 ```
 
@@ -189,10 +189,10 @@ Mark uncertain or assumed information explicitly:
 ```markdown
 ## States
 
-| Entity             | State      | Details                         |
-| ------------------ | ---------- | ------------------------------- |
-| API Compatibility  | Verified ✓ | Compatible with v2.3+ (tested)  |
-| Performance Impact | Estimated  | <5ms overhead (not benchmarked) |
+| Entity | State | Details |
+| - | - | - |
+| API Compatibility | Verified ✓ | Compatible with v2.3+ (tested) |
+| Performance Impact | Estimated | <5ms overhead (not benchmarked) |
 ```
 
 ### Avoid Implicit Assumptions
@@ -218,8 +218,8 @@ this to handoffs:
 
 ## States
 
-| Entity | State    | Details       |
-| ------ | -------- | ------------- |
+| Entity | State | Details |
+| - | - | - |
 | [Name] | [Status] | [Explanation] |
 
 ## Actions
@@ -270,12 +270,12 @@ this to handoffs:
 
 ## States
 
-| Entity                 | State        | Details                          |
-| ---------------------- | ------------ | -------------------------------- |
-| AvatarUpload Component | 80% Complete | UI done, validation pending      |
-| uploadAvatar API       | Complete ✓   | Tested with mock server          |
-| ImageProcessor         | Complete ✓   | Supports JPEG, PNG, WebP         |
-| Backend endpoint       | Deployed     | Available on staging environment |
+| Entity | State | Details |
+| - | - | - |
+| AvatarUpload Component | 80% Complete | UI done, validation pending |
+| uploadAvatar API | Complete ✓ | Tested with mock server |
+| ImageProcessor | Complete ✓ | Supports JPEG, PNG, WebP |
+| Backend endpoint | Deployed | Available on staging environment |
 
 ## Actions
 

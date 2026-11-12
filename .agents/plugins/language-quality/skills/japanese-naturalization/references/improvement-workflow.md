@@ -21,15 +21,15 @@ maintenance records.
 
 For each user correction, extract a finite feedback record:
 
-| Field             | Meaning                                                                                                            |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------ |
-| observed_phrase   | The phrase the user found unnatural.                                                                               |
-| context           | Domain, audience, channel, and surrounding sentence if available.                                                  |
-| problem_type      | One of `terminology`, `style-default`, `ai-like-pattern`, `register`, `evaluation-only`, `unclear`, or `rejected`. |
-| preferred_wording | User-preferred or researched wording, if known.                                                                    |
-| evidence          | User judgment, local project usage, official source, style guide, or research note.                                |
-| validation        | New or existing evaluation fixture that checks the behavior.                                                       |
-| decision          | `accept`, `accept-with-caveat`, `defer`, or `reject`.                                                              |
+| Field | Meaning |
+| - | - |
+| observed_phrase | The phrase the user found unnatural. |
+| context | Domain, audience, channel, and surrounding sentence if available. |
+| problem_type | One of `terminology`, `style-default`, `ai-like-pattern`, `register`, `evaluation-only`, `unclear`, or `rejected`. |
+| preferred_wording | User-preferred or researched wording, if known. |
+| evidence | User judgment, local project usage, official source, style guide, or research note. |
+| validation | New or existing evaluation fixture that checks the behavior. |
+| decision | `accept`, `accept-with-caveat`, `defer`, or `reject`. |
 
 If the context or preferred wording is missing, do not invent a durable rule. Either ask one concise
 question or record the feedback as `evaluation-only` or `defer`.
@@ -38,15 +38,15 @@ question or record the feedback as `evaluation-only` or `defer`.
 
 Classify the feedback into exactly one primary destination:
 
-| Problem type      | Destination                                                                                     | When to use                                                                    |
-| ----------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `terminology`     | [terminology-traps.md](terminology-traps.md)                                                    | A phrase needs context-specific term choice, such as `consumer` or `API 配線`. |
-| `style-default`   | [japanese-style-defaults.md](japanese-style-defaults.md)                                        | A general orthography or light style default applies across many contexts.     |
-| `ai-like-pattern` | [ai-like-japanese-patterns.md](ai-like-japanese-patterns.md)                                    | A recurring AI-like phrase should be inspected but not banned.                 |
-| `register`        | [evaluation-prompts.csv](evaluation-prompts.csv), and only later a reference rule if repeated   | The issue depends mainly on tone, channel, or audience.                        |
-| `evaluation-only` | [evaluation-prompts.csv](evaluation-prompts.csv)                                                | The feedback is useful as a regression case but too narrow for a rule.         |
-| `unclear`         | No runtime rule                                                                                 | The concept, target context, or preferred wording is unresolved.               |
-| `rejected`        | [CHANGELOG.md](CHANGELOG.md), or a future `rejected-edits.md` if rejected edits become frequent | The edit would overfit, contradict evidence, or reduce portability.            |
+| Problem type | Destination | When to use |
+| - | - | - |
+| `terminology` | [terminology-traps.md](terminology-traps.md) | A phrase needs context-specific term choice, such as `consumer` or `API 配線`. |
+| `style-default` | [japanese-style-defaults.md](japanese-style-defaults.md) | A general orthography or light style default applies across many contexts. |
+| `ai-like-pattern` | [ai-like-japanese-patterns.md](ai-like-japanese-patterns.md) | A recurring AI-like phrase should be inspected but not banned. |
+| `register` | [evaluation-prompts.csv](evaluation-prompts.csv), and only later a reference rule if repeated | The issue depends mainly on tone, channel, or audience. |
+| `evaluation-only` | [evaluation-prompts.csv](evaluation-prompts.csv) | The feedback is useful as a regression case but too narrow for a rule. |
+| `unclear` | No runtime rule | The concept, target context, or preferred wording is unresolved. |
+| `rejected` | [CHANGELOG.md](CHANGELOG.md), or a future `rejected-edits.md` if rejected edits become frequent | The edit would overfit, contradict evidence, or reduce portability. |
 
 ## Bounded Edit Rules
 

@@ -65,12 +65,12 @@ Policy:
 When generating final design system documentation, sources are prioritized by their proximity to
 design intent:
 
-| Priority | Source                                                           | Classification              | Documentation role                                                  |
-| -------- | ---------------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------- |
-| 1        | Knowledge bases (Notion MUST/SHOULD rules, product requirements) | **Intent: product-level**   | Answers "why does this design exist?"                               |
-| 2        | Design files (Figma annotations, structure, naming)              | **Intent: design-level**    | Answers "what was the designer's structural decision?"              |
-| 3        | ADR (Architecture Decision Records)                              | **Intent: technical-level** | Answers "why is this technical approach chosen to realize intent?"  |
-| 4        | Code implementation                                              | **Fact: implementation**    | Answers "what is currently built?" — validation only, not authority |
+| Priority | Source | Classification | Documentation role |
+| - | - | - | - |
+| 1 | Knowledge bases (Notion MUST/SHOULD rules, product requirements) | **Intent: product-level** | Answers "why does this design exist?" |
+| 2 | Design files (Figma annotations, structure, naming) | **Intent: design-level** | Answers "what was the designer's structural decision?" |
+| 3 | ADR (Architecture Decision Records) | **Intent: technical-level** | Answers "why is this technical approach chosen to realize intent?" |
+| 4 | Code implementation | **Fact: implementation** | Answers "what is currently built?" — validation only, not authority |
 
 Rules for documentation generation:
 

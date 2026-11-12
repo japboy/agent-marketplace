@@ -24,12 +24,12 @@ from the supplied scenario without tools. The candidate also received the skill 
 instructions. The command traces contained no tool calls in these comparisons. The author reviewed
 the results against the fixture assertions without blinding.
 
-| Case                                     | Without the skill                                                                                                                                    | With the revised skill                                                                                                                                                                                    |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1. Japanese, Development to Sales        | Connected the inquiry goal to the intake condition and preserved the proposal. Omitted what Sales needed to check before proceeding with its notice. | Preserved the proposal and added a separate question to Development: whether Sales should hold the customer notice too.                                                                                   |
-| 2. English, supplier to warehouse        | Preserved the reason, conditional offer, and Friday reply deadline. In one run, “before 10 a.m.” was left to attach implicitly to Tuesday.           | Stated Tuesday before 10 a.m. as the receiving condition and kept the Friday reply deadline separate. Asked no extra question.                                                                            |
-| 3. Ambiguous remark, Operations to Sales | Flagged the missing facts but instructed Sales to check existing approvals and contact a decision maker, steps absent from the remark.               | Kept the tentative view and provided specific questions for Operations about the target, release condition, and expected action. The relay still repeated some unknowns alongside the separate questions. |
-| 4. Two-way relay of disagreement         | Returned the listener’s understanding, dissent, and question about Thursday.                                                                         | Returned the same three elements without inventing agreement or an answer.                                                                                                                                |
+| Case | Without the skill | With the revised skill |
+| - | - | - |
+| 1. Japanese, Development to Sales | Connected the inquiry goal to the intake condition and preserved the proposal. Omitted what Sales needed to check before proceeding with its notice. | Preserved the proposal and added a separate question to Development: whether Sales should hold the customer notice too. |
+| 2. English, supplier to warehouse | Preserved the reason, conditional offer, and Friday reply deadline. In one run, “before 10 a.m.” was left to attach implicitly to Tuesday. | Stated Tuesday before 10 a.m. as the receiving condition and kept the Friday reply deadline separate. Asked no extra question. |
+| 3. Ambiguous remark, Operations to Sales | Flagged the missing facts but instructed Sales to check existing approvals and contact a decision maker, steps absent from the remark. | Kept the tentative view and provided specific questions for Operations about the target, release condition, and expected action. The relay still repeated some unknowns alongside the separate questions. |
+| 4. Two-way relay of disagreement | Returned the listener’s understanding, dissent, and question about Thursday. | Returned the same three elements without inventing agreement or an answer. |
 
 The first candidate missed the question in case 1 and left the date of the receiving condition
 implicit in case 2. The revision ties clarifications to a concrete decision and keeps conditions and
@@ -39,12 +39,12 @@ was retained.
 
 Reported usage and elapsed time for the second paired run (baseline / retained candidate):
 
-| Case |    Input tokens | Output tokens | Wall time (s) |
-| ---- | --------------: | ------------: | ------------: |
-| 1    | 16,920 / 17,383 |      60 / 132 |   6.50 / 9.32 |
-| 2    | 16,872 / 17,335 |       82 / 91 |   6.39 / 7.42 |
-| 3    | 14,974 / 15,437 |     199 / 186 |  10.11 / 7.44 |
-| 4    | 16,919 / 17,382 |       76 / 80 |   6.40 / 5.91 |
+| Case | Input tokens | Output tokens | Wall time (s) |
+| - | -: | -: | -: |
+| 1 | 16,920 / 17,383 | 60 / 132 | 6.50 / 9.32 |
+| 2 | 16,872 / 17,335 | 82 / 91 | 6.39 / 7.42 |
+| 3 | 14,974 / 15,437 | 199 / 186 | 10.11 / 7.44 |
+| 4 | 16,919 / 17,382 | 76 / 80 | 6.40 / 5.91 |
 
 Input totals include the CLI’s context, including cached tokens. Wall time is one observation per
 arm per case; it is not a latency estimate.
@@ -86,12 +86,12 @@ low reasoning effort, the same input, and the same instruction to use the suppli
 candidate received the current skill body inline. No case involved real participants or delivery of
 a message.
 
-| Scenario                                                                   | Without / with | Observation                                                                                                                                                                                                                             |
-| -------------------------------------------------------------------------- | -------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Relay an English logistics update in Japanese                              |      3/3 / 2/3 | The logistics speaker had explained the goal of unloading exhibits even if the dock equipment stopped. Both arms kept the truck booking and the request to confirm gate access by Thursday noon. The candidate omitted the stated goal. |
-| Relay a tentative remark about circulating a monthly report                |      1/3 / 2/3 | Only the candidate asked the analyst what “drawing a line” meant and whether it applied to Accounting’s internal distribution. Both outputs put some missing information in the relay itself.                                           |
-| Return Public Relations’ mistaken reading of a conditional production plan |      3/3 / 3/3 | Both arms returned the actual misunderstanding to Production and told Public Relations that the date remained conditional and the notice should stay as written.                                                                        |
-| Relay an overnight monitoring report to a new colleague                    |      2/3 / 3/3 | Both arms explained the backup server and omitted a clarification. Only the candidate explicitly named the monitoring team as the source.                                                                                               |
+| Scenario | Without / with | Observation |
+| - | -: | - |
+| Relay an English logistics update in Japanese | 3/3 / 2/3 | The logistics speaker had explained the goal of unloading exhibits even if the dock equipment stopped. Both arms kept the truck booking and the request to confirm gate access by Thursday noon. The candidate omitted the stated goal. |
+| Relay a tentative remark about circulating a monthly report | 1/3 / 2/3 | Only the candidate asked the analyst what “drawing a line” meant and whether it applied to Accounting’s internal distribution. Both outputs put some missing information in the relay itself. |
+| Return Public Relations’ mistaken reading of a conditional production plan | 3/3 / 3/3 | Both arms returned the actual misunderstanding to Production and told Public Relations that the date remained conditional and the notice should stay as written. |
+| Relay an overnight monitoring report to a new colleague | 2/3 / 3/3 | Both arms explained the backup server and omitted a clarification. Only the candidate explicitly named the monitoring team as the source. |
 
 In two additional pairs per scenario for the logistics and report cases, the omission of the
 logistics goal recurred. Across the three runs per arm, the candidate preserved that goal once and
@@ -137,13 +137,13 @@ received the saved pre-revision skill body, while the candidate received the cur
 paired run called a tool. These are synthetic scenarios and single observations, not estimates of
 general performance.
 
-| Scenario                                                   | Earlier body                                                                                                                     | Revised body                                                                                                                                                                                       |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| English logistics update to a Japanese facilities listener | Preserved the reason for booking a liftgate truck, the booking, and the gate check, but added a redundant check to the listener. | Preserved the equipment-failure purpose, the truck booking, gate condition, and Thursday deadline in the relay. No extra question in the final run.                                                |
-| Ambiguous monthly report remark to Accounting              | Gave the remark and described missing information, but did not direct concrete questions to the analyst.                         | Kept the analyst's remark as the relay and separately identified the missing meaning and whether the condition applies to Accounting's distribution. The analyst's unavailability stayed explicit. |
-| Agent's own draft to its user                              | Reported tests, a conditional hold proposal, and requested a release decision.                                                   | Preserved the same distinction and linked the hold to customer inquiries. The user's final decision role was explicit in the fixture.                                                              |
-| User mistakenly reads passing tests as release approval    | Corrected the unapproved state and restated the intake condition.                                                                | Corrected the same misunderstanding and asked whether that distinction was understood.                                                                                                             |
-| User accurately describes the proposal but disagrees       | Treated the reply as understanding plus opposition.                                                                              | Also treated it as understanding plus opposition, without requesting another readback.                                                                                                             |
+| Scenario | Earlier body | Revised body |
+| - | - | - |
+| English logistics update to a Japanese facilities listener | Preserved the reason for booking a liftgate truck, the booking, and the gate check, but added a redundant check to the listener. | Preserved the equipment-failure purpose, the truck booking, gate condition, and Thursday deadline in the relay. No extra question in the final run. |
+| Ambiguous monthly report remark to Accounting | Gave the remark and described missing information, but did not direct concrete questions to the analyst. | Kept the analyst's remark as the relay and separately identified the missing meaning and whether the condition applies to Accounting's distribution. The analyst's unavailability stayed explicit. |
+| Agent's own draft to its user | Reported tests, a conditional hold proposal, and requested a release decision. | Preserved the same distinction and linked the hold to customer inquiries. The user's final decision role was explicit in the fixture. |
+| User mistakenly reads passing tests as release approval | Corrected the unapproved state and restated the intake condition. | Corrected the same misunderstanding and asked whether that distinction was understood. |
+| User accurately describes the proposal but disagrees | Treated the reply as understanding plus opposition. | Also treated it as understanding plus opposition, without requesting another readback. |
 
 The saved paired runs took 5–7 seconds per arm in most cases. Input tokens were approximately
 15,000–17,000 per run, including varying CLI context. The skill text grew from 419 to 683

@@ -4,11 +4,11 @@ General conventions for XState v5 state machine design.
 
 ## File Naming Conventions
 
-| Type               | Pattern                            | Example                       |
-| ------------------ | ---------------------------------- | ----------------------------- |
-| Machine definition | `<name>.machine.ts` (camelCase)    | `todo.machine.ts`             |
-| Machine constant   | `<name>Machine` (camelCase)        | `todoMachine`                 |
-| Selector function  | `select<PropertyName>` (camelCase) | `selectItems`, `selectStatus` |
+| Type | Pattern | Example |
+| - | - | - |
+| Machine definition | `<name>.machine.ts` (camelCase) | `todo.machine.ts` |
+| Machine constant | `<name>Machine` (camelCase) | `todoMachine` |
+| Selector function | `select<PropertyName>` (camelCase) | `selectItems`, `selectStatus` |
 
 ## Naming Conventions
 
@@ -19,14 +19,14 @@ General conventions for XState v5 state machine design.
 
 Each element uses a specific part of speech to clarify its purpose.
 
-| Element            | Part of Speech                         | Examples                                          |
-| ------------------ | -------------------------------------- | ------------------------------------------------- |
-| **States**         | Noun / Adjective                       | `idle`, `loading`, `authenticated`, `error`       |
-| **Events**         | Past participle (dot.case recommended) | `form.submitted`, `data.loaded`, `error.occurred` |
-| **Actions**        | Verb phrase                            | `sendRequest`, `updateData`, `showError`          |
-| **Guards**         | Adjective / Past participle            | `isValid`, `hasData`, `isExpired`                 |
-| **Parent States**  | Compound noun                          | `editingProfile`                                  |
-| **Invoked Actors** | Noun / Gerund                          | `dataLoader`, `formValidator`                     |
+| Element | Part of Speech | Examples |
+| - | - | - |
+| **States** | Noun / Adjective | `idle`, `loading`, `authenticated`, `error` |
+| **Events** | Past participle (dot.case recommended) | `form.submitted`, `data.loaded`, `error.occurred` |
+| **Actions** | Verb phrase | `sendRequest`, `updateData`, `showError` |
+| **Guards** | Adjective / Past participle | `isValid`, `hasData`, `isExpired` |
+| **Parent States** | Compound noun | `editingProfile` |
+| **Invoked Actors** | Noun / Gerund | `dataLoader`, `formValidator` |
 
 ### Event Naming with dot.case
 
@@ -173,10 +173,10 @@ flowchart TD
     D --> G[WebSocket, browser events]
 ```
 
-| Actor Type     | Use Case                            | Examples                  |
-| -------------- | ----------------------------------- | ------------------------- |
-| `fromPromise`  | Async operations that complete once | API calls, data fetching  |
-| `fromCallback` | Continuous event streams            | WebSocket, browser events |
+| Actor Type | Use Case | Examples |
+| - | - | - |
+| `fromPromise` | Async operations that complete once | API calls, data fetching |
+| `fromCallback` | Continuous event streams | WebSocket, browser events |
 
 ### fromPromise Pattern
 
@@ -411,12 +411,12 @@ createMachine({
 
 Use simple, module-scoped type names without prefixes.
 
-| Type Purpose    | Name           | Form               |
-| --------------- | -------------- | ------------------ |
-| Machine context | `Context`      | interface          |
-| Machine events  | `Event`        | type alias (union) |
-| Machine input   | `Input`        | interface          |
-| Emitted events  | `EmittedEvent` | type alias         |
+| Type Purpose | Name | Form |
+| - | - | - |
+| Machine context | `Context` | interface |
+| Machine events | `Event` | type alias (union) |
+| Machine input | `Input` | interface |
+| Emitted events | `EmittedEvent` | type alias |
 
 **Exception:** If `Event` conflicts with the global DOM `Event` type, use `MachineEvent`.
 
@@ -513,13 +513,13 @@ it('enters loading while a fetch request is active', () => {
 
 ### What to Test
 
-| Target                                            | Priority | Reason                                          |
-| ------------------------------------------------- | -------- | ----------------------------------------------- |
-| Actor implementations (fromPromise, fromCallback) | High     | Side effects need verification                  |
-| Critical transitions and final states             | High     | Observable workflow behavior needs verification |
-| Complex guards                                    | Medium   | Business logic validation                       |
-| Derived selectors                                 | Medium   | Computation correctness                         |
-| Component integration                             | High     | User-facing behavior                            |
+| Target | Priority | Reason |
+| - | - | - |
+| Actor implementations (fromPromise, fromCallback) | High | Side effects need verification |
+| Critical transitions and final states | High | Observable workflow behavior needs verification |
+| Complex guards | Medium | Business logic validation |
+| Derived selectors | Medium | Computation correctness |
+| Component integration | High | User-facing behavior |
 
 Use the [official XState testing guidance](https://stately.ai/docs/testing) as the baseline. Treat
 the priorities above as team conventions, not as XState requirements.

@@ -86,11 +86,11 @@ durable product analytics.
 
 Classify operational maturity by what changes when a measurement is requested:
 
-| Level | Pattern                                                 | Change required for a new measurement                       |
-| ----- | ------------------------------------------------------- | ----------------------------------------------------------- |
-| 0     | Add or change individual tracking events as needs arise | Individual event implementation                             |
-| 1     | Consolidate and type event patterns and metadata        | Event implementation through a shared contract              |
-| 2     | Derive measurements from an observed event stream       | Interpretation rules; no or minimal instrumentation changes |
+| Level | Pattern | Change required for a new measurement |
+| - | - | - |
+| 0 | Add or change individual tracking events as needs arise | Individual event implementation |
+| 1 | Consolidate and type event patterns and metadata | Event implementation through a shared contract |
+| 2 | Derive measurements from an observed event stream | Interpretation rules; no or minimal instrumentation changes |
 
 These levels describe this pattern's operating model, not a vendor maturity standard. Level 2 is
 bounded by the facts the stream observes; typing an API or moving calls out of components alone does
@@ -160,17 +160,17 @@ route registry and understand the user's state.
 
 Minimum route registry fields:
 
-| Field                   | Purpose                                               |
-| ----------------------- | ----------------------------------------------------- |
-| `route_name`            | Stable machine identifier                             |
-| `url_pattern`           | Canonical URL pattern                                 |
-| `required_params`       | Required path parameters                              |
-| `optional_query_params` | Supported query-state parameters                      |
-| `user_meaning`          | What this state means to a user                       |
-| `analytics_meaning`     | What this state means analytically                    |
-| `pii_policy`            | Whether params or query values may contain PII        |
-| `canonicalization_rule` | How equivalent URLs collapse to one state             |
-| `deprecated`            | Whether this route is retained only for compatibility |
+| Field | Purpose |
+| - | - |
+| `route_name` | Stable machine identifier |
+| `url_pattern` | Canonical URL pattern |
+| `required_params` | Required path parameters |
+| `optional_query_params` | Supported query-state parameters |
+| `user_meaning` | What this state means to a user |
+| `analytics_meaning` | What this state means analytically |
+| `pii_policy` | Whether params or query values may contain PII |
+| `canonicalization_rule` | How equivalent URLs collapse to one state |
+| `deprecated` | Whether this route is retained only for compatibility |
 
 Example:
 
@@ -633,16 +633,16 @@ measurements:
 
 Keep responsibilities explicit:
 
-| Layer                       | Responsibility                                                                |
-| --------------------------- | ----------------------------------------------------------------------------- |
-| Feature code                | Update product state and route state correctly                                |
-| Router                      | Maintain canonical route transitions                                          |
-| Route registry              | Define stable state names and meanings                                        |
-| Instrumentation runtime     | Observe transitions and send raw events                                       |
-| Measurement manifest        | Declare semantic interpretation rules                                         |
-| Collector                   | Handle consent, privacy, batching, retry, and transport                       |
-| History store (when needed) | Preserve raw transitions for later interpretation                             |
-| Interpretation layer        | Derive named events, funnels, journeys, and metrics from observed transitions |
+| Layer | Responsibility |
+| - | - |
+| Feature code | Update product state and route state correctly |
+| Router | Maintain canonical route transitions |
+| Route registry | Define stable state names and meanings |
+| Instrumentation runtime | Observe transitions and send raw events |
+| Measurement manifest | Declare semantic interpretation rules |
+| Collector | Handle consent, privacy, batching, retry, and transport |
+| History store (when needed) | Preserve raw transitions for later interpretation |
+| Interpretation layer | Derive named events, funnels, journeys, and metrics from observed transitions |
 
 ## Privacy and Consent
 

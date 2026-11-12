@@ -8,15 +8,15 @@ translations, or a decision about established usage.
 Use the highest available source layer for the target audience. Do not let weak general usage
 override strong domain or industry evidence.
 
-| Tier | Source type                                                                             | Use for                                               |
-| ---- | --------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| 0    | User-provided internal glossary, product UI, code, Notion, design files, or brand docs  | Domain-specific terms and product constraints         |
-| 1    | Standards bodies and official terminology databases                                     | Cross-organization industry terms                     |
-| 2    | Government ministries, international organizations, and public agencies                 | Public-sector or regulated-domain usage               |
-| 3    | Professional associations, academic glossaries, textbooks, and peer-reviewed literature | Discipline-specific educational or professional usage |
-| 4    | Product-maintained terminology portals and vendor localization glossaries               | Platform, software, and product ecosystem terms       |
-| 5    | General dictionaries, style guides, and public-facing explainers                        | General-audience clarity                              |
-| 6    | Blogs, media, forums, search-result frequency, and generated summaries                  | Weak supporting evidence only                         |
+| Tier | Source type | Use for |
+| - | - | - |
+| 0 | User-provided internal glossary, product UI, code, Notion, design files, or brand docs | Domain-specific terms and product constraints |
+| 1 | Standards bodies and official terminology databases | Cross-organization industry terms |
+| 2 | Government ministries, international organizations, and public agencies | Public-sector or regulated-domain usage |
+| 3 | Professional associations, academic glossaries, textbooks, and peer-reviewed literature | Discipline-specific educational or professional usage |
+| 4 | Product-maintained terminology portals and vendor localization glossaries | Platform, software, and product ecosystem terms |
+| 5 | General dictionaries, style guides, and public-facing explainers | General-audience clarity |
+| 6 | Blogs, media, forums, search-result frequency, and generated summaries | Weak supporting evidence only |
 
 Examples of high-authority terminology sources:
 
@@ -32,14 +32,14 @@ Examples of high-authority terminology sources:
 
 Use exactly one primary status for each candidate.
 
-| Status        | Meaning                                                            | Required evidence                                                                   |
-| ------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
-| `established` | A stable term in the relevant community                            | Tier 1-3 source, or multiple independent high-authority sources, with concept match |
-| `preferred`   | Best choice for the target context, but not fully settled          | Strong source fit or product/context rationale with caveats                         |
-| `acceptable`  | Understandable and unlikely to mislead, but weak as a fixed term   | Concept fit plus no major collision, with limited authority                         |
-| `descriptive` | Useful as an explanation for general readers, not a technical term | Clear audience benefit, usually paired with an established term                     |
-| `avoid`       | Misleading, colliding, obsolete, or too broad/narrow               | Evidence of conflict, semantic drift, or audience confusion                         |
-| `unverified`  | Not enough evidence to recommend                                   | Missing source, stale source, or unresolved concept ambiguity                       |
+| Status | Meaning | Required evidence |
+| - | - | - |
+| `established` | A stable term in the relevant community | Tier 1-3 source, or multiple independent high-authority sources, with concept match |
+| `preferred` | Best choice for the target context, but not fully settled | Strong source fit or product/context rationale with caveats |
+| `acceptable` | Understandable and unlikely to mislead, but weak as a fixed term | Concept fit plus no major collision, with limited authority |
+| `descriptive` | Useful as an explanation for general readers, not a technical term | Clear audience benefit, usually paired with an established term |
+| `avoid` | Misleading, colliding, obsolete, or too broad/narrow | Evidence of conflict, semantic drift, or audience confusion |
+| `unverified` | Not enough evidence to recommend | Missing source, stale source, or unresolved concept ambiguity |
 
 Confidence is separate from status:
 
@@ -51,37 +51,37 @@ Confidence is separate from status:
 
 Track these fields while researching:
 
-| Field                            | Values or notes                                                          |
-| -------------------------------- | ------------------------------------------------------------------------ |
-| `source_term`                    | Original term or phrase                                                  |
-| `candidate_term`                 | Proposed translation or label                                            |
-| `language_pair`                  | Example: `ja-en`, `en-ja`                                                |
-| `concept_definition`             | One sentence defining the concept, not the wording                       |
-| `usage_layer`                    | `domain-specific`, `industry`, `general`                                 |
-| `audience`                       | Internal, teacher, developer, policymaker, student, general user, etc.   |
-| `status`                         | One candidate status from the finite list                                |
-| `confidence`                     | `high`, `medium`, or `low`                                               |
-| `sources`                        | URLs, internal locators, file paths, page titles, dates                  |
-| `evidence_notes`                 | Why the source supports or weakens the candidate                         |
+| Field | Values or notes |
+| - | - |
+| `source_term` | Original term or phrase |
+| `candidate_term` | Proposed translation or label |
+| `language_pair` | Example: `ja-en`, `en-ja` |
+| `concept_definition` | One sentence defining the concept, not the wording |
+| `usage_layer` | `domain-specific`, `industry`, `general` |
+| `audience` | Internal, teacher, developer, policymaker, student, general user, etc. |
+| `status` | One candidate status from the finite list |
+| `confidence` | `high`, `medium`, or `low` |
+| `sources` | URLs, internal locators, file paths, page titles, dates |
+| `evidence_notes` | Why the source supports or weakens the candidate |
 | `source_published_or_updated_at` | Source publication date or most recent visible update date, when exposed |
-| `retrieved_at`                   | Date the evidence was retrieved                                          |
-| `last_verified_at`               | Date the concept and term match was last verified                        |
-| `freshness_status`               | `current`, `stale`, `unknown`, or `not-time-sensitive`                   |
-| `collision_risk`                 | Existing acronym, product label, legal term, UI conflict, etc.           |
-| `decision`                       | Recommend, use with caveat, explain only, or reject                      |
+| `retrieved_at` | Date the evidence was retrieved |
+| `last_verified_at` | Date the concept and term match was last verified |
+| `freshness_status` | `current`, `stale`, `unknown`, or `not-time-sensitive` |
+| `collision_risk` | Existing acronym, product label, legal term, UI conflict, etc. |
+| `decision` | Recommend, use with caveat, explain only, or reject |
 
 ## Search Patterns
 
 Start narrow, then widen.
 
-| Goal                    | Query pattern                                                                        |
-| ----------------------- | ------------------------------------------------------------------------------------ |
-| Official term           | `"candidate term" glossary site:official-domain`                                     |
-| Cross-language term     | `"source term" "candidate term" terminology`                                         |
-| Education/public policy | `site:mext.go.jp`, `site:oecd.org`, `site:unesco.org`, official ministry domains     |
-| Software/web term       | MDN, W3C, WHATWG, official product docs, Context7-backed library docs                |
-| Product localization    | Microsoft Terminology, Apple style guides, platform glossaries, official vendor docs |
-| Collision check         | `"candidate term" acronym`, `"candidate term" glossary`, product/repo search         |
+| Goal | Query pattern |
+| - | - |
+| Official term | `"candidate term" glossary site:official-domain` |
+| Cross-language term | `"source term" "candidate term" terminology` |
+| Education/public policy | `site:mext.go.jp`, `site:oecd.org`, `site:unesco.org`, official ministry domains |
+| Software/web term | MDN, W3C, WHATWG, official product docs, Context7-backed library docs |
+| Product localization | Microsoft Terminology, Apple style guides, platform glossaries, official vendor docs |
+| Collision check | `"candidate term" acronym`, `"candidate term" glossary`, product/repo search |
 
 For connected workspace sources, search internal pages before public web when the user links or
 names a relevant internal source.
@@ -111,7 +111,7 @@ Mark a candidate `avoid` or `unverified` when:
 **Use By Audience**
 
 | Audience | Recommended wording | Status | Notes |
-| -------- | ------------------- | ------ | ----- |
+| - | - | - | - |
 
 **Local Fixes**
 
@@ -126,7 +126,7 @@ Mark a candidate `avoid` or `unverified` when:
 
 ```markdown
 | Candidate | Layer | Status | Confidence | Evidence | Risk |
-| --------- | ----- | ------ | ---------- | -------- | ---- |
+| - | - | - | - | - | - |
 ```
 
 ## Termbase Recommendation

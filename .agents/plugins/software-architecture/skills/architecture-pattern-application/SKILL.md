@@ -74,10 +74,10 @@ that dependency explicitly rather than assuming the other decision is ready.
 Match the task against this catalogue before loading references. When a request spans both entries,
 assess each separately and keep their evidence and applicability states distinct.
 
-| Reference                                                                          | Use when                                                                                                                                                                                   |
-| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Reference | Use when |
+| - | - |
 | [Route-State-Based Product Analytics](references/route-state-product-analytics.md) | The task involves product analytics, tracking, declarative instrumentation, route transition logs, URL-as-state, IA-aligned route design, or DWH semantic modeling from web behavior logs. |
-| [Monorepo / Workspace Layout](references/monorepo-workspace-layout.md)             | The task concerns directory layout, workspace member placement, unit versus role versus domain grouping, or filesystem and build metadata consistency across ecosystems.                   |
+| [Monorepo / Workspace Layout](references/monorepo-workspace-layout.md) | The task concerns directory layout, workspace member placement, unit versus role versus domain grouping, or filesystem and build metadata consistency across ecosystems. |
 
 ## Review Stance
 
