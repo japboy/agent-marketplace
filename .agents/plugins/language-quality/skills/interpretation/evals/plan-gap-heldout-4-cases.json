@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "oral_history_quote_review_assumption",
+      "speaker": {
+        "role": "市民史展示の編集担当",
+        "prior_context": "編集担当は、聞き間違いのある引用を証言者本人の発言として展示に印刷しないようにしたい。そのため、展示で使う引用部分だけを証言者ごとに送り、誤記がないか確かめてもらう手順を考えている。展示委員会はこの手順をまだ審議しておらず、印刷開始日もまだ決まっていない。編集担当はレイアウト担当に作業を依頼していない。",
+        "utterance": "展示で使う引用は、印刷前に証言者ごとに該当箇所を送って確認してもらう案です。委員会にはまだ出していません。",
+        "available_for_clarification": true
+      },
+      "listener": {
+        "role": "市民史展示のレイアウト担当",
+        "brief": "あなたは今日の編集会議で、展示用の引用を含むレイアウトの進め方を報告する。引用確認の手順については編集担当の発言以外に決定通知を受けていない。",
+        "prior_belief": "証言者への引用確認は委員会で決定済みで、編集担当が自分に送付作業を頼んでいると思っている。",
+        "next_decision": "今日の編集会議で、引用確認の手順と自分の作業をどう報告するか。"
+      },
+      "gold": {
+        "goal": "聞き間違いのある引用を証言者本人の発言として展示に印刷しないようにする。",
+        "means": "展示に使う引用箇所を証言者ごとに送り、本人に誤記を確認してもらうことで、誤った引用の印刷を防ぐ。",
+        "condition": "引用を送るなら印刷前に行う案だが、手順はまだ委員会に出しておらず、印刷開始日も未定。",
+        "requested_response": "レイアウト担当への送付作業の依頼や返答の指定はない。",
+        "decision_status": "証言者による引用確認は編集担当の案で、展示委員会は未審議。印刷開始日も未決定。",
+        "acceptable_next_actions": [
+          "編集会議では、引用確認を未審議の案として報告し、自分への送付依頼があったとは述べない。",
+          "自分のレイアウト作業に必要なら、手順を誰が決め、誰が証言者に送るかを確認する。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "展示委員会が引用確認の手順を承認済みである。",
+          "編集担当がレイアウト担当に証言者への送付を依頼した。",
+          "証言者への確認をしなければレイアウト担当は一切作業できないと決まった。"
+        ]
+      },
+      "test_focus": [
+        "counterfactual_listener_state",
+        "error_prevention_goal_to_person_review_means",
+        "proposal_vs_committee_decision",
+        "listener_work_does_not_supply_request"
+      ],
+      "predeclared_decision_slots": [
+        "goal",
+        "means",
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    },
+    {
+      "id": "oral_history_quote_review_informed_dissent",
+      "speaker": {
+        "role": "市民史展示の編集担当",
+        "prior_context": "編集担当は、聞き間違いのある引用を証言者本人の発言として展示に印刷しないようにしたい。そのため、展示で使う引用部分だけを証言者ごとに送り、誤記がないか確かめてもらう手順を考えている。展示委員会はこの手順をまだ審議しておらず、印刷開始日もまだ決まっていない。編集担当はレイアウト担当に作業を依頼していない。",
+        "utterance": "展示で使う引用は、印刷前に証言者ごとに該当箇所を送って確認してもらう案です。委員会にはまだ出していません。",
+        "available_for_clarification": true
+      },
+      "listener": {
+        "role": "市民史展示のレイアウト担当",
+        "brief": "あなたは今日の編集会議で、展示用の引用を含むレイアウトの進め方を報告する。編集担当は誤った引用の印刷を防ぐため、印刷前に引用箇所を証言者ごとに送る案を考えていると知っている。この手順は委員会で未審議で、印刷開始日も未定であり、編集担当から自分への送付依頼もないと知っている。",
+        "prior_belief": "案の目的と未審議の状態は理解している。ただ、証言者からの返事を待つと会議で予定していた準備日程が延びるかもしれず、その手順には反対意見を述べたい。",
+        "next_decision": "今日の編集会議で、引用確認の手順と自分の作業をどう報告するか。"
+      },
+      "gold": {
+        "goal": "聞き間違いのある引用を証言者本人の発言として展示に印刷しないようにする。",
+        "means": "展示に使う引用箇所を証言者ごとに送り、本人に誤記を確認してもらうことで、誤った引用の印刷を防ぐ。",
+        "condition": "引用を送るなら印刷前に行う案だが、手順はまだ委員会に出しておらず、印刷開始日も未定。",
+        "requested_response": "レイアウト担当への送付作業の依頼や返答の指定はない。",
+        "decision_status": "証言者による引用確認は編集担当の案で、展示委員会は未審議。印刷開始日も未決定。",
+        "acceptable_next_actions": [
+          "編集会議では未審議の案として報告したうえで、日程への懸念を自分の意見として述べる。",
+          "レイアウトの準備状況を報告し、証言者への送付が自分の依頼済み作業だとは述べない。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "展示委員会が引用確認の手順を承認済みである。",
+          "編集担当がレイアウト担当に証言者への送付を依頼した。",
+          "レイアウト担当が反対意見を述べたことは、案を理解していない証拠である。"
+        ]
+      },
+      "test_focus": [
+        "counterfactual_listener_state",
+        "no_gap_informed_dissent",
+        "speaker_facts_invariant",
+        "disagreement_is_not_misunderstanding"
+      ],
+      "predeclared_decision_slots": [
+        "goal",
+        "means",
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    },
+    {
+      "id": "community_radio_bridge_indirect_request",
+      "speaker": {
+        "role": "地域ラジオ番組の制作担当",
+        "prior_context": "制作担当は、番組Aの冒頭と本編の間に残る12秒の無音を埋めて、木曜12時の音声書き出しに間に合わせたい。録音ボランティアは、必要ならその箇所用の12秒のつなぎ音を録音して制作担当に渡せると申し出た。制作担当はその申し出にうなずき、録音ボランティアに向けて次のように述べた。つなぎ音はまだ録音されていない。",
+        "utterance": "番組Aの冒頭と本編の間の12秒、木曜12時の書き出しまでにつなぎ音が届くと助かります。",
+        "available_for_clarification": true
+      },
+      "listener": {
+        "role": "地域ラジオの録音ボランティア",
+        "brief": "あなたは番組Aのつなぎ音を録音して制作担当に渡せると申し出た。木曜12時が音声書き出しの時刻だと知っている。",
+        "prior_belief": "制作担当は無音をそのままにするつもりで、自分の申し出には返答しなかったと思っている。",
+        "next_decision": "番組Aのどの音を作り、いつまでに誰へ渡すか。"
+      },
+      "gold": {
+        "goal": "番組Aの冒頭と本編の間に残る12秒の無音を埋め、木曜12時の音声書き出しに間に合わせる。",
+        "means": "録音ボランティアがその箇所用の12秒のつなぎ音を録音し、制作担当へ渡して無音部分に使えるようにする。",
+        "condition": "対象は番組Aの冒頭と本編の間の12秒だけで、木曜12時の書き出しまでに届ける。",
+        "requested_response": "申し出を受けた録音ボランティアに、番組Aのその12秒用のつなぎ音を録音して木曜12時までに制作担当へ届けてほしい。",
+        "decision_status": "制作担当は録音ボランティアの申し出を受け、つなぎ音の到着を求めている。録音と受け渡しはまだ済んでいない。",
+        "acceptable_next_actions": [
+          "番組Aの冒頭と本編の間に使う12秒のつなぎ音を録音し、木曜12時の書き出し前に制作担当へ渡す。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "番組A全体の音声を録り直すよう依頼した。",
+          "録音ボランティアに音声書き出し自体を任せた。",
+          "つなぎ音は既に録音済みである。"
+        ]
+      },
+      "test_focus": [
+        "source_supported_indirect_request",
+        "accepted_offer_as_request_evidence",
+        "digital_artifact_handoff",
+        "scope_addressee_deadline"
+      ],
+      "predeclared_decision_slots": [
+        "goal",
+        "means",
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    },
+    {
+      "id": "archive_photo_internal_mockup_scope",
+      "speaker": {
+        "role": "郷土資料館の広報担当",
+        "prior_context": "広報担当は、寄贈写真の利用条件を守りながら展示を知らせたい。寄贈者の同意を確かめてから写真をウェブに公開するつもりだが、この扱いは広報担当自身の公開作業について述べたもの。館内だけで見るデザイン試作に写真を使えるかは確認しておらず、広報担当にはその可否を決める権限もない。写真の利用範囲を決めるのは資料利用責任者だが、広報担当もデザイン担当もまだその判断を聞いていない。",
+        "utterance": "私が写真をウェブに載せるのは、寄贈者の同意を確認してからにします。館内用の試作で使えるかは、まだわかりません。",
+        "available_for_clarification": false
+      },
+      "listener": {
+        "role": "郷土資料館のデザイン担当",
+        "brief": "あなたは館内だけで見る展示案の試作を今日作る。資料利用責任者に質問は送れるが、広報担当とは明日まで連絡が取れない。試作に写真を置けるかが次の判断点である。",
+        "prior_belief": "ウェブ公開まで待つという広報担当の条件があるので、館内用試作にも写真を使えないことが決まったと思っている。",
+        "next_decision": "今日の館内用試作に寄贈写真を配置するか、利用範囲の判断をどう得るか。"
+      },
+      "gold": {
+        "goal": "寄贈写真の利用条件を守りながら展示を知らせる。",
+        "means": "広報担当は寄贈者の同意を確かめてからウェブ公開することで、公開時の利用条件を守ろうとしている。",
+        "condition": "寄贈者の同意を確認してから行うのは広報担当自身のウェブ公開。館内用試作にも同じ条件が及ぶかは未確認。",
+        "requested_response": "デザイン担当への作業依頼や返答の指定はない。",
+        "decision_status": "広報担当は自分のウェブ公開を同意確認後に行うと述べている。館内用試作への使用可否は未決で、判断権限は資料利用責任者にある。",
+        "acceptable_next_actions": [
+          "資料利用責任者に、寄贈写真を館内用試作に置けるか、同意確認の条件が及ぶかを具体的に尋ねる。",
+          "判断を得るまでは写真の配置を確定せず、写真を使わない部分の試作を進める。"
+        ],
+        "open_questions": [
+          "資料利用責任者へ：寄贈写真を館内用のデザイン試作に使えるか。広報担当のウェブ公開前の同意確認という条件が、この内部使用にも適用されるか。"
+        ],
+        "forbidden_inferences": [
+          "広報担当が館内用試作への使用を禁止した。",
+          "広報担当が館内用試作への使用を許可した。",
+          "デザイン担当は広報担当の条件を自分の判断で解除できる。",
+          "資料利用責任者が館内用試作への使用を既に承認した。"
+        ]
+      },
+      "test_focus": [
+        "unresolved_condition_scope",
+        "authority_resides_with_third_party",
+        "speaker_own_action_vs_listener_action",
+        "question_remains_open_when_speaker_unavailable"
+      ],
+      "predeclared_decision_slots": [
+        "means",
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    },
+    {
+      "id": "podcast_transcript_internal_handoff",
+      "speaker": {
+        "role": "地域番組の文字起こし担当",
+        "prior_context": "文字起こし担当は、内部の校閲者が古い版を読んで修正を重複させないようにしたい。聞き取りにくかった固有名詞を修正した原稿の第2版を共有フォルダに置き、内部校閲に使う版として編集責任者の確認を得た。公開用の最終承認はまだない。校閲者に使う版を案内するのは校閲窓口の既存業務である。今回の発言は第2版の準備状況を伝える引き継ぎで、校閲窓口へ案内や転送を新たに依頼するものではない。",
+        "utterance": "固有名詞を直した文字起こし第2版を共有フォルダに置きました。内部校閲はこの版で進めると編集責任者に確認済みです。公開用の承認はまだです。",
+        "available_for_clarification": true
+      },
+      "listener": {
+        "role": "地域番組の校閲窓口",
+        "brief": "校閲者が読む原稿の版を案内するのは、あなたの既存業務である。古い版への重複した修正を防ぐため、固有名詞を直した第2版を共有フォルダに置いて内部校閲でそろえると別の連絡で知っている。内部校閲に使う確認は済み、公開用の承認はまだで、今回の引き継ぎが自分への新たな案内・転送依頼ではないことも知っている。",
+        "prior_belief": "校閲者には第2版を内部確認用として案内できるが、公開済みや公開承認済みとは案内しないと理解している。",
+        "next_decision": "校閲者へどの版をどう案内し、公開について何を伝えるか。"
+      },
+      "gold": {
+        "goal": "内部の校閲者が古い版を読んで修正を重複させないようにする。",
+        "means": "固有名詞を修正した第2版を共有フォルダに置き、その版を内部校閲に使うと確認することで、校閲者が同じ版を参照できるようにする。",
+        "condition": "第2版は内部校閲用として確認済みで、公開用にはまだ承認されていない。",
+        "requested_response": "文字起こし担当から校閲窓口への新たな案内・転送作業の依頼や返答の指定はない。",
+        "decision_status": "第2版の配置と内部校閲への利用確認は完了。公開用の最終承認は未了。",
+        "acceptable_next_actions": [
+          "校閲者に共有フォルダの第2版を内部校閲用として案内し、公開用の承認済みとは言わない。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "第2版は公開承認済みである。",
+          "第2版はまだ共有フォルダに置かれていない。",
+          "文字起こし担当が校閲窓口へ案内や転送を新たに依頼した。",
+          "編集責任者は第2版の内容を公開用に最終承認した。"
+        ]
+      },
+      "test_focus": [
+        "no_gap_control",
+        "informational_handoff_without_new_request",
+        "completed_preparation_vs_pending_publication",
+        "operational_state_vs_communicative_purpose"
+      ],
+      "predeclared_decision_slots": [
+        "goal",
+        "means",
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    },
+    {
+      "id": "assistant_agenda_backup_choice",
+      "speaker": {
+        "role": "議事メモの復元状況を答えたアシスタント",
+        "prior_context": "ユーザーは、誤って上書きした地域講座の議事メモについて、バックアップを探し、どの版を復元するか自分に確認してから作業してほしいと依頼した。アシスタントは火曜版と木曜版の二つを見つけた。現在の作業用メモはまだ置き換えていない。版を復元すると現在の作業用メモは選んだ版の内容に置き換わる。",
+        "utterance": "火曜版と木曜版のバックアップを見つけました。現在のメモはまだ置き換えていません。どちらを復元するか指定してください。復元すると、今の作業用メモは選んだ版の内容に置き換わります。",
+        "available_for_clarification": true
+      },
+      "listener": {
+        "role": "議事メモの復元を依頼したユーザー",
+        "brief": "あなたは火曜版と木曜版のうち、必要な追記がある木曜版を戻したい。復元する版を自分が選んでから作業してほしいと依頼していた。",
+        "prior_belief": "アシスタントは木曜版をすでに復元し、単に作業報告をしていると思っている。",
+        "next_decision": "アシスタントへ復元する版について何を返すか。"
+      },
+      "gold": {
+        "goal": "ユーザーが必要とする議事メモを、復元する版を確認したうえで取り戻す。",
+        "means": "火曜版と木曜版のバックアップを見つけ、ユーザーに版を選んでもらってから作業用メモをその版で置き換える。",
+        "condition": "復元するにはユーザーが版を指定する必要があり、復元時には現在の作業用メモが選んだ版に置き換わる。",
+        "requested_response": "ユーザーに、火曜版と木曜版のどちらを復元するか指定してほしい。",
+        "decision_status": "二つのバックアップは発見済みだが、復元する版は未指定で、現在の作業用メモはまだ置き換えられていない。",
+        "acceptable_next_actions": [
+          "必要な追記がある木曜版を復元するようアシスタントに指定する。",
+          "上書きの結果に不安があれば、復元前に現在のメモの扱いをアシスタントに確認する。"
+        ],
+        "open_questions": [],
+        "forbidden_inferences": [
+          "アシスタントは木曜版をすでに復元した。",
+          "どちらのバックアップにも必要な追記がない。",
+          "アシスタントがユーザーに復元版の選択を任せず、自分で決めた。",
+          "アシスタントは復元に伴う作業用メモの置き換えを完了した。"
+        ]
+      },
+      "test_focus": [
+        "assistant_authored_answer_relay",
+        "found_backups_vs_restored_state",
+        "user_owned_choice_before_overwrite",
+        "operational_state_vs_communicative_ask"
+      ],
+      "predeclared_decision_slots": [
+        "goal",
+        "means",
+        "condition",
+        "requested_response",
+        "decision_status"
+      ]
+    }
+  ]
+}

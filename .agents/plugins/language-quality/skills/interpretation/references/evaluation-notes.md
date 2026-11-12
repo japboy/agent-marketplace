@@ -470,3 +470,74 @@ Skill remains the baseline. This result describes repeated transcripts from one 
 simulated listener. The assistant-authored case uses a fresh interpreter of earlier assistant
 content, and the harness does not measure a model interpreting its own live answer, human grounding,
 or effects on real decisions.
+
+## Source-anchor candidate: rejected under the V3 temporal-label protocol
+
+The [source-anchor candidate snapshot](../evals/source-anchor-candidate-rejected.md) is the exact
+v17b input tested (SHA-256 `877df59dd1d6018f7c87c2e3467a3b02de0c6a9aeb936cfc233df007f2bdefb8`). It
+added an internal check of who asked whom and when, and kept a later listener answer separate from
+the original request. The baseline was the retained runtime Skill snapshot (SHA-256
+`48c663541e064c26dee3478b8b50b13cdc812ba2f77c4f4f65d7da070019870d`). The
+[fourth fixture](../evals/plan-gap-heldout-4-cases.json) (SHA-256
+`6216ceda39f2dba8cabb2bd0850fd8b67755d1245ece57f49056867e80269bb0`) contained six fresh synthetic
+cases. The [V3 protocol](../evals/HELDOUT_PROTOCOL_V3.md) labeled the original remark as earlier
+than the listener's `L0` reply, while retaining the frozen `L0` grades, outcomes, and gates from the
+[V2 protocol](../evals/HELDOUT_PROTOCOL_V2.md) and [rubric](../evals/RUBRIC_V2.md). Their frozen
+SHA-256 hashes were `29131e04dfa18eea4fdaf1489a727123cda53cc599eb3d5204398cdd67275711`,
+`5c9195bfb42cf76bb74d02539c6f6178bc66f98c4178637edfb0e1fc96879b45`, and
+`4e1a4452b00c34c03f3e57d0782fad64ea1fc4a86fa74531af28ec918f1ae3b6`. The runner SHA-256 was
+`fb40ee55350f09cc8deb50fc1c5a90d8000ed91203857bde9907176dbadac2aa`.
+
+Codex CLI 0.163.0 ran `gpt-6-luna` at medium reasoning effort for three repeats. The input freeze
+SHA-256 was `53e7b4a209265c520ce626c07c9fca7c6020e564cf9d1ba2114ca4aadfb15442`; the raw-run manifest
+SHA-256 was `9e5bbef6f26926b442dd4275c4ee66ff79b8f4e896d473c52e26f25f7685b480`. The frozen `L0`
+grade SHA-256 was `b423cb70bed5d759e170e5ce4bf18c668d0d3afd0fdf5a4b62b3fe94cc3fea5b`, and the
+comparison manifest SHA-256 was `fabe6676e562731034bd8dbfcd5835b1c8ab2a519d2b88aab11fec16ee77dc21`.
+All raw replies were reused; the run audit found no failed model calls, unexpected tool calls, or
+private evaluator fields in model prompts. The revised blind adjudication SHA-256 was
+`0c7eaf97fbd7681d6719f5212f81b0cff1013905854185031805eeff2c03b9ba`; the superseding pre-unblind
+freeze SHA-256 was `cc1c5c1e49c026ddd77878ca2341c8cedab6b40023456e50e0841992eb5c654d`. Only after
+that freeze were the arm mapping and cost opened (SHA-256
+`e6d08d8cd605b49d8b4517e93e8ab4b15688e08b04063080809ff28e08648a91` and
+`e7e3d45eea2dcb3396bba0aa68c3f5c9304924dcf053ad4e3f6c56696bd3cfc9`). The operator's unblinded
+evaluation record SHA-256 is `4eede7666dea949408c39367d2e8520d3a883799c97434ca6c4bcad09719594b`.
+
+Eighteen pairs were planned. Blind review found that `archive_photo_internal_mockup_scope` said the
+publicist and designer had not *heard* the records owner's judgment, while its gold could be read as
+asserting that the owner had not *made* a judgment. This source/gold ambiguity affects the
+decision-status and open-question grades. All three repeats were excluded symmetrically, leaving 15
+analyzable pairs: 12 with a material frozen `L0` gap and three no-gap pairs. The earlier independent
+pre-output fixture audit had missed this ambiguity; gold was not changed after output.
+
+| V3 measure among analyzable pairs                     | Baseline | Source-anchor candidate |
+| ----------------------------------------------------- | -------: | ----------------------: |
+| Primary `L1` closure among 12 eligible pairs          |        3 |                       5 |
+| No-gap `L1` preservation among 3 pairs                |        0 |                       2 |
+| First-message source-fidelity hard-failure arms of 15 |        3 |                       2 |
+| Follow-up source-fidelity hard-failure arms of 15     |        0 |                       0 |
+| Inappropriate follow-up choice among 15               |        7 |                       4 |
+| Median interpreter output tokens per pair             |      318 |                     266 |
+| Median interpreter elapsed time per pair (s)          |    13.38 |                   12.77 |
+
+The candidate had two paired primary wins, in two cases and repeat indices 1 and 2, with no primary
+losses; three pairs closed in both arms and seven in neither. Among no-gap pairs, the candidate
+alone preserved two and both arms failed one. Both arms preserved the supported indirect request in
+all three repeats and same-speaker source facts in all six designated relays. No primary `L2` full
+closure occurred; the baseline made one successful targeted repair and the candidate none. The
+paired median candidate-to-baseline ratios were 1.185 for output tokens and 1.085 for elapsed time,
+below the provisional-cost limits of 1.25 and 1.50. Both arms had complete usage records. These
+costs cover the 15 analyzable pairs; the excluded three are not in their medians.
+
+**Review state: rejected.** In `assistant_agenda_backup_choice#r3`, the assistant speaker asked the
+user to choose which backup to restore, but the candidate told the user,
+“木曜版を復元してください。” That reversed the actor and requested action; the baseline did not make
+this hard error. Separately, in `oral_history_quote_review_assumption#r1`, the candidate stopped
+after a listener reply that still misassigned the layout worker's role, whereas the baseline
+appropriately stopped after a reply that preserved the speaker's proposal and lack of a work
+request. These are independent candidate-only rejection conditions under V2's retained gate. The
+runtime Skill remains the baseline.
+
+The comparison measures a model's replies to synthetic transcripts. It does not establish change in
+human understanding, a live agent interpreting its own answer, or transfer to other models.
+Historical V2 and this V3 run use different interpreter prompts; only the paired V3 baseline and
+candidate support attribution within this run.

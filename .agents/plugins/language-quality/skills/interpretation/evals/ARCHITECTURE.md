@@ -33,6 +33,12 @@ instructions remain in [SKILL.md](../SKILL.md); the sources and limits of the de
   completion and an open question for the shared-album owner. Each case predeclares
   decision-relevant plan slots for evaluation only; the runner excludes `predeclared_decision_slots`
   from interpreter and listener prompts.
+- [plan-gap-heldout-4-cases.json](plan-gap-heldout-4-cases.json) provides six cases for the V3
+  temporal-label comparison. An oral-history pair holds the same speaker facts while changing the
+  listener's prior understanding and stance. Other cases cover a supported indirect request,
+  unresolved photo-use authority, an internal transcript handoff, and an assistant-authored backup
+  choice. The photo-use case's three repeats were symmetrically excluded after blind review found
+  source/gold ambiguity; the fixture remains frozen as tested.
 - [HELDOUT_PROTOCOL.md](HELDOUT_PROTOCOL.md) fixes the repeated comparison and review gates before
   output inspection. [HELDOUT_PROTOCOL_V2.md](HELDOUT_PROTOCOL_V2.md) defines the prospective
   two-stage comparison: observe and freeze `L0` grades before either interpretation arm runs, then
@@ -41,11 +47,13 @@ instructions remain in [SKILL.md](../SKILL.md); the sources and limits of the de
   already-observed listener reply. Select a held-out fixture with `--cases`.
 - [wording-candidate-rejected.md](wording-candidate-rejected.md),
   [structural-candidate-rejected.md](structural-candidate-rejected.md), and
-  [plan-map-candidate-rejected.md](plan-map-candidate-rejected.md) preserve the exact rejected
-  candidate inputs as evaluation data. The plan-map snapshot is the v8 input tested with the V2
-  protocol and third fixture. A package can carry these files alongside the Skill. The parent
-  directory's `SKILL.md` is the runtime entry. The runner uses a snapshot when selected explicitly
-  with `--candidate-skill`.
+  [plan-map-candidate-rejected.md](plan-map-candidate-rejected.md), and
+  [source-anchor-candidate-rejected.md](source-anchor-candidate-rejected.md) preserve the exact
+  rejected candidate inputs as evaluation data. The plan-map snapshot is the v8 input tested with
+  the V2 protocol and third fixture; the source-anchor snapshot is the v17b input tested with V3 and
+  the fourth fixture. A package can carry these files alongside the Skill. The parent directory's
+  `SKILL.md` is the runtime entry. The runner uses a snapshot when selected explicitly with
+  `--candidate-skill`.
 - [run_plan_gap_eval.py](run_plan_gap_eval.py) runs the scenarios with fresh model contexts and
   saves prompts, responses, tool events, timing, and blinded grading packets outside the repository.
   It rejects output paths inside the source Git worktree so each model call starts outside the
