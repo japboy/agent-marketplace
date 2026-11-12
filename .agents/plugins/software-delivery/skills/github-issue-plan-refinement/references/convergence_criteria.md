@@ -9,13 +9,13 @@ rather than restating their contents.
 The reviewer tags each finding with exactly one of the following. The orchestrator parses tags with
 a simple substring scan over every `round-*/final.md` that belongs to the batch.
 
-| Tag            | Meaning                               | Blocks convergence? |
-| -------------- | ------------------------------------- | :-----------------: |
-| `[BLOCKER]`    | Must be fixed before proceeding.      |         Yes         |
-| `[IMPORTANT]`  | Should be fixed; may be discussed.    |         Yes         |
-| `[QUESTION]`   | Clarification needed from the author. |         Yes         |
-| `[SUGGESTION]` | Improvement, not required.            |         No          |
-| `[NIT]`        | Trivial style, phrasing, or typo.     |         No          |
+| Tag | Meaning | Blocks convergence? |
+| - | - | :-: |
+| `[BLOCKER]` | Must be fixed before proceeding. | Yes |
+| `[IMPORTANT]` | Should be fixed; may be discussed. | Yes |
+| `[QUESTION]` | Clarification needed from the author. | Yes |
+| `[SUGGESTION]` | Improvement, not required. | No |
+| `[NIT]` | Trivial style, phrasing, or typo. | No |
 
 ## Classification (local vs fundamental)
 
@@ -59,12 +59,12 @@ omits it, the batch has not converged and another batch must run.
 
 Apply per consolidated finding. Never improvise outside this table:
 
-| Finding shape                                                                                                                                | Action                                                 |
-| -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Deterministic fix — the reviewer specifies exactly what to change and the change has no meaningful alternatives                              | Apply to the draft body without prompting              |
+| Finding shape | Action |
+| - | - |
+| Deterministic fix — the reviewer specifies exactly what to change and the change has no meaningful alternatives | Apply to the draft body without prompting |
 | Ambiguous choice — two or more viable directions, a design trade-off, a `[QUESTION]` tag, or contradictory advice across rounds in the batch | Present the options to the user and wait for direction |
-| Disagreement — the orchestrator believes the reviewers are wrong                                                                             | Surface both positions to the user and wait            |
-| `[SUGGESTION]` / `[NIT]` without a deterministic fix                                                                                         | Skip, unless the user has asked for optional polish    |
+| Disagreement — the orchestrator believes the reviewers are wrong | Surface both positions to the user and wait |
+| `[SUGGESTION]` / `[NIT]` without a deterministic fix | Skip, unless the user has asked for optional polish |
 
 When in doubt about whether a fix is deterministic, treat it as ambiguous and ask. Do not guess.
 

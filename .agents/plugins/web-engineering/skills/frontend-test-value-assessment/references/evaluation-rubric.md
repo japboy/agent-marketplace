@@ -35,17 +35,17 @@ Answer these in order. Stop at the first decisive answer.
 
 Once the best layer is chosen, score quality checks from 0 to 2.
 
-| Dimension               | 0                                | 1                                  | 2                                                |
-| ----------------------- | -------------------------------- | ---------------------------------- | ------------------------------------------------ |
-| User outcome            | Internal detail only             | Partial user-visible signal        | Clear user-visible or AT-visible outcome         |
-| Accessibility semantics | Critical semantics untested      | Partial semantic checks            | Role/name/focus/keyboard semantics covered       |
-| Behavior focus          | Implementation-coupled           | Mixed internal and external checks | Behavior-focused assertions                      |
-| Runtime realism         | Unrealistic runtime for the risk | Partial realism                    | Relevant runtime exercised                       |
-| Contract confidence     | Boundary risk unverified         | Partial boundary checks            | Explicit compatibility verified                  |
-| Visual signal           | Visual risk unprotected          | Partial visual oracle              | Meaningful visual guarantee covered              |
-| Refactor resilience     | Breaks on harmless refactor      | Moderate coupling                  | Stable under internal refactor                   |
-| Stability               | Intermittent or flaky            | Rare instability                   | Stable across reruns                             |
-| Fidelity                | Unrealistic mocks dominate       | Mixed doubles with gaps            | High-fidelity collaborators or realistic doubles |
+| Dimension | 0 | 1 | 2 |
+| - | - | - | - |
+| User outcome | Internal detail only | Partial user-visible signal | Clear user-visible or AT-visible outcome |
+| Accessibility semantics | Critical semantics untested | Partial semantic checks | Role/name/focus/keyboard semantics covered |
+| Behavior focus | Implementation-coupled | Mixed internal and external checks | Behavior-focused assertions |
+| Runtime realism | Unrealistic runtime for the risk | Partial realism | Relevant runtime exercised |
+| Contract confidence | Boundary risk unverified | Partial boundary checks | Explicit compatibility verified |
+| Visual signal | Visual risk unprotected | Partial visual oracle | Meaningful visual guarantee covered |
+| Refactor resilience | Breaks on harmless refactor | Moderate coupling | Stable under internal refactor |
+| Stability | Intermittent or flaky | Rare instability | Stable across reruns |
+| Fidelity | Unrealistic mocks dominate | Mixed doubles with gaps | High-fidelity collaborators or realistic doubles |
 
 Additional Storybook-specific checks when stories are part of the setup:
 

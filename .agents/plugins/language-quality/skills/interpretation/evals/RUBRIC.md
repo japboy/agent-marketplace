@@ -11,13 +11,13 @@ record the reason, and exclude it from comparisons rather than forcing a preferr
 Grade the same five slots in `listener_after_first` for the raw utterance (`L0`) and for each
 interpretation (`L1`). Grade `listener_after_followup` only when a follow-up message exists (`L2`):
 
-| Slot                 | What must be understood                                                                    |
-| -------------------- | ------------------------------------------------------------------------------------------ |
-| `goal`               | The speaker's supported purpose, attributed to that speaker.                               |
-| `means`              | What the speaker proposes or uses toward that purpose, and how it serves the goal.         |
-| `condition`          | The scope, prerequisite, or time condition attached to the relevant action.                |
+| Slot | What must be understood |
+| - | - |
+| `goal` | The speaker's supported purpose, attributed to that speaker. |
+| `means` | What the speaker proposes or uses toward that purpose, and how it serves the goal. |
+| `condition` | The scope, prerequisite, or time condition attached to the relevant action. |
 | `requested_response` | What, if anything, the speaker asks this listener to do or answer, including its deadline. |
-| `decision_status`    | What is proposed, decided, implemented, or still unresolved.                               |
+| `decision_status` | What is proposed, decided, implemented, or still unresolved. |
 
 For each slot assign `correct`, `unknown`, or `incorrect` against the source and gold. `Correct`
 requires a materially complete, source-supported reading; paraphrases count. For `means`, a list of

@@ -24,12 +24,12 @@ from the supplied scenario without tools. The candidate also received the skill 
 instructions. The command traces contained no tool calls in these comparisons. The author reviewed
 the results against the fixture assertions without blinding.
 
-| Case                                     | Without the skill                                                                                                                                    | With the revised skill                                                                                                                                                                                    |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1. Japanese, Development to Sales        | Connected the inquiry goal to the intake condition and preserved the proposal. Omitted what Sales needed to check before proceeding with its notice. | Preserved the proposal and added a separate question to Development: whether Sales should hold the customer notice too.                                                                                   |
-| 2. English, supplier to warehouse        | Preserved the reason, conditional offer, and Friday reply deadline. In one run, “before 10 a.m.” was left to attach implicitly to Tuesday.           | Stated Tuesday before 10 a.m. as the receiving condition and kept the Friday reply deadline separate. Asked no extra question.                                                                            |
-| 3. Ambiguous remark, Operations to Sales | Flagged the missing facts but instructed Sales to check existing approvals and contact a decision maker, steps absent from the remark.               | Kept the tentative view and provided specific questions for Operations about the target, release condition, and expected action. The relay still repeated some unknowns alongside the separate questions. |
-| 4. Two-way relay of disagreement         | Returned the listener’s understanding, dissent, and question about Thursday.                                                                         | Returned the same three elements without inventing agreement or an answer.                                                                                                                                |
+| Case | Without the skill | With the revised skill |
+| - | - | - |
+| 1. Japanese, Development to Sales | Connected the inquiry goal to the intake condition and preserved the proposal. Omitted what Sales needed to check before proceeding with its notice. | Preserved the proposal and added a separate question to Development: whether Sales should hold the customer notice too. |
+| 2. English, supplier to warehouse | Preserved the reason, conditional offer, and Friday reply deadline. In one run, “before 10 a.m.” was left to attach implicitly to Tuesday. | Stated Tuesday before 10 a.m. as the receiving condition and kept the Friday reply deadline separate. Asked no extra question. |
+| 3. Ambiguous remark, Operations to Sales | Flagged the missing facts but instructed Sales to check existing approvals and contact a decision maker, steps absent from the remark. | Kept the tentative view and provided specific questions for Operations about the target, release condition, and expected action. The relay still repeated some unknowns alongside the separate questions. |
+| 4. Two-way relay of disagreement | Returned the listener’s understanding, dissent, and question about Thursday. | Returned the same three elements without inventing agreement or an answer. |
 
 The first candidate missed the question in case 1 and left the date of the receiving condition
 implicit in case 2. The revision ties clarifications to a concrete decision and keeps conditions and
@@ -39,12 +39,12 @@ was retained.
 
 Reported usage and elapsed time for the second paired run (baseline / retained candidate):
 
-| Case |    Input tokens | Output tokens | Wall time (s) |
-| ---- | --------------: | ------------: | ------------: |
-| 1    | 16,920 / 17,383 |      60 / 132 |   6.50 / 9.32 |
-| 2    | 16,872 / 17,335 |       82 / 91 |   6.39 / 7.42 |
-| 3    | 14,974 / 15,437 |     199 / 186 |  10.11 / 7.44 |
-| 4    | 16,919 / 17,382 |       76 / 80 |   6.40 / 5.91 |
+| Case | Input tokens | Output tokens | Wall time (s) |
+| - | -: | -: | -: |
+| 1 | 16,920 / 17,383 | 60 / 132 | 6.50 / 9.32 |
+| 2 | 16,872 / 17,335 | 82 / 91 | 6.39 / 7.42 |
+| 3 | 14,974 / 15,437 | 199 / 186 | 10.11 / 7.44 |
+| 4 | 16,919 / 17,382 | 76 / 80 | 6.40 / 5.91 |
 
 Input totals include the CLI’s context, including cached tokens. Wall time is one observation per
 arm per case; it is not a latency estimate.
@@ -86,12 +86,12 @@ low reasoning effort, the same input, and the same instruction to use the suppli
 candidate received the current skill body inline. No case involved real participants or delivery of
 a message.
 
-| Scenario                                                                   | Without / with | Observation                                                                                                                                                                                                                             |
-| -------------------------------------------------------------------------- | -------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Relay an English logistics update in Japanese                              |      3/3 / 2/3 | The logistics speaker had explained the goal of unloading exhibits even if the dock equipment stopped. Both arms kept the truck booking and the request to confirm gate access by Thursday noon. The candidate omitted the stated goal. |
-| Relay a tentative remark about circulating a monthly report                |      1/3 / 2/3 | Only the candidate asked the analyst what “drawing a line” meant and whether it applied to Accounting’s internal distribution. Both outputs put some missing information in the relay itself.                                           |
-| Return Public Relations’ mistaken reading of a conditional production plan |      3/3 / 3/3 | Both arms returned the actual misunderstanding to Production and told Public Relations that the date remained conditional and the notice should stay as written.                                                                        |
-| Relay an overnight monitoring report to a new colleague                    |      2/3 / 3/3 | Both arms explained the backup server and omitted a clarification. Only the candidate explicitly named the monitoring team as the source.                                                                                               |
+| Scenario | Without / with | Observation |
+| - | -: | - |
+| Relay an English logistics update in Japanese | 3/3 / 2/3 | The logistics speaker had explained the goal of unloading exhibits even if the dock equipment stopped. Both arms kept the truck booking and the request to confirm gate access by Thursday noon. The candidate omitted the stated goal. |
+| Relay a tentative remark about circulating a monthly report | 1/3 / 2/3 | Only the candidate asked the analyst what “drawing a line” meant and whether it applied to Accounting’s internal distribution. Both outputs put some missing information in the relay itself. |
+| Return Public Relations’ mistaken reading of a conditional production plan | 3/3 / 3/3 | Both arms returned the actual misunderstanding to Production and told Public Relations that the date remained conditional and the notice should stay as written. |
+| Relay an overnight monitoring report to a new colleague | 2/3 / 3/3 | Both arms explained the backup server and omitted a clarification. Only the candidate explicitly named the monitoring team as the source. |
 
 In two additional pairs per scenario for the logistics and report cases, the omission of the
 logistics goal recurred. Across the three runs per arm, the candidate preserved that goal once and
@@ -137,13 +137,13 @@ received the saved pre-revision skill body, while the candidate received the cur
 paired run called a tool. These are synthetic scenarios and single observations, not estimates of
 general performance.
 
-| Scenario                                                   | Earlier body                                                                                                                     | Revised body                                                                                                                                                                                       |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| English logistics update to a Japanese facilities listener | Preserved the reason for booking a liftgate truck, the booking, and the gate check, but added a redundant check to the listener. | Preserved the equipment-failure purpose, the truck booking, gate condition, and Thursday deadline in the relay. No extra question in the final run.                                                |
-| Ambiguous monthly report remark to Accounting              | Gave the remark and described missing information, but did not direct concrete questions to the analyst.                         | Kept the analyst's remark as the relay and separately identified the missing meaning and whether the condition applies to Accounting's distribution. The analyst's unavailability stayed explicit. |
-| Agent's own draft to its user                              | Reported tests, a conditional hold proposal, and requested a release decision.                                                   | Preserved the same distinction and linked the hold to customer inquiries. The user's final decision role was explicit in the fixture.                                                              |
-| User mistakenly reads passing tests as release approval    | Corrected the unapproved state and restated the intake condition.                                                                | Corrected the same misunderstanding and asked whether that distinction was understood.                                                                                                             |
-| User accurately describes the proposal but disagrees       | Treated the reply as understanding plus opposition.                                                                              | Also treated it as understanding plus opposition, without requesting another readback.                                                                                                             |
+| Scenario | Earlier body | Revised body |
+| - | - | - |
+| English logistics update to a Japanese facilities listener | Preserved the reason for booking a liftgate truck, the booking, and the gate check, but added a redundant check to the listener. | Preserved the equipment-failure purpose, the truck booking, gate condition, and Thursday deadline in the relay. No extra question in the final run. |
+| Ambiguous monthly report remark to Accounting | Gave the remark and described missing information, but did not direct concrete questions to the analyst. | Kept the analyst's remark as the relay and separately identified the missing meaning and whether the condition applies to Accounting's distribution. The analyst's unavailability stayed explicit. |
+| Agent's own draft to its user | Reported tests, a conditional hold proposal, and requested a release decision. | Preserved the same distinction and linked the hold to customer inquiries. The user's final decision role was explicit in the fixture. |
+| User mistakenly reads passing tests as release approval | Corrected the unapproved state and restated the intake condition. | Corrected the same misunderstanding and asked whether that distinction was understood. |
+| User accurately describes the proposal but disagrees | Treated the reply as understanding plus opposition. | Also treated it as understanding plus opposition, without requesting another readback. |
 
 The saved paired runs took 5–7 seconds per arm in most cases. Input tokens were approximately
 15,000–17,000 per run, including varying CLI context. The skill text grew from 419 to 683
@@ -184,18 +184,18 @@ defined before the candidate runs and now retained as cases 9 and 10. Each arm r
 separate reviewer graded outputs under randomized A/B labels against the fixed assertions without
 seeing the arm mapping.
 
-| Case                                | Baseline | Candidate | Observed difference                                                                                           |
-| ----------------------------------- | -------: | --------: | ------------------------------------------------------------------------------------------------------------- |
-| 1. Development to Sales             |      3/3 |       2/3 | Candidate omitted a separate question to Development about the customer notice.                               |
-| 2. Supplier to warehouse            |      3/4 |       3/4 | Baseline rendered “before 10” as “by 10”; candidate repeated the stated reply request as a separate question. |
-| 3. Ambiguous Operations remark      |      2/3 |       2/3 | Both omitted at least one needed question to Operations.                                                      |
-| 4. Sales reply to Development       |      2/3 |       3/3 | Candidate explicitly retained Sales' understanding of the conditional proposal.                               |
-| 5. Agent's own draft                |      3/3 |       3/3 | Both separated test success from the proposed release hold.                                                   |
-| 6. User's mistaken approval reading |      3/3 |       2/3 | Candidate's “Is this understanding correct?” did not check the condition and undecided state specifically.    |
-| 7. User understands but disagrees   |      3/3 |       3/3 | Both treated disagreement as compatible with understanding.                                                   |
-| 8. Unsupported Sales action         |      2/4 |       3/4 | Both invented a request for Sales to help arrange the first-response desk.                                    |
-| 9. Goal from another document       |      3/3 |       3/3 | Neither attributed Sales' revenue goal to Quality Assurance.                                                  |
-| 10. Analyst unavailable             |      2/3 |       3/3 | Candidate directly corrected Accounting's mistaken reading and kept the analyst question open.                |
+| Case | Baseline | Candidate | Observed difference |
+| - | -: | -: | - |
+| 1. Development to Sales | 3/3 | 2/3 | Candidate omitted a separate question to Development about the customer notice. |
+| 2. Supplier to warehouse | 3/4 | 3/4 | Baseline rendered “before 10” as “by 10”; candidate repeated the stated reply request as a separate question. |
+| 3. Ambiguous Operations remark | 2/3 | 2/3 | Both omitted at least one needed question to Operations. |
+| 4. Sales reply to Development | 2/3 | 3/3 | Candidate explicitly retained Sales' understanding of the conditional proposal. |
+| 5. Agent's own draft | 3/3 | 3/3 | Both separated test success from the proposed release hold. |
+| 6. User's mistaken approval reading | 3/3 | 2/3 | Candidate's “Is this understanding correct?” did not check the condition and undecided state specifically. |
+| 7. User understands but disagrees | 3/3 | 3/3 | Both treated disagreement as compatible with understanding. |
+| 8. Unsupported Sales action | 2/4 | 3/4 | Both invented a request for Sales to help arrange the first-response desk. |
+| 9. Goal from another document | 3/3 | 3/3 | Neither attributed Sales' revenue goal to Quality Assurance. |
+| 10. Analyst unavailable | 2/3 | 3/3 | Candidate directly corrected Accounting's mistaken reading and kept the analyst question open. |
 
 The candidate passed 27/32 assertions versus 26/32 for the baseline; each passed every assertion in
 5/10 cases. The extra question in candidate case 2 was a repeated request, not a request for new
@@ -255,12 +255,12 @@ under anonymous labels before the arm mapping was opened. A separate protocol re
 hard-failure flags; the blind reviewer recorded an addendum without changing the frozen original
 grades. The two corrections offset, leaving eight hard-failure arms in total.
 
-| Case                     | Observed raw `L0` gap                                                                    | `no_skill`                                                   | Previous body                                                                 | Candidate body                                                                                                                   |
-| ------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Manager to subordinate   | Speaker purpose and means missing.                                                       | No closure; turns the proposed release hold into a decision. | No closure; purpose and means still missing.                                  | No closure; purpose and means still missing, and the proposed hold is stated as operative. The customer-notice scope stays open. |
-| Engineer to designer     | Purpose and goal-to-means link missing; review request misread as an availability reply. | No closure; wrong review reply remains.                      | No closure; adds an availability request.                                     | No closure; adds the same request. A follow-up corrects the review request, but purpose and means remain missing.                |
-| Director to engineer     | Purpose and goal-to-means link missing.                                                  | No closure; adds an instruction to start the estimate today. | Recovers purpose and means but adds an unsupported reply about starting work. | All material gaps close at `L1`; the listener estimates feasibility and effort and does not start implementation.                |
-| Informed dissent control | No observed gap; the listener understands the proposal and keeps a scope concern.        | Adds new errors.                                             | Adds a new scope deliverable.                                                 | Adds a new scope deliverable. None fully preserves the already adequate understanding.                                           |
+| Case | Observed raw `L0` gap | `no_skill` | Previous body | Candidate body |
+| - | - | - | - | - |
+| Manager to subordinate | Speaker purpose and means missing. | No closure; turns the proposed release hold into a decision. | No closure; purpose and means still missing. | No closure; purpose and means still missing, and the proposed hold is stated as operative. The customer-notice scope stays open. |
+| Engineer to designer | Purpose and goal-to-means link missing; review request misread as an availability reply. | No closure; wrong review reply remains. | No closure; adds an availability request. | No closure; adds the same request. A follow-up corrects the review request, but purpose and means remain missing. |
+| Director to engineer | Purpose and goal-to-means link missing. | No closure; adds an instruction to start the estimate today. | Recovers purpose and means but adds an unsupported reply about starting work. | All material gaps close at `L1`; the listener estimates feasibility and effort and does not start implementation. |
+| Informed dissent control | No observed gap; the listener understands the proposal and keeps a scope concern. | Adds new errors. | Adds a new scope deliverable. | Adds a new scope deliverable. None fully preserves the already adequate understanding. |
 
 Full `L1` closure occurred in **1 of 9** interpreted outputs from the three cases with an observed
 `L0` gap: candidate 1/3, previous 0/3, and no-skill 0/3. The candidate's two follow-up attempts
@@ -271,12 +271,12 @@ no-skill focus output also made a first-person role error that changed the liste
 response; the adjudication kept its listener-side error but did not count it as a speaker-request
 hard failure.
 
-| Arm            | Model calls | Input tokens | Output tokens | Summed call time (s) |
-| -------------- | ----------: | -----------: | ------------: | -------------------: |
-| Raw `L0`       |           4 |       62,452 |         1,457 |                37.55 |
-| No skill       |          12 |      181,540 |         1,680 |                65.76 |
-| Previous body  |          12 |      186,570 |         2,276 |                77.45 |
-| Candidate body |          14 |      217,172 |         3,500 |               100.61 |
+| Arm | Model calls | Input tokens | Output tokens | Summed call time (s) |
+| - | -: | -: | -: | -: |
+| Raw `L0` | 4 | 62,452 | 1,457 | 37.55 |
+| No skill | 12 | 181,540 | 1,680 | 65.76 |
+| Previous body | 12 | 186,570 | 2,276 | 77.45 |
+| Candidate body | 14 | 217,172 | 3,500 | 100.61 |
 
 Input totals include CLI context and cached tokens; the candidate also made two extra listener
 calls. The times are sums of observed calls in this run, not latency estimates.
@@ -317,13 +317,13 @@ without changing the original grades. Only then were labels and cost records ope
 case/repeats, seven had a decision-relevant gap at `L0`; the other 11 were no-gap preservation
 checks. The normalized results were:
 
-| Measure                                      | Baseline | Candidate |
-| -------------------------------------------- | -------: | --------: |
-| Full `L1` closure among 7 eligible pairs     |        1 |         0 |
-| `L1` preservation among 11 no-gap pairs      |        5 |         5 |
-| Source-fidelity hard-failure arms among 18   |        6 |        10 |
-| Median interpreter output tokens per pair    |      281 |     133.5 |
-| Median interpreter elapsed time per pair (s) |   10.115 |     8.165 |
+| Measure | Baseline | Candidate |
+| - | -: | -: |
+| Full `L1` closure among 7 eligible pairs | 1 | 0 |
+| `L1` preservation among 11 no-gap pairs | 5 | 5 |
+| Source-fidelity hard-failure arms among 18 | 6 | 10 |
+| Median interpreter output tokens per pair | 281 | 133.5 |
+| Median interpreter elapsed time per pair (s) | 10.115 | 8.165 |
 
 There were six candidate-only and two baseline-only hard-failure pairs. In the theater cases the
 candidate repeatedly turned a listener-side work-table action into a request attributed to the
@@ -364,13 +364,13 @@ the frozen input hashes, exact source inputs in all 72 interpreter prompts, and 
 observations. Three graders scored the anonymous packets. An independent blind reviewer reconciled
 grading differences before the arm mapping and costs were opened.
 
-| Measure                                      | Baseline | Candidate |
-| -------------------------------------------- | -------: | --------: |
-| Full `L1` closure among 12 eligible pairs    |        3 |         6 |
-| `L1` preservation among 6 no-gap pairs       |        5 |         4 |
-| Source-fidelity hard-failure arms among 18   |        1 |         1 |
-| Median interpreter output tokens per pair    |    202.5 |     140.5 |
-| Median interpreter elapsed time per pair (s) |    9.575 |      8.36 |
+| Measure | Baseline | Candidate |
+| - | -: | -: |
+| Full `L1` closure among 12 eligible pairs | 3 | 6 |
+| `L1` preservation among 6 no-gap pairs | 5 | 4 |
+| Source-fidelity hard-failure arms among 18 | 1 | 1 |
+| Median interpreter output tokens per pair | 202.5 | 140.5 |
+| Median interpreter elapsed time per pair (s) | 9.575 | 8.36 |
 
 The three candidate-only `L1` closures occurred in three cases across repeats 1 and 3. The seed
 cases recovered the same-cultivar criterion for the Friday candidate number. The transcription case
@@ -424,14 +424,14 @@ failed model calls or tool calls and verified reuse of the 18 frozen raw listene
 18 planned pairs were all analyzable, with no exclusions. The blind grades were settled before the
 arm mapping and cost records were opened.
 
-| V2 measure                                            | Baseline | Plan-map candidate |
-| ----------------------------------------------------- | -------: | -----------------: |
-| Full `L1` closure among 12 eligible pairs             |        2 |                 10 |
-| `L1` preservation among 6 no-gap pairs                |        2 |                  4 |
-| First-message source-fidelity hard-failure arms of 18 |        4 |                  2 |
-| Follow-up source-fidelity hard-failure arms of 18     |        1 |                  0 |
-| Median interpreter output tokens per pair             |      162 |                238 |
-| Median interpreter elapsed time per pair (s)          |    8.975 |              10.58 |
+| V2 measure | Baseline | Plan-map candidate |
+| - | -: | -: |
+| Full `L1` closure among 12 eligible pairs | 2 | 10 |
+| `L1` preservation among 6 no-gap pairs | 2 | 4 |
+| First-message source-fidelity hard-failure arms of 18 | 4 | 2 |
+| Follow-up source-fidelity hard-failure arms of 18 | 1 | 0 |
+| Median interpreter output tokens per pair | 162 | 238 |
+| Median interpreter elapsed time per pair (s) | 8.975 | 10.58 |
 
 The candidate had eight paired `L1` wins across four cases and all three repeat indices, with no
 primary losses; two pairs closed in both arms and two in neither. It preserved the supported
@@ -455,14 +455,14 @@ one to two in both arms.
 Per-case interpreter cost sums the initial and follow-up calls in each repeat. Each cell gives the
 baseline / candidate median [range] over three repeats:
 
-| Case                  | Output tokens                 | Elapsed time (s)                          |
-| --------------------- | ----------------------------- | ----------------------------------------- |
-| Assistant caption     | 164 [109–227] / 430 [260–467] | 8.47 [8.13–9.27] / 13.22 [10.63–14.16]    |
-| Film-night sign       | 128 [74–163] / 205 [193–212]  | 8.24 [8.21–8.68] / 9.64 [8.64–9.79]       |
-| Library purchase      | 263 [161–424] / 163 [146–183] | 11.29 [7.88–13.73] / 8.76 [7.68–10.35]    |
-| Rain-venue assumption | 161 [149–392] / 294 [292–385] | 11.49 [9.66–12.81] / 12.71 [10.53–12.78]  |
-| Rain-venue dissent    | 421 [272–459] / 537 [268–851] | 13.49 [10.87–13.66] / 16.12 [12.60–21.19] |
-| Planetarium handoff   | 103 [85–111] / 203 [163–216]  | 7.37 [7.27–8.30] / 9.02 [8.57–10.82]      |
+| Case | Output tokens | Elapsed time (s) |
+| - | - | - |
+| Assistant caption | 164 [109–227] / 430 [260–467] | 8.47 [8.13–9.27] / 13.22 [10.63–14.16] |
+| Film-night sign | 128 [74–163] / 205 [193–212] | 8.24 [8.21–8.68] / 9.64 [8.64–9.79] |
+| Library purchase | 263 [161–424] / 163 [146–183] | 11.29 [7.88–13.73] / 8.76 [7.68–10.35] |
+| Rain-venue assumption | 161 [149–392] / 294 [292–385] | 11.49 [9.66–12.81] / 12.71 [10.53–12.78] |
+| Rain-venue dissent | 421 [272–459] / 537 [268–851] | 13.49 [10.87–13.66] / 16.12 [12.60–21.19] |
+| Planetarium handoff | 103 [85–111] / 203 [163–216] | 7.37 [7.27–8.30] / 9.02 [8.57–10.82] |
 
 **Review state: rejected.** Candidate-only hard failures, a confirmed no-gap regression, and a
 follow-up-choice regression independently trigger the precommitted V2 rejection rule. The working
@@ -509,15 +509,15 @@ decision-status and open-question grades. All three repeats were excluded symmet
 analyzable pairs: 12 with a material frozen `L0` gap and three no-gap pairs. The earlier independent
 pre-output fixture audit had missed this ambiguity; gold was not changed after output.
 
-| V3 measure among analyzable pairs                     | Baseline | Source-anchor candidate |
-| ----------------------------------------------------- | -------: | ----------------------: |
-| Primary `L1` closure among 12 eligible pairs          |        3 |                       5 |
-| No-gap `L1` preservation among 3 pairs                |        0 |                       2 |
-| First-message source-fidelity hard-failure arms of 15 |        3 |                       2 |
-| Follow-up source-fidelity hard-failure arms of 15     |        0 |                       0 |
-| Inappropriate follow-up choice among 15               |        7 |                       4 |
-| Median interpreter output tokens per pair             |      318 |                     266 |
-| Median interpreter elapsed time per pair (s)          |    13.38 |                   12.77 |
+| V3 measure among analyzable pairs | Baseline | Source-anchor candidate |
+| - | -: | -: |
+| Primary `L1` closure among 12 eligible pairs | 3 | 5 |
+| No-gap `L1` preservation among 3 pairs | 0 | 2 |
+| First-message source-fidelity hard-failure arms of 15 | 3 | 2 |
+| Follow-up source-fidelity hard-failure arms of 15 | 0 | 0 |
+| Inappropriate follow-up choice among 15 | 7 | 4 |
+| Median interpreter output tokens per pair | 318 | 266 |
+| Median interpreter elapsed time per pair (s) | 13.38 | 12.77 |
 
 The candidate had two paired primary wins, in two cases and repeat indices 1 and 2, with no primary
 losses; three pairs closed in both arms and seven in neither. Among no-gap pairs, the candidate

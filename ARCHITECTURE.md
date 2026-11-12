@@ -119,6 +119,8 @@ manual / CI ── all Skill roots ┘
   Markdown prose policy without automatic correction. `renovate.json5` deliberately uses the JSONC
   subset of JSON5 and is explicitly associated with dprint's JSON plugin. The official Agent Skills
   reference CLI owns Skill format validation.
+- dprint formats Markdown tables with one space around cell text and a short separator to keep
+  source lines compact on narrow screens and reduce padding in agent inputs.
 - Vale follows its native repository layout: `.vale.ini` is the root entrypoint, `styles/` is the
   `StylesPath`, and `tests/vale/` owns integration fixtures. The entrypoint selects only the
   repository-owned `AgentMarketplace` style; no external Vale package or `vale sync` step
