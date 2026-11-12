@@ -33,12 +33,12 @@ knowledge bases, then publish outputs in Adobe Spectrum's structural taxonomy.
 Sources are classified into **intent sources** (design meaning and purpose) and **fact sources**
 (implementation reality). Intent sources have higher authority for design system documentation.
 
-| Priority    | Source Type                                           | Authority               | Role                                                                            |
-| ----------- | ----------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------- |
-| 1 (highest) | Knowledge bases (Notion, docs) with MUST/SHOULD rules | **Design intent**       | Product requirements and design constraints that govern all other decisions     |
-| 2           | Design files (Figma) with annotations and structure   | **Design intent**       | Designer's structural decisions, visual semantics, and component relationships  |
-| 3           | Architecture Decision Records (ADR)                   | **Technical intent**    | Rationale for how intent is realized in code; bridges intent and implementation |
-| 4 (lowest)  | Code implementation                                   | **Implementation fact** | Current state of the codebase; used for validation, not as source of truth      |
+| Priority | Source Type | Authority | Role |
+| - | - | - | - |
+| 1 (highest) | Knowledge bases (Notion, docs) with MUST/SHOULD rules | **Design intent** | Product requirements and design constraints that govern all other decisions |
+| 2 | Design files (Figma) with annotations and structure | **Design intent** | Designer's structural decisions, visual semantics, and component relationships |
+| 3 | Architecture Decision Records (ADR) | **Technical intent** | Rationale for how intent is realized in code; bridges intent and implementation |
+| 4 (lowest) | Code implementation | **Implementation fact** | Current state of the codebase; used for validation, not as source of truth |
 
 Rules:
 

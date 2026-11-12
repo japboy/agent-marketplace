@@ -4,8 +4,8 @@ Conventions for integrating XState v5 with React using `@xstate/react`.
 
 ## File Naming Conventions
 
-| Type         | Pattern                              | Example               |
-| ------------ | ------------------------------------ | --------------------- |
+| Type | Pattern | Example |
+| - | - | - |
 | ActorContext | `<Name>ActorContext.ts` (PascalCase) | `TodoActorContext.ts` |
 
 > **Note:** Machine file naming (`*.machine.ts`) is defined in
@@ -55,11 +55,11 @@ graph TB
     end
 ```
 
-| Scope         | Provider Location | Use Case                   |
-| ------------- | ----------------- | -------------------------- |
-| App-wide      | Root layout       | Global state (theme, auth) |
-| Domain/Layout | Layout component  | Feature-scoped state       |
-| Page-specific | Page component    | Page-local state           |
+| Scope | Provider Location | Use Case |
+| - | - | - |
+| App-wide | Root layout | Global state (theme, auth) |
+| Domain/Layout | Layout component | Feature-scoped state |
+| Page-specific | Page component | Page-local state |
 
 #### Example
 
@@ -348,13 +348,13 @@ export default function WizardForm({ onComplete }: Props): ReactElement {
 
 ### Comparison with ActorContext Pattern
 
-| Aspect          | ActorContext Pattern   | Component 1:1 Pattern    |
-| --------------- | ---------------------- | ------------------------ |
-| Actor creation  | Once in Provider       | On each component mount  |
-| Lifecycle       | Follows Provider scope | Matches component        |
-| State sharing   | Shared across children | Component-local only     |
-| Actor injection | Provider options       | `provide()`              |
-| Use case        | Cross-cutting state    | Component-specific flows |
+| Aspect | ActorContext Pattern | Component 1:1 Pattern |
+| - | - | - |
+| Actor creation | Once in Provider | On each component mount |
+| Lifecycle | Follows Provider scope | Matches component |
+| State sharing | Shared across children | Component-local only |
+| Actor injection | Provider options | `provide()` |
+| Use case | Cross-cutting state | Component-specific flows |
 
 ## Event Subscription Pattern
 

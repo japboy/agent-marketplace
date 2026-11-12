@@ -85,16 +85,16 @@ Enterprise Application Architecture』（2002年）の影響を強く受けて�
 
 **起源と発展**
 
-| 年       | 出来事                                  | 提唱者/組織           |
-| -------- | --------------------------------------- | --------------------- |
-| 1960年代 | Simula 言語によるオブジェクト指向の萌芽 | Dahl & Nygaard        |
-| 1972年   | Smalltalk の開発                        | Alan Kay (Xerox PARC) |
-| 1994年   | デザインパターンの体系化                | Gang of Four          |
-| 1996年   | Analysis Patterns 出版                  | Martin Fowler         |
-| 2001年   | アジャイルマニフェスト署名              | Fowler 他             |
-| 2002年   | PoEAA 出版                              | Martin Fowler         |
-| 2003年   | DDD 書籍出版                            | Eric Evans            |
-| 2013年   | Implementing DDD 出版                   | Vaughn Vernon         |
+| 年 | 出来事 | 提唱者/組織 |
+| - | - | - |
+| 1960年代 | Simula 言語によるオブジェクト指向の萌芽 | Dahl & Nygaard |
+| 1972年 | Smalltalk の開発 | Alan Kay (Xerox PARC) |
+| 1994年 | デザインパターンの体系化 | Gang of Four |
+| 1996年 | Analysis Patterns 出版 | Martin Fowler |
+| 2001年 | アジャイルマニフェスト署名 | Fowler 他 |
+| 2002年 | PoEAA 出版 | Martin Fowler |
+| 2003年 | DDD 書籍出版 | Eric Evans |
+| 2013年 | Implementing DDD 出版 | Vaughn Vernon |
 
 #### 2.1.2 理論的基盤
 
@@ -136,15 +136,15 @@ graph TB
 
 **戦術的設計パターン**
 
-| パターン       | 定義                                             | 特徴                       |
-| -------------- | ------------------------------------------------ | -------------------------- |
-| Entity         | アイデンティティによって定義されるオブジェクト   | 固有のライフサイクルを持つ |
-| Value Object   | アイデンティティを持たない不変オブジェクト       | 属性のみで定義             |
-| Aggregate      | 一貫性境界を定義する概念                         | Root 経由でのみ変更可能    |
-| Repository     | ドメインオブジェクト取得のためのインターフェース | 永続化の詳細を隠蔽         |
-| Factory        | オブジェクト生成をカプセル化                     | 複雑な生成ロジックを分離   |
-| Domain Service | 特定のエンティティに属さない振る舞い             | 複数オブジェクト間の操作   |
-| Domain Event   | ドメイン内の重要な出来事                         | 状態変化の記録と通知       |
+| パターン | 定義 | 特徴 |
+| - | - | - |
+| Entity | アイデンティティによって定義されるオブジェクト | 固有のライフサイクルを持つ |
+| Value Object | アイデンティティを持たない不変オブジェクト | 属性のみで定義 |
+| Aggregate | 一貫性境界を定義する概念 | Root 経由でのみ変更可能 |
+| Repository | ドメインオブジェクト取得のためのインターフェース | 永続化の詳細を隠蔽 |
+| Factory | オブジェクト生成をカプセル化 | 複雑な生成ロジックを分離 |
+| Domain Service | 特定のエンティティに属さない振る舞い | 複数オブジェクト間の操作 |
+| Domain Event | ドメイン内の重要な出来事 | 状態変化の記録と通知 |
 
 #### 2.1.3 哲学的基盤
 
@@ -165,16 +165,16 @@ DDD は「世界を正しく表現するモデル」の構築を目指す。そ�
 
 **起源と発展**
 
-| 年     | 出来事                                      | 提唱者/組織                  |
-| ------ | ------------------------------------------- | ---------------------------- |
-| 1876年 | 十進分類法の発明                            | Melvil Dewey                 |
-| 1933年 | コロン分類法（ファセット分類）発表          | S.R. Ranganathan             |
-| 1976年 | 「情報アーキテクチャ」用語の提唱            | Richard Saul Wurman          |
-| 1989年 | 『Information Anxiety』出版、LATCH 原則発表 | Richard Saul Wurman          |
-| 1998年 | 『Web 情報アーキテクチャ』初版出版          | Rosenfeld & Morville         |
-| 2002年 | IA Institute 設立                           | 複数の実務家                 |
-| 2009年 | Journal of Information Architecture 創刊    | 学術コミュニティ             |
-| 2015年 | 『Web 情報アーキテクチャ』第4版出版         | Rosenfeld, Morville & Arango |
+| 年 | 出来事 | 提唱者/組織 |
+| - | - | - |
+| 1876年 | 十進分類法の発明 | Melvil Dewey |
+| 1933年 | コロン分類法（ファセット分類）発表 | S.R. Ranganathan |
+| 1976年 | 「情報アーキテクチャ」用語の提唱 | Richard Saul Wurman |
+| 1989年 | 『Information Anxiety』出版、LATCH 原則発表 | Richard Saul Wurman |
+| 1998年 | 『Web 情報アーキテクチャ』初版出版 | Rosenfeld & Morville |
+| 2002年 | IA Institute 設立 | 複数の実務家 |
+| 2009年 | Journal of Information Architecture 創刊 | 学術コミュニティ |
+| 2015年 | 『Web 情報アーキテクチャ』第4版出版 | Rosenfeld, Morville & Arango |
 
 **LATCH 原則**（情報を組織化する5つの方法）：
 
@@ -249,11 +249,11 @@ Time）により、単一オブジェクトに複数の分類を割り当てる�
 
 **構成要素の階層**
 
-| レベル | 要素               | 定義                             | 範囲                                  |
-| ------ | ------------------ | -------------------------------- | ------------------------------------- |
-| 基盤   | スタイルガイド     | 視覚的ルールの文書化             | 色、タイポグラフィ、ボイス＆トーン    |
-| 中間   | パターンライブラリ | 再利用可能な UI コンポーネント集 | ボタン、フォーム、ナビゲーション      |
-| 統合   | デザインシステム   | 上記＋原則・ガイドライン・コード | アクセシビリティ、UX 原則、実装コード |
+| レベル | 要素 | 定義 | 範囲 |
+| - | - | - | - |
+| 基盤 | スタイルガイド | 視覚的ルールの文書化 | 色、タイポグラフィ、ボイス＆トーン |
+| 中間 | パターンライブラリ | 再利用可能な UI コンポーネント集 | ボタン、フォーム、ナビゲーション |
+| 統合 | デザインシステム | 上記＋原則・ガイドライン・コード | アクセシビリティ、UX 原則、実装コード |
 
 > 「デザインシステムは、パターンライブラリとスタイルガイドを包含しつつ、それらを統合する原則とガイドラインを加えたものである」—
 > Alla Kholmatova
@@ -265,19 +265,19 @@ Time）により、単一オブジェクトに複数の分類を割り当てる�
 
 **起源と発展**
 
-| 年     | 出来事                              | 提唱者/組織                         | 意義                                                   |
-| ------ | ----------------------------------- | ----------------------------------- | ------------------------------------------------------ |
-| 1977年 | Apple II Human Interface Guidelines | Apple                               | 最初期の UI ガイドライン文書                           |
-| 1986年 | Human Interface Guidelines 正式出版 | Apple                               | 「Human Interface」概念の確立                          |
-| 2013年 | Atomic Design 提唱                  | Brad Frost                          | コンポーネント階層の体系化                             |
-| 2014年 | Material Design 発表                | Google                              | 物理的メタファーに基づくシステム                       |
-| 2014年 | Design Tokens 概念の発明            | Jina Anne & Jon Levine (Salesforce) | クロスプラットフォーム設計変数                         |
-| 2015年 | Lightning Design System 公開        | Salesforce                          | 世界初のオープンソース・エンタープライズ DS            |
-| 2016年 | Carbon Design System 開始           | IBM                                 | アクセシビリティ重視のオープンソース DS                |
-| 2017年 | Fluent Design System 発表           | Microsoft                           | 5つの基本要素（Light, Depth, Motion, Material, Scale） |
-| 2017年 | 『Design Systems』出版              | Alla Kholmatova (Smashing)          | 効果的な DS の原則を体系化                             |
-| 2021年 | Material You (Material Design 3)    | Google                              | ユーザーカスタマイズ可能なテーマ                       |
-| 2025年 | W3C Design Tokens 仕様 安定版       | W3C DTCG                            | 業界標準の確立                                         |
+| 年 | 出来事 | 提唱者/組織 | 意義 |
+| - | - | - | - |
+| 1977年 | Apple II Human Interface Guidelines | Apple | 最初期の UI ガイドライン文書 |
+| 1986年 | Human Interface Guidelines 正式出版 | Apple | 「Human Interface」概念の確立 |
+| 2013年 | Atomic Design 提唱 | Brad Frost | コンポーネント階層の体系化 |
+| 2014年 | Material Design 発表 | Google | 物理的メタファーに基づくシステム |
+| 2014年 | Design Tokens 概念の発明 | Jina Anne & Jon Levine (Salesforce) | クロスプラットフォーム設計変数 |
+| 2015年 | Lightning Design System 公開 | Salesforce | 世界初のオープンソース・エンタープライズ DS |
+| 2016年 | Carbon Design System 開始 | IBM | アクセシビリティ重視のオープンソース DS |
+| 2017年 | Fluent Design System 発表 | Microsoft | 5つの基本要素（Light, Depth, Motion, Material, Scale） |
+| 2017年 | 『Design Systems』出版 | Alla Kholmatova (Smashing) | 効果的な DS の原則を体系化 |
+| 2021年 | Material You (Material Design 3) | Google | ユーザーカスタマイズ可能なテーマ |
+| 2025年 | W3C Design Tokens 仕様 安定版 | W3C DTCG | 業界標準の確立 |
 
 #### 2.3.3 主要な理論的モデル
 
@@ -318,11 +318,11 @@ graph BT
 
 **チームモデル**（ガバナンス構造）：
 
-| モデル                | 説明                                 | 適合組織                   |
-| --------------------- | ------------------------------------ | -------------------------- |
-| Centralized（集中型） | 専任チームが DS 全体を管理           | 小規模〜中規模、新規組織   |
-| Federated（連邦型）   | 各プロダクトチームの代表者が共同管理 | 大規模、多様なプロダクト群 |
-| Standalone（独立型）  | 各チームが独自の DS を維持           | 独立性の高いプロダクト     |
+| モデル | 説明 | 適合組織 |
+| - | - | - |
+| Centralized（集中型） | 専任チームが DS 全体を管理 | 小規模〜中規模、新規組織 |
+| Federated（連邦型） | 各プロダクトチームの代表者が共同管理 | 大規模、多様なプロダクト群 |
+| Standalone（独立型） | 各チームが独自の DS を維持 | 独立性の高いプロダクト |
 
 ##### C. Alla Kholmatova の設計原則（Smashing Magazine, 2017）
 
@@ -453,14 +453,14 @@ Studio、Terrazzo、Figma、Sketch、Penpot、Framer、Knapsack、Supernova、ze
 
 #### 2.3.7 デザインシステムの構成要素（総括）
 
-| 要素             | 定義                             | 例                         | 出典                   |
-| ---------------- | -------------------------------- | -------------------------- | ---------------------- |
-| デザイントークン | 不可分なデザイン決定の単位       | 色、余白、タイポグラフィ   | Jina Anne (Salesforce) |
-| コンポーネント   | 再利用可能な UI 要素             | ボタン、カード、モーダル   | Atomic Design          |
-| パターン         | 繰り返し使用されるソリューション | ナビゲーション、フォーム   | Pattern Library        |
-| ガイドライン     | デザイン・実装の規則             | アクセシビリティ、ブランド | HIG, Material          |
-| 原則             | 設計判断の指針となる価値観       | Clarity, Consistency       | Nathan Curtis          |
-| ガバナンス       | 管理・進化の仕組み               | Federated Model            | EightShapes            |
+| 要素 | 定義 | 例 | 出典 |
+| - | - | - | - |
+| デザイントークン | 不可分なデザイン決定の単位 | 色、余白、タイポグラフィ | Jina Anne (Salesforce) |
+| コンポーネント | 再利用可能な UI 要素 | ボタン、カード、モーダル | Atomic Design |
+| パターン | 繰り返し使用されるソリューション | ナビゲーション、フォーム | Pattern Library |
+| ガイドライン | デザイン・実装の規則 | アクセシビリティ、ブランド | HIG, Material |
+| 原則 | 設計判断の指針となる価値観 | Clarity, Consistency | Nathan Curtis |
+| ガバナンス | 管理・進化の仕組み | Federated Model | EightShapes |
 
 ---
 
@@ -473,15 +473,15 @@ Experience」のダイアグラムを公開し、2002年に書籍として体系
 
 **起源と発展**
 
-| 年          | 出来事                                             |
-| ----------- | -------------------------------------------------- |
-| 1999-2000年 | Garrett がダイアグラムを開発                       |
-| 2000年3月   | ダイアグラムを PDF で公開（2万回以上ダウンロード） |
-| 2001年      | Adaptive Path 設立                                 |
-| 2002年      | 書籍初版出版                                       |
-| 2005年      | AJAX 用語の提唱                                    |
-| 2011年      | 書籍第2版出版（モバイル対応）                      |
-| 2014年      | Adaptive Path が Capital One に買収                |
+| 年 | 出来事 |
+| - | - |
+| 1999-2000年 | Garrett がダイアグラムを開発 |
+| 2000年3月 | ダイアグラムを PDF で公開（2万回以上ダウンロード） |
+| 2001年 | Adaptive Path 設立 |
+| 2002年 | 書籍初版出版 |
+| 2005年 | AJAX 用語の提唱 |
+| 2011年 | 書籍第2版出版（モバイル対応） |
+| 2014年 | Adaptive Path が Capital One に買収 |
 
 #### 2.4.2 5層モデルの詳細
 
@@ -513,13 +513,13 @@ graph TB
 
 **二面性モデル（Dual Nature）**
 
-| 層        | 機能系（Product as Functionality） | 情報系（Product as Information） |
-| --------- | ---------------------------------- | -------------------------------- |
-| Strategy  | ユーザーニーズ / ビジネス目標      | ← 共通                           |
-| Scope     | 機能仕様                           | コンテンツ要件                   |
-| Structure | インタラクションデザイン           | 情報アーキテクチャ               |
-| Skeleton  | インターフェースデザイン           | ナビゲーションデザイン           |
-| Surface   | ビジュアルデザイン                 | ← 共通                           |
+| 層 | 機能系（Product as Functionality） | 情報系（Product as Information） |
+| - | - | - |
+| Strategy | ユーザーニーズ / ビジネス目標 | ← 共通 |
+| Scope | 機能仕様 | コンテンツ要件 |
+| Structure | インタラクションデザイン | 情報アーキテクチャ |
+| Skeleton | インターフェースデザイン | ナビゲーションデザイン |
+| Surface | ビジュアルデザイン | ← 共通 |
 
 #### 2.4.3 制約関係の原則
 
@@ -597,11 +597,11 @@ graph LR
 
 各モデリング手法は、異なる「変換」を担当する：
 
-| 手法               | 変換                    | 入力             | 出力               |
-| ------------------ | ----------------------- | ---------------- | ------------------ |
-| ドメインモデリング | 現実 → 概念モデル       | 業務知識・ルール | 計算可能な構造     |
-| 情報アーキテクチャ | 概念モデル → 認知モデル | 情報構造         | 人が理解可能な構造 |
-| デザインシステム   | 認知モデル → UI モデル  | 認知構造         | 視覚的表現         |
+| 手法 | 変換 | 入力 | 出力 |
+| - | - | - | - |
+| ドメインモデリング | 現実 → 概念モデル | 業務知識・ルール | 計算可能な構造 |
+| 情報アーキテクチャ | 概念モデル → 認知モデル | 情報構造 | 人が理解可能な構造 |
+| デザインシステム | 認知モデル → UI モデル | 認知構造 | 視覚的表現 |
 
 ### 3.3 学問的系統の相違
 
@@ -627,11 +627,11 @@ graph TD
 
 #### 学術界での評価
 
-| 指標                                        | 数値  | 出典                |
-| ------------------------------------------- | ----- | ------------------- |
-| Eric Evans 著書の引用数                     | 249件 | ACM Digital Library |
-| 系統的文献レビュー（SLR）で分析された研究数 | 36件  | arXiv (2023-2025)   |
-| マイクロサービス関連研究の割合              | 44%   | SLR 調査結果        |
+| 指標 | 数値 | 出典 |
+| - | - | - |
+| Eric Evans 著書の引用数 | 249件 | ACM Digital Library |
+| 系統的文献レビュー（SLR）で分析された研究数 | 36件 | arXiv (2023-2025) |
+| マイクロサービス関連研究の割合 | 44% | SLR 調査結果 |
 
 #### 産業界での採用
 
@@ -681,25 +681,25 @@ graph TD
 
 **主要企業のデザインシステム**：
 
-| 企業       | システム名                 | 初公開 | 特徴                                                                   | オープンソース |
-| ---------- | -------------------------- | ------ | ---------------------------------------------------------------------- | -------------- |
-| Apple      | Human Interface Guidelines | 1986年 | プラットフォーム固有の最適化、「Human Interface」概念の起源            | 部分的         |
-| Google     | Material Design            | 2014年 | 物理的素材のメタファー、Material You（2021）でパーソナライズ対応       | Yes            |
-| Salesforce | Lightning Design System    | 2015年 | 世界初のオープンソース・エンタープライズ DS、Design Tokens 発祥地      | Yes            |
-| IBM        | Carbon Design System       | 2016年 | 人間中心設計、アクセシビリティ最重視、IBM Plex 書体                    | Yes            |
-| Microsoft  | Fluent Design System       | 2017年 | 5要素（Light, Depth, Motion, Material, Scale）、クロスプラットフォーム | Yes            |
-| Shopify    | Polaris                    | 2017年 | EC 特化、インクルーシビティ                                            | Yes            |
-| Atlassian  | Design System              | 2018年 | コラボレーションツール特化                                             | Yes            |
-| Adobe      | Spectrum                   | 2019年 | クリエイティブツール統合                                               | Yes            |
+| 企業 | システム名 | 初公開 | 特徴 | オープンソース |
+| - | - | - | - | - |
+| Apple | Human Interface Guidelines | 1986年 | プラットフォーム固有の最適化、「Human Interface」概念の起源 | 部分的 |
+| Google | Material Design | 2014年 | 物理的素材のメタファー、Material You（2021）でパーソナライズ対応 | Yes |
+| Salesforce | Lightning Design System | 2015年 | 世界初のオープンソース・エンタープライズ DS、Design Tokens 発祥地 | Yes |
+| IBM | Carbon Design System | 2016年 | 人間中心設計、アクセシビリティ最重視、IBM Plex 書体 | Yes |
+| Microsoft | Fluent Design System | 2017年 | 5要素（Light, Depth, Motion, Material, Scale）、クロスプラットフォーム | Yes |
+| Shopify | Polaris | 2017年 | EC 特化、インクルーシビティ | Yes |
+| Atlassian | Design System | 2018年 | コラボレーションツール特化 | Yes |
+| Adobe | Spectrum | 2019年 | クリエイティブツール統合 | Yes |
 
 **コミュニティ・標準化活動**：
 
-| 組織/活動                         | 説明                               | 主要人物             |
-| --------------------------------- | ---------------------------------- | -------------------- |
-| W3C Design Tokens Community Group | デザイントークン標準化             | Jina Anne (Co-chair) |
-| Clarity Conference                | デザインシステム専門カンファレンス | Jina Anne (創設者)   |
-| Design Systems Slack              | 実務者コミュニティ                 | Jina Anne (管理)     |
-| EightShapes                       | ガバナンス・チームモデル研究       | Nathan Curtis        |
+| 組織/活動 | 説明 | 主要人物 |
+| - | - | - |
+| W3C Design Tokens Community Group | デザイントークン標準化 | Jina Anne (Co-chair) |
+| Clarity Conference | デザインシステム専門カンファレンス | Jina Anne (創設者) |
+| Design Systems Slack | 実務者コミュニティ | Jina Anne (管理) |
+| EightShapes | ガバナンス・チームモデル研究 | Nathan Curtis |
 
 #### 主要批判
 
@@ -756,22 +756,22 @@ graph TB
 
 **主要な相違点**：
 
-| 観点         | ドメインモデリング         | IA                         | デザインシステム         |
-| ------------ | -------------------------- | -------------------------- | ------------------------ |
-| 志向性       | 内部志向                   | 人間志向                   | 表現志向                 |
-| 重視する品質 | 精度・正確性               | 妥当性・理解可能性         | 再利用性・一貫性         |
-| 成果物       | 概念モデル・コード         | サイトマップ・タクソノミー | コンポーネント・トークン |
-| 評価基準     | ビジネスルールの正確な表現 | ユーザーの迷わなさ         | 見た目と振る舞いの一貫性 |
+| 観点 | ドメインモデリング | IA | デザインシステム |
+| - | - | - | - |
+| 志向性 | 内部志向 | 人間志向 | 表現志向 |
+| 重視する品質 | 精度・正確性 | 妥当性・理解可能性 | 再利用性・一貫性 |
+| 成果物 | 概念モデル・コード | サイトマップ・タクソノミー | コンポーネント・トークン |
+| 評価基準 | ビジネスルールの正確な表現 | ユーザーの迷わなさ | 見た目と振る舞いの一貫性 |
 
 #### 5.1.2 組織的分離
 
 典型的な組織における責任範囲の分離：
 
-| 領域     | 担当部門                  | 課題                       |
-| -------- | ------------------------- | -------------------------- |
-| ドメイン | バックエンド / 業務側     | ユーザー視点の欠如         |
-| IA       | UX / プロダクト           | 技術的制約の理解不足       |
-| DS       | フロントエンド / デザイン | ビジネスロジックの理解不足 |
+| 領域 | 担当部門 | 課題 |
+| - | - | - |
+| ドメイン | バックエンド / 業務側 | ユーザー視点の欠如 |
+| IA | UX / プロダクト | 技術的制約の理解不足 |
+| DS | フロントエンド / デザイン | ビジネスロジックの理解不足 |
 
 > **問題**: 誰も全体構造を統合していない
 
@@ -781,12 +781,12 @@ graph TB
 
 同じ概念に対して異なる用語が使用されている：
 
-| 概念           | DDD                        | IA               | DS               |
-| -------------- | -------------------------- | ---------------- | ---------------- |
-| 情報の分類単位 | エンティティ               | コンテンツタイプ | コンポーネント   |
-| 命名規則       | ユビキタス言語             | ラベリング       | 命名規約         |
-| 境界の定義     | 境界づけられたコンテキスト | 情報空間         | デザイントークン |
-| 階層構造       | アグリゲート               | タクソノミー     | Atomic 階層      |
+| 概念 | DDD | IA | DS |
+| - | - | - | - |
+| 情報の分類単位 | エンティティ | コンテンツタイプ | コンポーネント |
+| 命名規則 | ユビキタス言語 | ラベリング | 命名規約 |
+| 境界の定義 | 境界づけられたコンテキスト | 情報空間 | デザイントークン |
+| 階層構造 | アグリゲート | タクソノミー | Atomic 階層 |
 
 #### 5.2.2 抽象度の不一致
 
@@ -809,11 +809,11 @@ graph TB
 
 #### 5.3.1 状態遷移の扱い
 
-| 手法               | 状態の扱い                           |
-| ------------------ | ------------------------------------ |
+| 手法 | 状態の扱い |
+| - | - |
 | ドメインモデリング | 明示的（状態遷移、ドメインイベント） |
-| IA                 | 暗黙的（ナビゲーションフロー程度）   |
-| デザインシステム   | 部分的（コンポーネント状態）         |
+| IA | 暗黙的（ナビゲーションフロー程度） |
+| デザインシステム | 部分的（コンポーネント状態） |
 
 #### 5.3.2 The Elements of UX の限界
 
@@ -1061,14 +1061,14 @@ graph TB
 
 ### 8.4 デザインシステム主要人物
 
-| 人物            | 貢献                                  | 所属/関連組織                       |
-| --------------- | ------------------------------------- | ----------------------------------- |
-| Brad Frost      | Atomic Design 提唱、Pattern Lab 開発  | 独立コンサルタント                  |
-| Jina Anne       | Design Tokens 発明、W3C DTCG Co-chair | Salesforce (元)、Clarity 創設者     |
-| Nathan Curtis   | DS ガバナンスモデル、チームモデル研究 | EightShapes                         |
-| Alla Kholmatova | DS 設計原則の体系化                   | FutureLearn (元)、Smashing Magazine |
-| Matías Duarte   | Material Design リード                | Google                              |
-| Jon Levine      | Design Tokens 共同発明                | Salesforce                          |
+| 人物 | 貢献 | 所属/関連組織 |
+| - | - | - |
+| Brad Frost | Atomic Design 提唱、Pattern Lab 開発 | 独立コンサルタント |
+| Jina Anne | Design Tokens 発明、W3C DTCG Co-chair | Salesforce (元)、Clarity 創設者 |
+| Nathan Curtis | DS ガバナンスモデル、チームモデル研究 | EightShapes |
+| Alla Kholmatova | DS 設計原則の体系化 | FutureLearn (元)、Smashing Magazine |
+| Matías Duarte | Material Design リード | Google |
+| Jon Levine | Design Tokens 共同発明 | Salesforce |
 
 ---
 

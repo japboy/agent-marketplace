@@ -28,7 +28,7 @@ row per finding with these columns in this order:
 ## Findings
 
 | # | Severity | Sources | Disposition | Summary |
-| - | -------- | ------- | ----------- | ------- |
+| - | - | - | - | - |
 ```
 
 - `Severity`: `BLOCKER`, `IMPORTANT`, `QUESTION`, `SUGGESTION`, or `NIT`.
@@ -40,13 +40,13 @@ row per finding with these columns in this order:
 
 ## Required per-finding sections
 
-| Severity             | Disposition                | Detail section |
-| -------------------- | -------------------------- | :------------: |
-| `BLOCKER`            | any                        |    Required    |
-| `IMPORTANT`          | `Awaiting (Q<n>)`          |    Required    |
-| `IMPORTANT`          | `Auto-applied` / `Skipped` |      Omit      |
-| `QUESTION`           | any                        |    Required    |
-| `SUGGESTION` / `NIT` | any                        |      Omit      |
+| Severity | Disposition | Detail section |
+| - | - | :-: |
+| `BLOCKER` | any | Required |
+| `IMPORTANT` | `Awaiting (Q<n>)` | Required |
+| `IMPORTANT` | `Auto-applied` / `Skipped` | Omit |
+| `QUESTION` | any | Required |
+| `SUGGESTION` / `NIT` | any | Omit |
 
 Each required section is `### Finding <#> — <SEVERITY>`, followed by a `**Sources**:` bullet list,
 `**Disposition**:`, and explanatory prose of at most 400 characters. Add a fenced block only when

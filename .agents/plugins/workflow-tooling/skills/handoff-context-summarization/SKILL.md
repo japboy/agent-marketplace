@@ -25,12 +25,12 @@ file only when the user explicitly requests saved, persisted, or file output.
 
 ### MFR Categories
 
-| Category        | Description                                                 |
-| --------------- | ----------------------------------------------------------- |
-| **Entities**    | Key objects, concepts, files, or components discussed       |
-| **States**      | Current status, progress, or conditions of entities         |
-| **Actions**     | Completed actions, pending tasks, or recommended next steps |
-| **Constraints** | Limitations, requirements, or boundaries identified         |
+| Category | Description |
+| - | - |
+| **Entities** | Key objects, concepts, files, or components discussed |
+| **States** | Current status, progress, or conditions of entities |
+| **Actions** | Completed actions, pending tasks, or recommended next steps |
+| **Constraints** | Limitations, requirements, or boundaries identified |
 
 ## Output States
 
@@ -64,11 +64,11 @@ the conversation context window:
 
 **Inheritance Rules:**
 
-| Category        | Inheritance Behavior                                                 |
-| --------------- | -------------------------------------------------------------------- |
-| **Entities**    | Inherit unless explicitly removed or replaced in the current session |
-| **States**      | Update based on current session progress (do NOT inherit as-is)      |
-| **Actions**     | Fresh for each session (completed actions become historical context) |
+| Category | Inheritance Behavior |
+| - | - |
+| **Entities** | Inherit unless explicitly removed or replaced in the current session |
+| **States** | Update based on current session progress (do NOT inherit as-is) |
+| **Actions** | Fresh for each session (completed actions become historical context) |
 | **Constraints** | Inherit unless explicitly changed or resolved in the current session |
 
 > **Important**: Entities and Constraints represent stable context that should persist across
