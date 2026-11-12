@@ -317,13 +317,18 @@ def model_call(
     return structured
 
 
-def source_details(case: dict[str, Any]) -> str:
+def source_details(case: dict[str, Any], prompt_version: str = "legacy") -> str:
     speaker = case["speaker"]
     listener = case["listener"]
+    remark_label = (
+        "Speaker's original remark (before the listener replied)"
+        if prompt_version == "v3-temporal"
+        else "Speaker's current remark"
+    )
     return (
         f"Speaker role: {speaker['role']}\n"
         f"Prior speaker context available to you: {speaker['prior_context']}\n"
-        f"Speaker's current remark: {speaker['utterance']}\n"
+        f"{remark_label}: {speaker['utterance']}\n"
         f"Speaker available for clarification: {speaker['available_for_clarification']}\n\n"
         f"Listener role: {listener['role']}\n"
         f"Listener's next decision: {listener['next_decision']}\n"
@@ -335,14 +340,22 @@ def skill_section(skill_body: str | None) -> str:
 
 
 def first_prompt(
-    case: dict[str, Any], observed_reply: str, skill_body: str | None
+    case: dict[str, Any],
+    observed_reply: str,
+    skill_body: str | None,
+    prompt_version: str = "legacy",
 ) -> str:
+    reply_label = (
+        "Listener's later reply to the original remark"
+        if prompt_version == "v3-temporal"
+        else "Listener's actual reply to the original remark"
+    )
     return (
         "Convey the speaker's remark to this listener so they can make their next decision. "
         "Write the message you would deliver. Use only the supplied facts. Do not use tools "
         "or external sources.\n\n"
-        + source_details(case)
-        + f"\nListener's actual reply to the original remark: {observed_reply}\n"
+        + source_details(case, prompt_version)
+        + f"\n{reply_label}: {observed_reply}\n"
         + skill_section(skill_body)
     )
 
@@ -386,17 +399,28 @@ def followup_prompt(
     initial_listener_reply: str,
     listener_reply: str,
     skill_body: str | None,
+    prompt_version: str = "legacy",
 ) -> str:
+    initial_reply_label = (
+        "Listener's first reply after the original remark"
+        if prompt_version == "v3-temporal"
+        else "Listener's initial reply to the original remark"
+    )
+    later_reply_label = (
+        "Listener's later reply to your first message"
+        if prompt_version == "v3-temporal"
+        else "Listener's actual reply"
+    )
     return (
         "Continue the exchange after the listener's actual reply. Return status stop with an "
         "empty message if you have nothing more to say. Otherwise return status reply with "
         "the message you would send to the listener. The speaker has not supplied a new answer. "
         "Use only the supplied facts; do not use tools or external sources. Return the requested "
         "JSON fields.\n\n"
-        + source_details(case)
-        + f"\nListener's initial reply to the original remark: {initial_listener_reply}\n"
+        + source_details(case, prompt_version)
+        + f"\n{initial_reply_label}: {initial_listener_reply}\n"
         + f"\nYour first message to the listener: {first_message}\n"
-        + f"Listener's actual reply: {listener_reply}"
+        + f"{later_reply_label}: {listener_reply}"
         + "\n"
         + skill_section(skill_body)
     )
@@ -418,7 +442,7 @@ def run_arm(
         first_message = model_call(
             args,
             directory / "interpreter-initial",
-            first_prompt(case, initial_listener_reply, skill_body),
+            first_prompt(case, initial_listener_reply, skill_body, args.prompt_version),
         )
         assert isinstance(first_message, str)
     history = (
@@ -449,6 +473,7 @@ def run_arm(
                 initial_listener_reply,
                 listener_first["reply"],
                 skill_body,
+                args.prompt_version,
             ),
             FOLLOWUP_SCHEMA,
         )
@@ -501,6 +526,10 @@ def load_v2_raw_run(
         "case_ids": [case["id"] for case in cases],
         "protocol_v2": True,
     }
+    if args.prompt_version == "v3-temporal":
+        expected["prompt_version"] = "v3-temporal"
+    elif "prompt_version" in manifest:
+        raise ValueError("raw run prompt_version does not match this comparison")
     for key, value in expected.items():
         if manifest.get(key) != value:
             raise ValueError(f"raw run {key} does not match this comparison")
@@ -629,6 +658,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--timeout-seconds", type=int, default=180)
     parser.add_argument("--blind-seed", type=int)
     parser.add_argument("--protocol-v2", action="store_true")
+    parser.add_argument(
+        "--prompt-version",
+        choices=("legacy", "v3-temporal"),
+        default="legacy",
+        help="temporal labels are opt-in; formal V3 requires --protocol-v2",
+    )
     parser.add_argument("--initial-raw-run", type=Path)
     parser.add_argument("--l0-grades", type=Path)
     parser.add_argument("--expected-l0-grades-sha256")
@@ -739,6 +774,11 @@ def main() -> None:
             "arms": args.arms,
             "repeats": args.repeats,
             "case_ids": [case["id"] for case in cases],
+            **(
+                {"prompt_version": args.prompt_version}
+                if args.prompt_version != "legacy"
+                else {}
+            ),
             "skill_sha256": {
                 arm: skills[arm][1]
                 for arm in args.arms

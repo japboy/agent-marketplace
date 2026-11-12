@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import stat
 import sys
 import tempfile
@@ -85,9 +86,11 @@ class V2RunTest(unittest.TestCase):
         ):
             runner.main()
 
-    def run_raw_and_grade(self) -> Path:
+    def run_raw_and_grade(self, prompt_version: str = "legacy") -> Path:
         self.run_stage(
             "--protocol-v2",
+            "--prompt-version",
+            prompt_version,
             "--cases",
             str(self.fixture),
             "--output",
@@ -121,9 +124,12 @@ class V2RunTest(unittest.TestCase):
         grades: Path,
         expected_hash: str | None = None,
         candidate_skill: Path | None = None,
+        prompt_version: str = "legacy",
     ) -> None:
         self.run_stage(
             "--protocol-v2",
+            "--prompt-version",
+            prompt_version,
             "--cases",
             str(self.fixture),
             "--output",
@@ -233,6 +239,107 @@ class V2RunTest(unittest.TestCase):
             self.compare(grades, candidate_skill=self.skill)
         self.assertEqual(len(self.prompts), 1)
         self.assertFalse(self.compare_output.exists())
+
+    def test_legacy_prompt_bytes_and_manifest_shape_stay_unchanged(self) -> None:
+        first = runner.first_prompt(self.case, "I will identify it.", "Relay the source.")
+        followup = runner.followup_prompt(
+            self.case,
+            "The label is pending.",
+            "I will identify it.",
+            "Which label?",
+            "Relay the source.",
+        )
+        self.assertEqual(
+            hashlib.sha256(first.encode()).hexdigest(),
+            "efbcc9e4373908ad92bf0d2d1aac15c5bc11d2040e29adac6d96cde35ce67f4f",
+        )
+        self.assertEqual(
+            hashlib.sha256(followup.encode()).hexdigest(),
+            "ba106881d4946d77225fe7d3ff7373be38fe77b5a6e8fdc0a8b0e8f281a2187a",
+        )
+        grades = self.run_raw_and_grade()
+        self.compare(grades)
+        self.assertNotIn(
+            "prompt_version", json.loads((self.raw_output / "manifest.json").read_text())
+        )
+        self.assertNotIn(
+            "prompt_version", json.loads((self.compare_output / "manifest.json").read_text())
+        )
+
+    def test_temporal_prompt_labels_and_raw_run_version_match(self) -> None:
+        grades = self.run_raw_and_grade("v3-temporal")
+        self.compare(grades, prompt_version="v3-temporal")
+        interpreter_prompts = [
+            prompt
+            for prompt in self.prompts
+            if prompt.startswith("Convey the speaker's remark")
+            or prompt.startswith("Continue the exchange")
+        ]
+        self.assertEqual(len(interpreter_prompts), 4)
+        self.assertTrue(
+            all(
+                "Speaker's original remark (before the listener replied):"
+                in prompt
+                for prompt in interpreter_prompts
+            )
+        )
+        self.assertTrue(
+            all("Speaker's current remark:" not in prompt for prompt in interpreter_prompts)
+        )
+        self.assertTrue(
+            all(
+                "Listener's later reply to the original remark:"
+                in prompt
+                for prompt in interpreter_prompts
+                if prompt.startswith("Convey the speaker's remark")
+            )
+        )
+        self.assertTrue(
+            all(
+                "Listener's first reply after the original remark:"
+                in prompt
+                and "Listener's later reply to your first message:" in prompt
+                for prompt in interpreter_prompts
+                if prompt.startswith("Continue the exchange")
+            )
+        )
+        for output in (self.raw_output, self.compare_output):
+            manifest = json.loads((output / "manifest.json").read_text())
+            self.assertEqual(manifest["prompt_version"], "v3-temporal")
+
+    def test_rejects_temporal_version_mismatch_before_interpreter_call(self) -> None:
+        grades = self.run_raw_and_grade("v3-temporal")
+        with self.assertRaisesRegex(ValueError, "raw run prompt_version"):
+            self.compare(grades)
+        self.assertEqual(len(self.prompts), 1)
+        self.assertFalse(self.compare_output.exists())
+
+    def test_temporal_labels_allow_development_replay_without_v2_grades(self) -> None:
+        output = self.root / "development"
+        self.run_stage(
+            "--prompt-version",
+            "v3-temporal",
+            "--cases",
+            str(self.fixture),
+            "--output",
+            str(output),
+            "--arms",
+            "raw",
+            "previous",
+            "candidate",
+            "--previous-skill",
+            str(self.skill),
+            "--candidate-skill",
+            str(self.candidate_skill),
+        )
+        manifest = json.loads((output / "manifest.json").read_text())
+        self.assertEqual(manifest["prompt_version"], "v3-temporal")
+        self.assertNotIn("protocol_v2", manifest)
+        self.assertFalse((output / "l0-grade-template.json").exists())
+        self.assertEqual(
+            sum("Speaker's original remark" in prompt for prompt in self.prompts),
+            4,
+        )
 
 
 if __name__ == "__main__":

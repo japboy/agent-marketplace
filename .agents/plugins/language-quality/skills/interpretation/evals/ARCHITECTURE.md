@@ -36,7 +36,9 @@ instructions remain in [SKILL.md](../SKILL.md); the sources and limits of the de
 - [HELDOUT_PROTOCOL.md](HELDOUT_PROTOCOL.md) fixes the repeated comparison and review gates before
   output inspection. [HELDOUT_PROTOCOL_V2.md](HELDOUT_PROTOCOL_V2.md) defines the prospective
   two-stage comparison: observe and freeze `L0` grades before either interpretation arm runs, then
-  compare the arms against those same raw replies. Select a held-out fixture with `--cases`.
+  compare the arms against those same raw replies. [HELDOUT_PROTOCOL_V3.md](HELDOUT_PROTOCOL_V3.md)
+  retains V2's grade and outcome rules while labeling the speaker utterance as earlier than the
+  already-observed listener reply. Select a held-out fixture with `--cases`.
 - [wording-candidate-rejected.md](wording-candidate-rejected.md),
   [structural-candidate-rejected.md](structural-candidate-rejected.md), and
   [plan-map-candidate-rejected.md](plan-map-candidate-rejected.md) preserve the exact rejected
@@ -80,6 +82,12 @@ simulated, transcript-based change; it does not track a single human's latent un
 keeps arms isolated and saves anonymous grading packets. The listener's structured fields ask for
 the speaker's purpose, proposed means, conditions, request, and decision status; `next_action`
 records the listener's own action.
+
+The opt-in `--prompt-version v3-temporal` uses the same data flow but names the source utterance as
+the original remark before `L0`, and labels `L0` and `L1` as later listener turns. The default
+`legacy` setting preserves the V1/V2 prompt text and manifest shape. A V3 raw run cannot be reused
+with a legacy comparison, or vice versa. The temporal labels can also be used in historical mode for
+development replays, but that path is not a formal V3 evaluation.
 
 For the V2 path, the runner first uses `--protocol-v2 --arms raw` to produce raw-only packets and a
 grade template. The grader sees no interpretation output when freezing the `L0` slot grades. A
