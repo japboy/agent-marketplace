@@ -4,7 +4,7 @@ dprint = "0.63.0"
 hk = "2.7.0"
 python = "3.15.0"
 uv = "0.13.1"
-vale = "3.24.0"
+vale = "3.27.0"
 
 [tasks.format]
 description = "Format repository Markdown, JSON-compatible configuration, and YAML"
