@@ -7,6 +7,19 @@ instruction for creating or updating skills.
 Use this file to answer "what changed and when?" Keep evidence, rationale, and rejected alternatives
 in the detailed record files linked from each entry.
 
+## 2026-11-18
+
+Status: **Accepted for source-backed corrections. Provisional for broader behavioral effects.**
+
+- Aligned the portable format, authoring recommendations, and product behavior with current Agent
+  Skills, Codex, and Claude Code sources.
+- Added current model and harness guidance to the reference map. Made verification evidence, task
+  completion, and blockers explicit in the shared authoring guidance.
+- Compared the previous and candidate skill on the three existing cases. Both passed all 15
+  assertions. The candidate passed the supplemental standards check for description quality.
+  - Evidence:
+    [2026-11-18 Standards and Completion Review](evaluation-notes.md#2026-11-18-standards-and-completion-review)
+
 ## 2026-07-31
 
 Status: **Accepted for packaging and portability; no behavioral improvement claimed.** The change

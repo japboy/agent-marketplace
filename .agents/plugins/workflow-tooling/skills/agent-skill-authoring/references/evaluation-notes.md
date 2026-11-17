@@ -3,6 +3,60 @@
 This file records validation evidence for changes to the `agent-skill-authoring` skill. It is
 update/audit context, not runtime instruction.
 
+## 2026-11-18 Standards and Completion Review
+
+Status: **Accepted for source-backed corrections. Provisional for broader behavioral effects.** The
+comparison found a more precise standards review and passed the existing regression checks. The
+cases provide limited evidence for the new completion and verification guidance.
+
+### Comparison setup
+
+- Previous version: Git commit `d6224a0324b0b0d4a6cd7328edac4ea70ea9f33c`.
+- Candidate `SKILL.md` SHA-256: `8ff81570f7a4f3a84af53a27ff4f2a6e1b31374d5bf02a66aca16886e6558db3`.
+  The staged candidate contained the updated guidance and references before this result and the
+  changelog entry were recorded.
+- Fixture: unchanged [evals/evals.json](../evals/evals.json) from the previous version. Each arm
+  received the original prompts and was graded against the same 15 assertions.
+- Target: Codex CLI 0.163.0, `gpt-6.1-sol` at medium reasoning effort. One fresh ephemeral session
+  per case and version, with the same explicit skill-loading instruction, permissions, and cached
+  offline validator. The runtime and its references were available read-only. The filesystem profile
+  blocked other installed skill bodies and the evaluator's fixture. All six traces confirmed the
+  intended `SKILL.md` was read.
+- Excluded diagnostic attempts: Claude Code could not authenticate. The initial Codex run allowed
+  access to unrelated local instructions. The fenced rerun supplied the results below.
+
+### Results
+
+Wall time is measured per run. Total tokens are the CLI's input plus output, including cached input.
+Reasoning output is included in output.
+
+| Case | Assertions, previous / candidate | Wall time in seconds, previous / candidate | Total tokens, previous / candidate |
+| - | -: | -: | -: |
+| 1. Create a portable skill | 5/5 / 5/5 | 82.662 / 70.811 | 326,730 / 272,465 |
+| 2. Review standard compliance | 5/5 / 5/5 | 52.669 / 44.888 | 227,592 / 110,709 |
+| 3. Review an anecdote-based edit | 5/5 / 5/5 | 49.377 / 47.766 | 145,726 / 143,189 |
+| Total | 15/15 / 15/15 | 184.708 / 163.465 | 700,048 / 526,363 |
+
+- Case 1: Both sessions produced only `review-changelog/SKILL.md` and passed the validator. An
+  independent `skills-ref` 0.1.1 run passed on both files. The candidate defined a final comparison
+  against the source. The previous output explicitly kept links from omitted entries. The candidate
+  gave a general preservation rule with less detail for that edge case.
+- Case 2: Both passed the original assertions. A supplemental check used the standard's
+  [description field](https://agentskills.io/specification#description-field) and the
+  [reference validator](https://github.com/agentskills/agentskills/blob/main/skills-ref/src/skills_ref/validator.py#L70-L84).
+  The previous answer included a description rewrite in the minimum compliance fix. The candidate
+  identified the invalid name as the format defect and recommended a more useful description and
+  targeted reference links as authoring improvements. The supplemental result improved from fail to
+  pass.
+- Case 3: Both kept the update provisional, declined a universal five-step rollback rule, and
+  specified a fixed-target comparison with quality, token, and duration evidence.
+
+Cached input fell from 613,376 to 433,024 tokens. Uncached input rose from 81,369 to 88,278 and
+output fell from 5,303 to 5,061. The elapsed and usage totals describe these runs. They provide
+limited evidence about repeatable latency or cost. This suite exercises explicit loading in one
+client and model. Implicit triggering, Claude Code execution, and the behavior of the generated
+changelog skill on actual release notes remain unverified.
+
 ## 2026-07-31 LicenseUndecided Metadata Validation
 
 Status: **Accepted as a non-behavioral metadata and packaging change.**

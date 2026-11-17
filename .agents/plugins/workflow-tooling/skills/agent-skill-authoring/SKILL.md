@@ -69,11 +69,12 @@ Write YAML frontmatter at the top of `SKILL.md`. `name` and `description` are re
 `compatibility`, `metadata`, and `allowed-tools` are optional standard fields; `allowed-tools` is
 experimental and client support varies.
 
-Specification-level rules: `name` is 1-64 characters of lowercase letters, digits, and hyphens, with
-no leading, trailing, or consecutive hyphen, and must match the parent directory name. `description`
-is 1-1024 characters and must explain both what the skill does and when to use it. `compatibility`,
-if present, is 1-500 characters. `metadata`, if present, is a key-value mapping of strings. The full
-field reference lives in [REFERENCE.md](references/REFERENCE.md).
+`name` is 1-64 characters of lowercase alphanumeric characters and hyphens, with no leading,
+trailing, or consecutive hyphen, and must match the parent directory name. `description` is a
+non-empty string of 1-1024 characters. The specification recommends describing what the skill does
+and when to use it. Assess that quality in review. `compatibility`, if present, is 1-500 characters.
+`metadata`, if present, maps string keys to string values. See the field rules and validator scope
+in [REFERENCE.md](references/REFERENCE.md).
 
 Validate with:
 
@@ -99,8 +100,8 @@ Two consequences worth applying deliberately:
 - State *when* to load each supporting file. "Read `references/api-errors.md` if the API returns a
   non-200 status code" is loadable on demand; "see `references/` for details" is not.
 - Put the rules that must hold for the whole task near the top of `SKILL.md`. Some clients truncate
-  a re-attached skill body after context compaction, and the 5,000-token guidance is the safest
-  assumption for what survives.
+  skill body during activation or after context compaction. Check behavior in the target client when
+  the skill depends on instructions late in the file.
 
 ## Shared Practices for Codex and Claude Code
 
@@ -119,9 +120,8 @@ Good descriptions:
 - Make scope boundaries obvious
 - Front-load the key use case and trigger words
 
-The listing budget is shared across every installed skill, not allocated per skill. Clients truncate
-or drop entries by their own priority rules, and text near the end is cut first, so treat
-description length as a cost paid environment-wide.
+Clients can share a listing budget across skills and shorten descriptions or omit entries when the
+budget fills. Put the key use case first and check the target client's listing behavior.
 
 Do not force one house style as if it were required by the spec. Third-person phrasing, imperative
 phrasing, and quote-heavy trigger lists can all be useful, but they are authoring choices.
@@ -155,19 +155,22 @@ For each instruction, ask whether the agent would get this wrong without it. If 
 - **Match specificity to fragility.** Be prescriptive where an operation is fragile or a sequence is
   mandatory. Where several approaches work, state the outcome and the reason instead of the steps,
   and leave the path to the agent.
-- **Delete instructions the agent already follows.** Generic self-verification, re-checking, and
-  double-check steps add redundant work without improving results. Remove repeated rules, style
-  instructions that change nothing, and examples that change nothing.
-- **State success criteria and stopping conditions.** Define the outcome, the constraints that
-  matter, and how the agent knows the task is finished.
+- **Use observable verification.** Specify the check that demonstrates the outcome, such as a
+  validator for a generated file or a test that exercises changed behavior. Run the applicable check
+  before reporting success and report any required check that remains blocked. Use target runs to
+  identify repeated rules and generic re-checks that can be removed.
+- **State success criteria and stopping conditions.** Define the requested deliverables and the
+  evidence that each is complete. Continue through recoverable failures within scope and existing
+  authorization. Report a blocker when the remaining work needs missing input or permission, or when
+  the available checks cannot establish completion.
 - **Reserve absolute language for invariants.** Keep always, never, must, and only for safety rules,
   required fields, and actions that must not happen.
 - **Separate exhaustive generation from filtering.** Instructions to be conservative or to report
   only severe findings are followed literally and suppress recall. Ask for everything, then filter
   in a distinct phase.
-- **State output length and update cadence explicitly.** Skills that write documents should
-  calibrate length; skills that run long workflows should say when to report progress.
-  Reasoning-effort settings control neither.
+- **Specify communication when the task needs it.** Set the intended length for user-facing outputs
+  and name meaningful milestones for progress updates in long interactive work. If updates are
+  missing, check what the client displays before changing the wording.
 - **Watch for over-constraint.** When added rules stop improving results, delete instructions and
   check whether results hold.
 
@@ -176,10 +179,10 @@ plan-validate-execute, see [instruction-patterns.md](references/instruction-patt
 
 ### Validation Beyond Syntax
 
-After baseline validation, check that the description triggers on the intended tasks, that the body
-gives enough guidance to complete them, that every referenced file exists, that resource directories
-are actually used, that supporting scripts run, and that behavior-changing updates carry evidence
-and validation notes.
+Match each claim to its observable check. Use the validator for format, activation trials for
+trigger changes, and representative tasks for behavior changes. Check that bundled references
+resolve and exercise supporting scripts on representative inputs. Record the observed results and
+any unverified product behavior in the validation notes.
 
 ## Codex-Specific Practices
 
@@ -195,8 +198,9 @@ with Codex. It follows symlinked skill folders, and `~/.codex/config.toml` can d
 Direct skill folders suit local authoring and repo-scoped workflows; plugins are the distribution
 unit for reusable skills and app integrations.
 
-The startup skills list is capped at 2% of the model's context window, or 8,000 characters when the
-window is unknown, and Codex shortens skill descriptions first when many skills are installed.
+By default, the initial skills list uses at most 2% of the model's context window, or 8,000
+characters when the window is unknown. Codex shortens descriptions and may omit entries in large
+lists. `skills.max_context_tokens` sets a custom budget up to 10,000 tokens.
 
 ### `agents/openai.yaml`
 
@@ -215,16 +219,15 @@ For Codex-focused skills:
 
 - Keep the standard `SKILL.md` portable
 - Put Codex-only UI or policy metadata in `agents/openai.yaml`
-- Generate or refresh `openai.yaml` when the skill title, summary, icons, brand color, default
-  prompt, invocation policy, or tool dependencies change
+- Generate `openai.yaml` for new metadata. Edit the affected fields in an existing file to preserve
+  its other interface, policy, and dependency settings
 - Keep `default_prompt` short and aligned with the intended invocation
 - Test prompts against the description to confirm explicit and implicit trigger behavior
 
-When Codex provides its built-in Skill Creator under `~/.agents/skills/.system/skill-creator/`,
-resolve its user-facing symlinks and verify each target is a regular readable file before use;
-otherwise use the portable validator and edit the files directly. When present,
-`scripts/init_skill.py`, `scripts/generate_openai_yaml.py`, `scripts/quick_validate.py`, and
-`references/openai_yaml.md` are repository-specific tooling, not the portable standard.
+Invoke the built-in Skill Creator with `$skill-creator` when available. To call its helpers
+directly, use the bundled location under the active Codex home and verify each target is a regular
+readable file. See [REFERENCE.md](references/REFERENCE.md) for the location and helper names.
+Otherwise, create the files directly and run the portable validator.
 
 ## Claude Code-Specific Practices
 
@@ -239,25 +242,25 @@ Important distinctions:
 - For portable skills, keep the standard `name` and `description` baseline
 - For Claude Code-only skills, Claude Code treats all frontmatter fields as optional and recommends
   `description` so Claude knows when to use the skill
-- The slash command usually comes from the skill directory name, not frontmatter `name`; plugin-root
-  `SKILL.md` is the notable exception
-- Claude Code-specific fields are not portable standard fields unless the Agent Skills spec
-  separately defines them
+- For personal and project skill directories, frontmatter `name` can set the slash command, and the
+  directory name also invokes it. Plugin skills keep the plugin namespace and use `name` for the
+  last segment when set. See [REFERENCE.md](references/REFERENCE.md) for other layouts
 - Skills live under `~/.claude/skills/`, project `.claude/skills/`, `<plugin>/skills/`, and
   enterprise-managed locations
 
 Claude Code-specific frontmatter includes `when_to_use`, `argument-hint`, `arguments`,
-`disable-model-invocation`, `user-invocable`, `allowed-tools`, `disallowed-tools`, `model`,
-`effort`, `context`, `agent`, `hooks`, `paths`, and `shell`. Use these only when they intentionally
-change Claude Code invocation, execution, permissions, or context behavior.
+`disable-model-invocation`, `user-invocable`, `disallowed-tools`, `model`, `effort`, `context`,
+`agent`, `background`, `hooks`, `paths`, and `shell`. Use them when the target needs Claude Code
+behavior. The standard's experimental `allowed-tools` field pre-approves matching tools during the
+invoking turn in Claude Code.
 
 Claude Code context accounting:
 
-- `description` and `when_to_use` are combined for the listing and truncated at 1,536 characters per
-  entry. Keep the key use case first.
-- The listing budget scales at 1% of the model's context window. On overflow, Claude Code drops
-  descriptions starting with the least-invoked skills, so a rarely used skill loses its trigger text
-  first.
+- `description` and `when_to_use` are combined for the listing and truncated at a configurable
+  default of 1,536 characters per entry. Keep the key use case first.
+- By default, the listing budget scales at 1% of the model's context window. On overflow, Claude
+  Code drops descriptions starting with the least-invoked skills, so a rarely used skill loses its
+  trigger text first.
 - After auto-compaction, only the first 5,000 tokens of each re-attached skill survive, within a
   combined 25,000-token budget filled from the most recently invoked skill. Place durable rules near
   the top of `SKILL.md`.
@@ -266,16 +269,14 @@ Claude Code supports dynamic context injection with `` !`command` `` and ` ```! 
 blocks. Treat this as Claude Code-specific behavior, use `${CLAUDE_SKILL_DIR}` for bundled files,
 keep commands deterministic, and account for settings that can disable skill shell execution.
 
-Use `context: fork` only for skills that contain an actionable task. A forked subagent receives the
-skill content as its prompt and does not automatically inherit the full main conversation. When a
-skill delegates to subagents, state which work warrants delegation and cap the number; delegation
-multiplies cost on small tasks, and subagents should not be used to double-check the agent's own
-work.
+Use `context: fork` for actionable tasks that can run without the main conversation history. The
+fork normally runs in the background with a narrower tool set. Set `background: false` when the
+invoking turn needs the result or the task requires a tool unavailable in the background. See
+[REFERENCE.md](references/REFERENCE.md) for exceptions.
 
-Treat `model` and `effort` overrides as measured decisions, not defaults carried over from another
-skill or an earlier model. Before raising `effort`, check whether the skill body is missing a
-success criterion, a dependency rule, a tool-selection rule, or a verification loop; a missing
-instruction is cheaper to fix than a permanent effort increase.
+When a skill delegates, state which independent work warrants delegation and bound its scope.
+Measure `model` and `effort` overrides on the target task. Check for a missing success criterion,
+tool-selection rule, or verification step before raising effort.
 
 For detailed Claude Code checks, use [validation-checklist.md](references/validation-checklist.md).
 
@@ -288,8 +289,8 @@ requirements.
 
 For non-trivial updates, check these axes:
 
-- **Fixed target**: State the target product, model or harness, and evaluator. Do not attribute
-  improvement to a skill if those variables also changed.
+- **Fixed target**: Record the product and harness version, model, effort, and evaluator. When the
+  target changes, rerun the unchanged skill there before testing edits against it.
 - **Evidence**: Base edits on representative prompts, trajectories, logs, outputs, verifier results,
   or reviewer judgments.
 - **Success/failure separation**: Repair systematic failures and preserve reusable success patterns
@@ -319,9 +320,9 @@ For the full checklist, use [validation-checklist.md](references/validation-chec
 skill demonstrates the maintenance-record subset with [CHANGELOG.md](references/CHANGELOG.md),
 [evaluation-notes.md](references/evaluation-notes.md),
 [rejected-edits.md](references/rejected-edits.md), and
-[decision-records.md](references/decision-records.md). It is not an evaluation fixture reference
-implementation: it has no committed `evals/evals.json` until representative cases are designed and
-reviewed.
+[decision-records.md](references/decision-records.md). Its `evals/evals.json` cases cover portable
+creation, a standards review, and an update supported by one anecdote. Recorded runs and their
+limits are in the evaluation notes.
 
 ## Creation Workflow
 
@@ -353,8 +354,8 @@ directory.
 Create the portable baseline first: the skill directory, `SKILL.md`, only the resource directories
 actually needed, then validation against the standard.
 
-For a Codex-focused skill, use `init_skill.py` only after the helper checks in Codex Authoring
-Guidance pass. Otherwise create the portable baseline directly.
+For a Codex-focused skill, use the built-in Skill Creator when available or create the portable
+baseline directly.
 
 ### Step 5: Add Product-Specific Extensions
 
@@ -435,9 +436,7 @@ See [validation-checklist.md](references/validation-checklist.md) for a layered 
 
 ## Completion
 
-A creation task is complete when the target is classified, required files and references exist, the
-standard validator passes, requested product extensions are validated, and stated success criteria
-are met. An update review is complete only when every behavior-changing edit has an explicit
-`provisional`, `accepted`, or `rejected` state and the reported conclusion matches its recorded
-evidence. If comparative evaluation is deferred, finish only the requested local correction and
-report both the provisional state and the open evaluation gate.
+Complete creation when the files and references exist, the standard validator passes, and observed
+checks meet the requested outcome and applicable product behavior. Complete an update review when
+its `provisional`, `accepted`, or `rejected` state follows from the recorded evidence. If a required
+check is blocked, report the remaining work and the evidence needed to close it.
