@@ -164,3 +164,56 @@ The new regression case records this as an open check.
 paired tests improved the documented failures. The low-capability native invocation still invented a
 listener action in one scenario. Claude Code behavior was not tested because the local CLI reported
 that it was not logged in.
+
+## English-wording revision and paired re-evaluation on 2026-11-12
+
+The revision clarifies when the agent's own output can be the source, which speaker a contextual
+goal belongs to, whose reply is available, and who should answer a question about a condition's
+scope. It also replaces the noun *relay* with *interpretation* and makes the grounding heading
+procedural. The baseline was the previous `SKILL.md` (SHA-256
+`943f59008f796fad10d4b450c05ff622b6818426c3a23165526c9236d200a3fc`); the candidate was the revised
+file (SHA-256 `48c663541e064c26dee3478b8b50b13cdc812ba2f77c4f4f65d7da070019870d`).
+
+Both arms received the same wrapper, skill-body placement, and exact prompt for each case. Runs used
+Codex CLI 0.163.0, `gpt-6-luna` at medium reasoning effort, fresh temporary working directories,
+`codex exec --ignore-user-config --ignore-rules --ephemeral -s read-only --skip-git-repo-check
+--json`, and an instruction to use only the scenario without tools. All runs exited successfully and
+recorded no tool calls. The first pass used the eight existing prompts in
+[evals.json](../evals/evals.json) plus two probes for goal attribution and an unavailable speaker,
+defined before the candidate runs and now retained as cases 9 and 10. Each arm ran once per case. A
+separate reviewer graded outputs under randomized A/B labels against the fixed assertions without
+seeing the arm mapping.
+
+| Case | Baseline | Candidate | Observed difference |
+| - | -: | -: | - |
+| 1. Development to Sales | 3/3 | 2/3 | Candidate omitted a separate question to Development about the customer notice. |
+| 2. Supplier to warehouse | 3/4 | 3/4 | Baseline rendered “before 10” as “by 10”; candidate repeated the stated reply request as a separate question. |
+| 3. Ambiguous Operations remark | 2/3 | 2/3 | Both omitted at least one needed question to Operations. |
+| 4. Sales reply to Development | 2/3 | 3/3 | Candidate explicitly retained Sales' understanding of the conditional proposal. |
+| 5. Agent's own draft | 3/3 | 3/3 | Both separated test success from the proposed release hold. |
+| 6. User's mistaken approval reading | 3/3 | 2/3 | Candidate's “Is this understanding correct?” did not check the condition and undecided state specifically. |
+| 7. User understands but disagrees | 3/3 | 3/3 | Both treated disagreement as compatible with understanding. |
+| 8. Unsupported Sales action | 2/4 | 3/4 | Both invented a request for Sales to help arrange the first-response desk. |
+| 9. Goal from another document | 3/3 | 3/3 | Neither attributed Sales' revenue goal to Quality Assurance. |
+| 10. Analyst unavailable | 2/3 | 3/3 | Candidate directly corrected Accounting's mistaken reading and kept the analyst question open. |
+
+The candidate passed 27/32 assertions versus 26/32 for the baseline; each passed every assertion in
+5/10 cases. The extra question in candidate case 2 was a repeated request, not a request for new
+information, so that assertion is a borderline judgment. To check the two candidate regressions,
+cases 1 and 6 were each repeated twice per arm with the same prompt and fresh contexts. Across three
+runs per arm, case 1 passed 8/9 baseline versus 7/9 candidate assertions; case 6 passed 7/9 in both
+arms. Both versions sometimes omitted the Development question or asked only a generic understanding
+check. The repeated outputs do not establish a consistent benefit for the revised wording.
+
+In the first ten pairs, total elapsed time was 49.31 seconds baseline versus 58.94 seconds
+candidate, and output tokens were 1,089 versus 1,318. The complete skill text grew from 701 to 758
+whitespace-delimited words. Timing and token totals are observations from single runs, not estimates
+of general cost; reported input tokens include CLI context and cache variation. The preceding
+evaluation record does not preserve its five lower-model prompts verbatim, so this comparison used
+the preserved fixture prompts instead. Native skill discovery and Claude Code behavior were not
+rerun.
+
+**Review state: provisional.** The revised English is clearer about the intended roles and sources,
+but the paired outputs do not demonstrate a reliable behavioral improvement. The unsupported Sales
+request remains an open failure on case 8. Retain the wording as a scoped clarification, with no
+claim of improved reliability pending broader testing.
