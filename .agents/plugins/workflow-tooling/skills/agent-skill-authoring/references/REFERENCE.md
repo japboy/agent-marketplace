@@ -11,11 +11,9 @@ Use sources in this order when authoring or reviewing skills:
 4. **Product-maintained example repositories**
 5. **Research sources** for additional evaluation and iteration rationale
 
-This order matters. Product examples are useful implementation references, but they do not override
-the shared specification unless the product explicitly says so. Standard-site authoring guidance is
-recommendation, not syntax: it is authoritative for *practice* but does not add validation rules.
-Research papers can inform evaluation and iteration, but they do not define the Agent Skills file
-format.
+Use the shared specification to assess portable compliance. Use product documentation to explain
+behavior in the target product. The standard-site guides describe recommended authoring and
+evaluation practices. Research papers can provide additional evidence for those practices.
 
 ## Standard Agent Skills Sources
 
@@ -23,8 +21,9 @@ These are the baseline references for any portable skill:
 
 - [Agent Skills Specification](https://agentskills.io/specification) - authoritative shared format
   and validation rules
-- [What are Skills?](https://agentskills.io/what-are-skills) - concept overview
-- [Integrate Skills](https://agentskills.io/integrate-skills) - client-side integration guidance
+- [Agent Skills overview](https://agentskills.io/home) - concept overview
+- [How to add skills support to your agent](https://agentskills.io/client-implementation/adding-skills-support) -
+  client-side integration guidance
 - [skills-ref Library](https://github.com/agentskills/agentskills/tree/main/skills-ref) - reference
   validator and prompt-generation tooling
 - [Agent Skills spec source](https://github.com/agentskills/agentskills/blob/main/docs/specification.mdx) -
@@ -52,9 +51,10 @@ Condensed procedures derived from these pages live in
 
 ## `skills-ref` Installation and Execution
 
-The reference validator is distributed as the Python package `skills-ref`, but recent package
-metadata exposes the CLI executable as `agentskills`. Do not assume either command is installed
-globally.
+The [PyPI distribution `skills-ref` 0.1.1](https://pypi.org/project/skills-ref/0.1.1/) exposes the
+`agentskills` command. The
+[upstream source checkout](https://github.com/agentskills/agentskills/blob/main/skills-ref/pyproject.toml)
+defines a `skills-ref` command, which is also the spelling used in the specification.
 
 Standalone validation:
 
@@ -65,13 +65,15 @@ uvx --from skills-ref agentskills validate ./skill-name
 Project-pinned usage:
 
 ```bash
-uv add --dev skills-ref
+uv add --dev 'skills-ref==0.1.1'
 uv run agentskills validate ./skill-name
 ```
 
-The package requires Python 3.11 or later. Some public specification examples still show `skills-ref
-validate`; prefer the package-published `agentskills` entry point when using the current PyPI
-package.
+The package requires Python 3.11 or later. A passing validator result establishes the format checks
+the tool performs. Review description usefulness and optional field semantics separately. The
+[upstream validator](https://github.com/agentskills/agentskills/blob/main/skills-ref/src/skills_ref/validator.py#L70-L84)
+checks that a description is a non-blank string of at most 1,024 characters. Judge whether it
+actually says what the skill does and when to use it during authoring and review.
 
 ## Codex Sources
 
@@ -79,7 +81,8 @@ Use these for Codex-specific behavior:
 
 - [Build skills](https://learn.chatgpt.com/docs/build-skills) - Codex support for local skills,
   progressive disclosure, skill discovery, and `agents/openai.yaml`
-- [OpenAI skills examples](https://github.com/openai/skills) - examples linked from the Codex docs
+- [OpenAI Plugins](https://github.com/openai/plugins) - current official Codex skill and plugin
+  examples, as directed by the [original skill catalog](https://github.com/openai/skills)
 
 The former `https://developers.openai.com/codex/skills` and
 `https://developers.openai.com/codex/build-skills` URLs now issue a permanent redirect to
@@ -99,10 +102,13 @@ Key Codex-only topics:
 
 Codex skill-listing budget:
 
-- The startup skills list uses at most 2% of the model's context window, or 8,000 characters when
-  the context window is unknown
-- When many skills are installed, Codex shortens skill descriptions first
-- This makes front-loading the key use case a requirement rather than a stylistic preference
+- By default, the initial list uses up to 2% of the model's context window, or 8,000 characters when
+  the context window is unknown. Set `skills.max_context_tokens` to override the budget up to 10,000
+  tokens. See [Build skills](https://learn.chatgpt.com/docs/build-skills#progressive-disclosure) and
+  the
+  [catalog implementation](https://github.com/openai/codex/blob/rust-v0.169.1/codex-rs/ext/skills/src/render.rs#L169-L193).
+- Codex shortens descriptions first and may omit entries from a large initial list. Put the key use
+  case first. The initial-list budget governs discovery text.
 
 ## Claude Code Sources
 
@@ -117,6 +123,8 @@ Use these for Claude Code-specific behavior:
   examples
 - [Claude Code plugin-dev skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills) -
   plugin-oriented implementation examples
+- [Test plugins with evals](https://code.claude.com/docs/en/plugin-evals) - optional Claude Code
+  plugin-level evaluation with an isolated no-plugin baseline
 
 Key Claude Code-only topics:
 
@@ -128,7 +136,8 @@ Key Claude Code-only topics:
 - dynamic context injection with `` !`command` `` and ` ```! ` blocks
 - `${CLAUDE_SKILL_DIR}` for bundled file paths
 - `context: fork`, `agent`, and `background` for subagent execution
-- `allowed-tools`, `disallowed-tools`, `model`, `effort`, `hooks`, `paths`, and `shell`
+- `disallowed-tools`, `model`, `effort`, `hooks`, `paths`, and `shell`
+- Claude Code's interpretation of the experimental standard field `allowed-tools`
 
 Claude Code context accounting for skills:
 
@@ -138,9 +147,9 @@ Claude Code context accounting for skills:
   `skillListingBudgetFraction` setting or the `SLASH_COMMAND_TOOL_CHAR_BUDGET` environment variable
 - When the listing overflows, Claude Code drops descriptions starting with the least-invoked skills,
   so frequently used skills keep their full text
-- Each listing entry's combined `description` and `when_to_use` text is capped at 1,536 characters
-  regardless of budget, configurable with `skillListingMaxDescChars`
-- Low-priority skills can be set to `"name-only"` in `skillOverrides` to free listing budget
+- Each listing entry's combined `description` and `when_to_use` text defaults to a 1,536-character
+  limit, configurable with `skillListingMaxDescChars`
+- For supported non-plugin skills, `"name-only"` in `skillOverrides` frees listing budget
 - `/doctor` estimates the listing's context cost and its biggest contributors
 - After auto-compaction, Claude Code re-attaches the most recent invocation of each skill, keeping
   only the **first 5,000 tokens** of each, within a **combined 25,000-token** budget filled from the
@@ -153,10 +162,14 @@ Important note:
 - For Claude Code-only skills, the docs state that all frontmatter fields are optional and
   `description` is recommended; for portable standard skills, `name` and `description` remain
   required by the Agent Skills spec
-- Claude Code frontmatter `name` is generally a display label; the slash command normally comes from
-  the skill directory name, except for plugin-root `SKILL.md`
-- Claude Code-specific fields are not the shared Agent Skills baseline unless separately defined by
-  the Agent Skills spec
+- For personal and project skill directories, frontmatter `name` sets the command name when
+  available, and the directory name still invokes the skill. For plugins, `name` sets the last
+  segment within the plugin namespace. See
+  [command naming by location](https://code.claude.com/docs/en/skills#how-a-skill-gets-its-command-name)
+  for defaults and collision handling.
+- Claude Code accepts its own frontmatter extensions. Uploads to claude.ai and the Skills API accept
+  the six standard fields. See
+  [frontmatter compatibility](https://code.claude.com/docs/en/skills#using-skill-frontmatter-outside-claude-code).
 
 ## Research and Evaluation Sources
 
@@ -194,26 +207,40 @@ Vendor prompting guides describe how a *specific* model behaves. Treat them as f
 evidence, not as portable Agent Skills rules. Use them to explain why a shared authoring practice
 exists, and record the target model when citing one.
 
-- [Prompting Claude Opus 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5)
-- [Claude prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
-- [Prompting guidance for GPT-5.6 Sol](https://developers.openai.com/api/docs/guides/prompt-guidance-gpt-5p6.md)
+### Current Model Guides
 
-Points where these guides converge, and which therefore generalize into shared authoring practice:
+- GPT-6.2 Astra and Sol in Codex. Define how the deliverable will be reviewed and use delegation for
+  independent work within the authority of the task.
+  [Prompting GPT-6.2 in Codex](https://learn.chatgpt.com/guides/prompting-gpt-6-2-astra)
+- GPT-6.2 Astra and Sol in OpenAI API applications. State the completion criteria and identify
+  decisions that require user input. Check whether carried-over style and process instructions still
+  help after migration.
+  [Using GPT-6.2](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6.2-astra#prompting-best-practices)
+- Claude Opus 5.5 in Claude API applications. Re-evaluate effort on your workload. In unattended
+  loops, check task state when a model turn ends and use bounded continuation when work remains.
+  [Prompting Claude Opus 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5)
+- Claude Fable 5.2 in Claude API applications. Test inherited instructions when you see premature
+  stopping, approval requests for routine actions, or excessive delegation. For silent tool runs,
+  check whether the client displays the progress messages the API emits.
+  [Prompting Claude Fable 5.2](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2)
+- Claude Sonnet 5.5 and Haiku 5.5 in Claude API applications. The guides report skipped executable
+  checks at lower effort. If this occurs, specify a check that exercises the change and have the
+  agent identify any check it could not run.
+  [Sonnet 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5#verification-on-coding-tasks),
+  [Haiku 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-haiku-5-5#tell-coding-agents-to-verify-their-changes)
 
-- Instructions for behavior the model already performs reliably should be deleted, not merely
-  tolerated. Both vendors name self-verification and re-checking explicitly.
-- Prompts should state the outcome, success criteria, constraints, and stopping conditions, and
-  leave routine path selection to the model.
-- Absolute language should be reserved for genuine invariants.
-- Conservative or hedging instructions are followed literally and suppress recall, so exhaustive
-  generation and filtering belong in separate phases.
-- Output length and progress-narration cadence must be stated explicitly; they are not controlled by
-  reasoning-effort settings.
-- Positive examples of a desired style outperform prohibitions.
+The portable practice is to make the outcome, relevant constraints, verification, and completion
+conditions observable. Keep concrete checks that earn their place and remove repeated instructions
+for behavior the target already performs reliably. Evaluate changes in the intended model and
+execution environment. Settings such as effort defaults, continuation handling, and rendering
+progress blocks belong to that environment.
 
-Points that are model-specific and must not be promoted into portable guidance: context window
-sizes, thinking-disabled output artifacts, API parameters such as verbosity or programmatic tool
-calling, and any recommended effort default.
+For general Claude guidance, see
+[Claude prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices).
+The earlier
+[Opus 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5)
+and [GPT-5.6 Sol](https://developers.openai.com/api/docs/guides/prompt-guidance-gpt-5p6.md) guides
+support the dated observations in [evaluation-notes.md](evaluation-notes.md).
 
 ## Standard Baseline Summary
 
@@ -264,7 +291,7 @@ Optional standard fields:
 `description`
 
 - 1-1024 characters
-- should explain what the skill does and when to use it
+- should explain what the skill does and when to use it, as assessed during content review
 - should include specific keywords that help agents identify relevant tasks
 
 `compatibility`
@@ -274,8 +301,7 @@ Optional standard fields:
 
 `metadata`
 
-- key-value mapping
-- recommended string keys and string values
+- mapping from string keys to string values
 - use reasonably unique key names to avoid accidental conflicts
 
 `allowed-tools`
@@ -304,9 +330,9 @@ These are recommendations that work well in multiple products:
   every installed skill, not a per-skill allowance
 - Keep `SKILL.md` focused on the core workflow
 - Put the rules that must survive a long session near the top of `SKILL.md`
-- Delete instructions the agent already follows reliably, especially generic self-verification and
-  re-checking
-- State success criteria and stopping conditions
+- Remove repeated instructions for behavior the target agent already performs reliably
+- State observable success criteria, the check that exercises them, and the conditions that end or
+  block the task
 - Reserve absolute language for genuine invariants and explain the reason behind flexible rules
 - Separate exhaustive generation from filtering instead of asking for conservative output in one
   pass
@@ -366,6 +392,10 @@ This file is a Codex extension, not part of the shared Agent Skills spec.
 `allow_implicit_invocation` defaults to `true`; setting it to `false` blocks implicit matching while
 preserving explicit `$skill` invocation.
 
+Use the generator for initial metadata. For an existing file, edit the relevant fields directly to
+preserve other interface values, invocation policy, and tool dependencies. The bundled
+[generator writes the whole file](https://github.com/openai/codex/blob/rust-v0.169.1/codex-rs/skills/src/assets/samples/skill-creator/scripts/generate_openai_yaml.py#L169-L191).
+
 ## Claude Code-Specific Practices
 
 Claude Code examples and docs commonly show:
@@ -377,6 +407,15 @@ Claude Code examples and docs commonly show:
   and shell behavior
 - supporting files such as templates, examples, references, and scripts
 - dynamic context injection with shell commands before the skill content is sent to Claude
+- `allowed-tools` pre-approves matching tools for the invoking turn under
+  [Claude Code's permission rules](https://code.claude.com/docs/en/skills#pre-approve-tools-for-a-skill).
+  Use a space-separated string for the
+  [standard format](https://agentskills.io/specification#allowed-tools-field).
+- `context: fork` starts a subagent with the skill as its prompt. It runs in the background by
+  default. Use `background: false` when the result is needed in the same turn or the task requires a
+  tool unavailable in the background. See the
+  [fork documentation](https://code.claude.com/docs/en/skills#run-skills-in-a-subagent) for
+  exceptions, including non-interactive runs.
 
 Treat these as Claude Code implementation practices when relevant. Do not copy them into a portable
 skill without labeling them as Claude Code-specific.
@@ -445,10 +484,9 @@ Use these files as follows:
 - `references/decision-records.md`: durable maintenance decisions that explain why the skill is
   shaped a certain way, but are not task-time instructions
 
-The `agent-skill-authoring` skill demonstrates the `references/` maintenance record subset. It does
-not currently include `evals/evals.json`, so do not cite it as a complete evaluation-layout
-reference implementation. Its `CHANGELOG.md` is kept as an index, not as the place for detailed
-evidence or decision rationale.
+This skill includes three test cases in [evals/evals.json](../evals/evals.json). Use
+[evaluation-notes.md](evaluation-notes.md) to see which comparisons were run and what they
+establish. [CHANGELOG.md](CHANGELOG.md) indexes the maintenance records.
 
 Ordinarily promote a note from `references/` into `SKILL.md` only when it has become a validated,
 reusable procedure, tool policy, applicability condition, output constraint, or failure-avoidance
@@ -469,12 +507,15 @@ For skill updates or audits only, see:
 - [rejected-edits.md](references/rejected-edits.md)
 ```
 
-## Repository-Specific Codex Helpers
+## Bundled Codex Helpers
 
-This repository declares the user-facing Codex helper path as:
+Invoke [`$skill-creator`](https://learn.chatgpt.com/docs/build-skills#create-a-skill) to use the
+built-in workflow. When invoking a helper directly, the
+[Codex CLI implementation](https://github.com/openai/codex/blob/rust-v0.169.1/codex-rs/skills/src/lib.rs#L58-L85)
+places the bundled skill under:
 
 ```text
-~/.agents/skills/.system/skill-creator/
+${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/
 ```
 
 When these paths resolve to regular readable files, useful files are:
@@ -484,8 +525,7 @@ When these paths resolve to regular readable files, useful files are:
 - `scripts/quick_validate.py`
 - `references/openai_yaml.md`
 
-These are repository-specific helpers. They are not the Agent Skills standard, and missing,
-recursive, or broken symlinks must not block portable authoring.
+Use the portable creation and validation workflow when these bundled files are unavailable.
 
 ## Common Mistakes
 

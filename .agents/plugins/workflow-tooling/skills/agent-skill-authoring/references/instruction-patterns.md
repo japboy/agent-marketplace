@@ -1,11 +1,8 @@
 # Instruction Patterns
 
-Reusable techniques for structuring skill content. These are standard-site authoring
-recommendations, not specification requirements. Use the ones that fit the task; a skill does not
-need all of them.
-
-Primary source:
-[Best practices for skill creators](https://agentskills.io/skill-creation/best-practices).
+Choose the patterns that help the skill deliver an observable result. The
+[Agent Skills authoring guide](https://agentskills.io/skill-creation/best-practices) explains how to
+calibrate control and write reusable instructions.
 
 ## Calibrating Control
 
@@ -67,14 +64,14 @@ Progress:
 
 ## Validation Loops
 
-Instruct the agent to validate its own work before moving on: do the work, run a validator (script,
-reference checklist, or self-check), fix issues, repeat until validation passes.
+Name the artifact or state that must be checked, the relevant test, validator, or source of truth,
+and what counts as a pass. Correct actionable failures within the authorized scope and rerun the
+relevant check. Include checks that exercise the requested result. For example, compare preserved
+issue links with the release notes when rewriting a changelog.
 
-Distinguish this from redundant self-verification. A validation loop is worth encoding when it has
-an external verifier the agent would not otherwise run. A generic "double-check your answer" or
-"verify with a subagent" instruction is not; current models already self-verify, and such
-instructions add cost without improving results. See the instruction-calibration guidance in
-`SKILL.md`.
+Complete the task when the requested deliverable or state and its required checks are satisfied. If
+a required check cannot run, report the missing evidence and the blocker. Continue independent,
+authorized work while a user decision or required permission is pending.
 
 ## Plan-Validate-Execute
 

@@ -13,7 +13,8 @@ whether the output is better when it does. A skill that triggers is not a skill 
 
 ## Trigger Evaluation
 
-Tests the `description` field, which carries the entire burden of activation.
+Tests how well the `description` helps the target client select the skill implicitly. Check explicit
+invocation and discovery settings separately when those are part of the change.
 
 ### Query set
 
@@ -102,11 +103,19 @@ usually not knowable in advance.
 
 ### Baseline comparison
 
-Run each case twice: once **with the skill** and once **without it**. When improving an existing
-skill, snapshot the previous version and use that as the baseline instead.
+Run each case **with the skill** and **without it** to measure the skill's contribution. For an
+update, compare snapshots of the **candidate** and **previous version**, including any referenced
+files. Record the versions and use the same model, effort, client, permissions, evaluator, case
+inputs, and assertions for both.
 
 Every run must start with a clean context. Leftover context from authoring the skill masks gaps in
-the written instructions. Use a subagent or a separate session per run.
+the written instructions. Use a fresh session and workspace per run. Verify that discovery or
+explicit loading reaches only the intended skill snapshot. Record the activation method.
+
+When migrating a model or client, first evaluate the unchanged skill in the new environment. Then
+use that result as the baseline for the candidate in the same environment. Re-measure any effort
+changes on representative cases and record the exact model, client, effort, and settings that
+affected behavior.
 
 Workspace layout, one directory per iteration:
 
@@ -134,6 +143,11 @@ in human review than decomposed into pass/fail checks.
 Grading records PASS/FAIL with evidence that quotes or references the actual output. Require
 concrete evidence for a PASS; a section titled "Summary" containing one vague sentence is a FAIL.
 Use scripts rather than LLM judgment for mechanical checks.
+
+Score the same assertions in both arms. If a case's expectations conflict with the applicable
+specification, record the discrepancy and score any supplemental check separately for both arms. Use
+observable task completion as evidence. For example, inspect the delivered artifact and confirm that
+the intended validation actually ran when the task requires it.
 
 ### Cost and benefit
 
@@ -196,3 +210,9 @@ writes `grading.json`, aggregates `benchmark.json` for with-skill versus without
 A/B version comparison, and tunes descriptions against generated should-trigger and
 should-not-trigger prompts. Treat the plugin as product tooling; the workflow above is the portable
 procedure.
+
+Claude Code v2.1.269 and later also provides
+[`claude plugin eval`](https://code.claude.com/docs/en/plugin-evals) for plugin-level comparisons
+against a no-plugin baseline. It uses its own per-case directory format with `case.yaml` or
+`prompt.md` and graders. Choose it when the complete plugin is the subject of the evaluation. Keep a
+fixed previous-versus-candidate comparison when testing a revision of one skill.

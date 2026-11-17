@@ -1,29 +1,28 @@
 # Skill Validation Checklist
 
-Use this checklist in layers. Do not confuse shared specification rules, recommended authoring
-practice, product-specific conventions, and update-review practices.
+Use the standard checks for portable format, then apply the relevant quality, product, and
+update-review checks.
 
 ## Layer 1: Agent Skills Standard
 
-These checks apply to any portable Agent Skill.
+These checks follow the [Agent Skills specification](https://agentskills.io/specification).
+Progressive disclosure targets are authoring guidance.
 
 ### Structure
 
 - [ ] Skill directory exists
 - [ ] `SKILL.md` exists in the skill root
-- [ ] Optional directories are used intentionally
-- [ ] Extra files or directories, if present, are justified by the skill
 
 ### Frontmatter
 
-- [ ] YAML frontmatter exists at the top of `SKILL.md`
+- [ ] YAML frontmatter appears at the top of `SKILL.md`, followed by Markdown instructions
 - [ ] `name` exists
 - [ ] `description` exists
 
 ### `name`
 
 - [ ] 1-64 characters
-- [ ] lowercase letters, digits, and hyphens only
+- [ ] lowercase Unicode alphanumeric characters and hyphens only
 - [ ] does not start with a hyphen
 - [ ] does not end with a hyphen
 - [ ] does not contain consecutive hyphens
@@ -31,23 +30,20 @@ These checks apply to any portable Agent Skill.
 
 ### `description`
 
-- [ ] 1-1024 characters
-- [ ] explains what the skill does
-- [ ] explains when the skill should be used
-- [ ] includes concrete keywords or task language for discovery
+- [ ] nonempty string of 1-1024 characters
 
 ### Optional Standard Fields
 
 - [ ] `license`, if present, is appropriate
-- [ ] `compatibility`, if present, is 1-500 characters and describes real environment requirements
-- [ ] `metadata`, if present, is an intentional key-value mapping
-- [ ] `allowed-tools`, if present, is intentional, space-separated, and supported by the target
-      client
+- [ ] `compatibility`, if present, is a string of 1-500 characters
+- [ ] `metadata`, if present, maps string keys to string values
+- [ ] `allowed-tools`, if present in a portable skill, is a space-separated string. The field is
+      experimental, so verify support and behavior in each target client.
 
 ### Progressive Disclosure
 
 - [ ] `SKILL.md` is focused on activation-time instructions
-- [ ] main instructions are materially below the 5,000-token guidance when practical
+- [ ] main instructions follow the recommendation of fewer than 5,000 tokens when practical
 - [ ] `SKILL.md` is under 500 lines unless the extra length is justified
 - [ ] rules that must hold for the whole task appear near the top of `SKILL.md`
 - [ ] each supporting file reference states *when* to load it, not just that it exists
@@ -64,9 +60,8 @@ These are strong recommendations, not standard syntax rules.
 
 ### Trigger Quality
 
-- [ ] `description` is concrete rather than vague
-- [ ] `description` front-loads the key use case and trigger words
-- [ ] `description` uses task language the client can match
+- [ ] `description` explains what the skill does and when to use it in concrete task language
+- [ ] `description` puts the key use case and trigger words first
 - [ ] scope boundaries are clear enough to avoid over-triggering
 - [ ] realistic should-trigger and should-not-trigger prompts have been checked
 - [ ] negative prompts include near-misses, not only unrelated requests
@@ -86,7 +81,7 @@ These are strong recommendations, not standard syntax rules.
 
 - [ ] every referenced file exists
 - [ ] supporting files are linked clearly from `SKILL.md`
-- [ ] resource directories are actually used by the workflow
+- [ ] bundled files and directories serve a purpose in the workflow
 - [ ] no large duplicated content appears in both `SKILL.md` and `references/`
 
 ### Supporting Script Safety
@@ -111,13 +106,12 @@ These are strong recommendations, not standard syntax rules.
 
 ### Instruction Calibration
 
-- [ ] every instruction would change behavior if followed; none restate what the agent already does
-      reliably
-- [ ] no generic self-verification, re-check, or double-check instructions
-- [ ] no repeated rules, no style instructions that change nothing, and no examples that change
-      nothing
+- [ ] each rule and example supports behavior needed in the target environment
 - [ ] prescriptive detail is reserved for fragile operations and mandatory sequences
-- [ ] success criteria and stopping conditions are stated
+- [ ] success criteria describe the expected artifact or state and how to observe it
+- [ ] validation names the relevant test, command, or source comparison and the evidence to report
+- [ ] completion requires the requested work and checks. If a required action cannot proceed under
+      existing authorization, the report identifies the remaining work and the specific blocker.
 - [ ] absolute language is reserved for genuine invariants
 - [ ] exhaustive generation and filtering are separate phases, rather than a single instruction to
       be conservative
@@ -133,7 +127,7 @@ Important note:
 
 ## Layer 3: Codex-Specific Checks
 
-Run this layer only when the skill targets Codex.
+Run this layer when the skill targets [Codex](https://learn.chatgpt.com/docs/build-skills).
 
 ### Discovery and Scope
 
@@ -142,8 +136,10 @@ Run this layer only when the skill targets Codex.
 - [ ] duplicate skill names are understood; Codex does not merge them
 - [ ] symlinked skill folders, if used, point to the intended target
 - [ ] `[[skills.config]]` disables only the intended skill when used
-- [ ] the description still carries its key use case after Codex shortens the listing to 2% of the
-      context window, or 8,000 characters when unknown
+- [ ] the description puts the key use case first so it survives truncation. The initial list
+      defaults to 2% of the context window or 8,000 characters when unknown.
+      `skills.max_context_tokens` configures a budget up to 10,000 tokens, and large catalogs can
+      omit entries.
 
 ### `agents/openai.yaml`
 
@@ -157,6 +153,8 @@ Run this layer only when the skill targets Codex.
 - [ ] `policy.allow_implicit_invocation`, if present, matches the intended trigger behavior; omitted
       means Codex default behavior applies
 - [ ] `dependencies.tools`, if present, reflects actual tool dependencies
+- [ ] updates to an existing file preserve unrelated fields, including `policy` and `dependencies`.
+      The bundled generator writes the entire file.
 
 ### Separation of Concerns
 
@@ -166,7 +164,7 @@ Run this layer only when the skill targets Codex.
 
 ## Layer 4: Claude Code-Specific Checks
 
-Run this layer only when the skill targets Claude Code.
+Run this layer when the skill targets [Claude Code](https://code.claude.com/docs/en/skills).
 
 ### Portable Skill vs Claude Code Skill
 
@@ -174,8 +172,8 @@ Run this layer only when the skill targets Claude Code.
 - [ ] portable skills keep standard `name` and `description`
 - [ ] Claude Code-only skills document when they intentionally rely on Claude Code's optional
       frontmatter behavior
-- [ ] slash command naming follows the skill location rules, not an incorrect assumption that
-      frontmatter `name` always controls invocation
+- [ ] the intended slash command works for the skill location. `name` sets the command for personal
+      and project skills and the final segment of namespaced plugin commands when specified.
 
 ### Discovery and Distribution
 
@@ -187,24 +185,24 @@ Run this layer only when the skill targets Claude Code.
 ### Claude Code Frontmatter
 
 - [ ] `description` contains the key use case first
-- [ ] `when_to_use`, if present, adds trigger guidance without bloating the combined listing text
-      beyond the 1,536-character cap
+- [ ] `when_to_use`, if present, adds trigger guidance within the combined listing limit. The
+      default is 1,536 characters and `skillListingMaxDescChars` can change it.
 - [ ] the skill still works when only its first 5,000 tokens survive auto-compaction re-attachment
 - [ ] `argument-hint` and `arguments`, if present, match actual placeholders
 - [ ] `disable-model-invocation` is used for workflows the model should not trigger automatically
-- [ ] `user-invocable: false` is used only for background skills that should be hidden from the
-      slash menu
-- [ ] `allowed-tools` grants only the intended pre-approved tools
-- [ ] `disallowed-tools` removes tools intentionally and temporarily
-- [ ] `model` and `effort` overrides are intentional, measured, and scoped to the active skill turn,
-      not defaults carried over from another skill or model
+- [ ] `user-invocable: false` is used when the skill is intended for model invocation only
+- [ ] `allowed-tools` pre-approves only intended tools for the invoking turn in Claude Code
+- [ ] `disallowed-tools` removes intended tools until the next user message
+- [ ] `model` and `effort` overrides are measured on the target model and apply to the invoking turn
+      for inline skills or to the subagent for `context: fork`
 - [ ] before any raised `effort`, the body was checked for a missing success criterion, dependency
       rule, tool-selection rule, or verification loop
-- [ ] `context: fork` is used only when the skill contains an actionable task
-- [ ] skills that delegate state which work warrants a subagent and cap the number, and do not use
-      subagents to double-check their own work
+- [ ] `context: fork` receives an actionable task with enough context to run independently
+- [ ] `background: false` is set when an interactive fork needs same-turn results or tools
+      unavailable in the default background mode. Check the behavior in the target run mode.
+- [ ] skills that delegate specify which work warrants a subagent and bound the number
 - [ ] `agent`, if present, names the intended built-in or custom subagent
-- [ ] `hooks`, if present, are scoped to the skill lifecycle intentionally
+- [ ] `hooks`, if present, are suitable for remaining registered after the invoking turn
 - [ ] `paths`, if present, limit automatic activation to the intended globs
 - [ ] `shell`, if present, matches the intended dynamic command environment
 
