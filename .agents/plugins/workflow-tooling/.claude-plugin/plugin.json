@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "workflow-tooling",
   "displayName": "Workflow Tooling",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Provides repository-shared memory, Agent Skill authoring, and conversation handoff workflows.",
   "author": {
     "name": "Yu Inao",
