@@ -1,269 +1,143 @@
 # Reference
 
-This document defines evidence requirements and interpretation notes for frontend test-value reviews
-centered on the Testing Trophy.
+Use this reference for terminology, placement examples, and evidence. The [skill](../SKILL.md)
+contains the review workflow.
 
-## Core Position
+## Test Terminology Map
 
-The Testing Trophy is the primary decision model for this skill.
+Use the [test terminology map](../assets/test-term-map.svg) to agree on what test labels mean in the
+review. Read across from a concrete test example. Aligned bands show plausible uses, and hatching
+marks where a different setup or source can change the classification. Follow the skill and rubric
+for recommendations.
 
-Interpret it as a guide to confidence-per-cost:
+- **Scope** describes what the assertions validate. State which parts are under test, which
+  dependencies are real or substituted, and where an end-to-end path starts and ends.
+- **Size** depends on the resources the test is allowed to use. Apply the project's policy. Under
+  Google's model, a browser and a real API can run in a Medium configuration if all network calls
+  stay on `localhost`.
+- **Names and techniques** may describe what a test checks, how it is designed, or its scope.
+  ISO/IEC/IEEE 29119-1:2022 §3.130 lists *functional testing* as an example of a test type and
+  explains that a type can apply at one or several test levels. The ISTQB Foundation Level syllabus
+  describes functional testing as evaluating the functions a component or system should perform.
+  Google's book lists *functional test* as one label for wide-scope tests. For a *scenario test*,
+  state the starting conditions, actions, expected outcome, and scope.
+- **Pyramid and Trophy** describe suite-level emphasis. The pyramid percentages in the figure are
+  Google's example by test case count. The Trophy illustrates where Dodds suggests focusing effort.
+  Review the resulting mix for gaps and duplication after choosing coverage for individual
+  behaviors.
 
-- Static checks provide the cheapest and broadest defect prevention.
-- End-to-end tests are necessary when realistic browser, device, workflow, or backend behavior
-  matters; evaluate this dependency before choosing the default dynamic layer.
-- Integration tests are the default dynamic layer for frontend behavior after those end-to-end
-  dependencies are ruled out.
-- Unit tests are the narrowest and least-preferred dynamic layer, reserved for pure local logic and
-  hard-to-reach edge logic.
+### Sources for the Map
 
-For this skill, layer selection comes before in-layer quality scoring.
-
-Storybook stories and portable stories do not add a new layer to the Testing Trophy. They are a way
-to define canonical component scenarios and, when component tests are justified, to reuse those
-scenarios without duplicating setup.
-
-## Primary Source Understanding
-
-Kent C. Dodds describes the Testing Trophy as a return-on-investment guide for testing JavaScript
-applications, not a neutral taxonomy. He further explains:
-
-- end-to-end tests are where you validate behavior with as little mocking as practical
-- unit tests are tests of single logic-containing units with collaborators absent or mocked
-- integration tests are tests of multiple units integrating with one another
-
-Source:
-
-- https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications
-
-## Frontend Interpretation Rules
-
-### 1. Static First
-
-If the risk can be prevented via typing, linting, schema validation, generated contracts, or
-comparable static guarantees, prefer `STATIC`.
-
-### 2. Mostly Integration
-
-For most frontend behavior, prefer `INTEGRATION`. This includes:
-
-- UI rendering with user-visible assertions
-- router and state propagation
-- accessibility semantics that can be observed from the DOM and interactions
-- contract mapping from boundary data into UI state
-
-### 3. Selective End-to-End
-
-Prefer `E2E` when the risk materially depends on:
-
-- real browser engines
-- real navigation and persistence
-- multi-screen flows
-- backend round trips
-- auth and session behavior
-- device-specific or timing-sensitive behavior
-
-### 4. Minimal Unit
-
-Prefer `UNIT` only when the logic is:
-
-- pure
-- local
-- not well prevented statically
-- not more clearly verified through integrated behavior
-
-### 5. Hooks and Components Are Forms, Not Primary Strategies
-
-Direct hook tests and isolated component tests are not top-level strategic destinations. They should
-be classified according to what they actually validate:
-
-- pure local logic -> `UNIT`
-- multiple frontend units through user-visible DOM behavior -> `INTEGRATION`
-- mere plumbing or implementation detail -> usually low ROI
-
-### 6. Story-Driven Component Tests Are Exception Patterns
-
-When a component test is justified, Storybook may be the best place to define the canonical public
-scenarios for that component.
-
-- Treat a story as a public use case or meaningful visible state, not as an exhaustive matrix of
-  internal implementation states.
-- Prefer one concept or use case per story, with enough description to explain why the scenario
-  matters.
-- Prefer reusing stories in tests through `composeStories` or `composeStory` and applying
-  `.storybook/preview` annotations through `setProjectAnnotations`.
-- Reusing stories improves synchronization and maintainability, but does not change Trophy routing
-  by itself.
-- If a component test hand-recreates props, decorators, or providers that an equivalent story
-  already defines, treat that duplication as lower quality unless the test requires a materially
-  different runtime.
-
-### 7. Derived Storybook Component-Spec Policy
-
-This skill derives the following policy from Storybook portable stories, Storybook story best
-practices, Testing Library's user-centric model, and Testing Trophy routing:
-
-- When Playwright-level browser or workflow realism is not required, but component behavior still
-  needs executable coverage, prefer a paired story/spec pattern.
-- The story declares the public use case or meaningful visible state.
-- The spec imports and composes the story, then verifies behavior through user-level interactions
-  and observable outcomes.
-- This file-pair convention is not a Storybook framework requirement. It is a deterministic skill
-  policy for avoiding duplicated fixtures while keeping stories declarative and tests
-  behavior-focused.
-
-## Secondary Quality Checks
-
-After choosing the best Trophy layer, evaluate quality with these secondary checks:
-
-- user-visible outcome
-- accessibility semantics
-- runtime realism
-- boundary confidence
-- visual signal
-- refactor resilience
-- implementation coupling
-- flake risk
-- fidelity of collaborators
-
-These checks refine `KEEP` versus `REWRITE`, but they do not replace the Trophy routing decision.
-
-## Supporting Sources
-
-### User-Centric Testing
-
-- Testing Library introduction:
-  - https://testing-library.com/docs/dom-testing-library/intro/
-- Testing Library query priority:
-  - https://testing-library.com/docs/queries/about/#priority
-
-### Frontend Layer Selection
-
-- Cypress testing types:
-  - https://docs.cypress.io/app/core-concepts/testing-types
-- Playwright browsers and projects:
-  - https://playwright.dev/docs/browsers
-- Playwright locators:
-  - https://playwright.dev/docs/locators
-
-### Storybook Stories and Portable Stories
-
-- Storybook AI best practices:
-  - https://storybook.js.org/docs/ai/best-practices
-- Storybook writing stories:
-  - https://storybook.js.org/docs/writing-stories
-- Storybook writing tests:
-  - https://storybook.js.org/docs/writing-tests
-- Storybook stories in unit tests:
-  - https://storybook.js.org/docs/writing-tests/integrations/stories-in-unit-tests
-- Storybook portable stories in Vitest:
-  - https://storybook.js.org/docs/api/portable-stories/portable-stories-vitest
-- Storybook React portable stories source:
-  - https://github.com/storybookjs/storybook/blob/370524faae96a30d27e36efcaa2fc39cd65fab29/code/renderers/react/src/portable-stories.tsx#L46-L159
-- Storybook core portable stories source:
-  - https://github.com/storybookjs/storybook/blob/370524faae96a30d27e36efcaa2fc39cd65fab29/code/core/src/preview-api/modules/store/csf/portable-stories.ts#L73-L233
-
-### Accessibility Semantics
-
-- W3C Accessible Name and Description Computation:
-  - https://www.w3.org/TR/accname-1.1/
-
-### Boundary Contracts
-
-- Martin Fowler consumer-driven contracts:
-  - https://martinfowler.com/articles/consumerDrivenContracts.html
-- Pact docs:
-  - https://docs.pact.io/
-
-### Visual Regression
-
-- Playwright screenshot assertions:
-  - https://playwright.dev/docs/test-snapshots
-
-### Test Fidelity and Mock Overuse
-
-- Google Testing Blog:
-  - https://testing.googleblog.com/2024/02/increase-test-fidelity-by-avoiding-mocks.html
-
-### Mutation Testing
-
-- StrykerJS docs:
-  - https://stryker-mutator.io/docs/stryker-js/introduction/
-
-### Flaky Tests
-
-- Martin Fowler:
-  - https://martinfowler.com/articles/nonDeterminism.html
+- [Software Engineering at Google, Chapter 11](https://abseil.io/resources/swe-book/html/ch11.html)
+- [The Testing Trophy and Testing Classifications](https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications)
+  and
+  [Static vs Unit vs Integration vs E2E Testing](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests)
+- [ISO/IEC/IEEE 29119-1:2022 §3.130, Test type](https://www.iso.org/obp/ui/#iso:std:iso-iec-ieee:29119:-1:ed-2:v1:en:term:3.130)
+  and
+  [ISTQB Foundation Level Syllabus v4.0.1, §2.2.2](https://istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf#page=29)
+- [An Introduction to Scenario Testing](https://kaner.com/pdfs/ScenarioIntroVer4.pdf)
+- [Playwright component testing](https://playwright.dev/docs/test-components),
+  [API mocking](https://playwright.dev/docs/mock), and
+  [mock response implementation](https://github.com/microsoft/playwright/blob/ce480a952553175eae75342aad2c5e86cdf2cbba/packages/playwright-core/src/client/network.ts#L350-L374)
+- [Vitest Browser Mode](https://vitest.dev/guide/browser/),
+  [Storybook interaction tests](https://storybook.js.org/docs/writing-tests/interaction-testing),
+  and [Testing Library](https://testing-library.com/docs/dom-testing-library/intro/)
+- [Go command documentation](https://pkg.go.dev/cmd/go),
+  [gomock](https://pkg.go.dev/go.uber.org/mock/gomock), and
+  [Testcontainers for Go](https://golang.testcontainers.org/modules/postgres/)
+- [cargo test](https://doc.rust-lang.org/cargo/commands/cargo-test.html)
+  ([source](https://github.com/rust-lang/cargo/blob/9ae79c984e55ee94ed9642ea101abd3f16f82916/src/bin/cargo/commands/test.rs#L4-L12)),
+  [Clippy](https://doc.rust-lang.org/clippy/usage.html)
+  ([source](https://github.com/rust-lang/rust-clippy/blob/ddecc8599b65b25351726777db63c727903c9ba8/src/main.rs#L179-L187)),
+  [Mockall](https://docs.rs/mockall/latest/mockall/)
+  ([source](https://github.com/asomers/mockall/blob/a47295fb08a178e1f5c570c38c8b40cd663a2750/mockall_derive/src/lib.rs#L1376-L1392)),
+  and [Testcontainers for Rust](https://rust.testcontainers.org/quickstart/community_modules/)
 
 ## Evidence Protocol
 
-Attach explicit evidence for every claim.
+| Claim | Evidence to cite |
+| - | - |
+| Protected behavior | Actor, public operation or input, expected observable result, and concrete regression. Cite the production symbol or contract and the test assertion. |
+| Test placement | Current and proposed scope, runtime, and collaborators. Explain how the setup exposes the failure and how the assertion detects it. Cite test or runner configuration and the real or substituted dependency. Include size when the applicable resource policy and configuration establish it. |
+| Accessibility | Expected role, name, focus, keyboard response, or live-region update. Cite the locator or assertion and the runtime or assistive technology needed to observe it. |
+| Visual behavior | Expected visual outcome, relevant viewport or environment, and the screenshot, comparison baseline, or diff. |
+| Boundary contract | Source of the request, response, event, callback, storage, or API contract and the assertion that observes its effect. |
+| Stability or mutation | Failing run, retry history, or nondeterministic dependency. For mutation evidence, cite the report and explain which survival exposes a missed regression. |
+| Framework behavior | Official documentation and a code permalink pinned to the implementation's repository path, commit, and line range. |
+| Story reuse | Story file and export, scenario setup, project annotations, and the test's behavior assertion, whether in a spec or the story's `play` function. |
 
-Repository home pages are not valid source evidence. When citing framework implementation behavior,
-resolve the exact source file permalink with commit and line numbers for the API or behavior under
-review.
+## Test Placement Examples
 
-1. Trophy routing claim:
+- A type checker can reject an invalid call to a typed public API. For an external response that can
+  carry an invalid value, the check needs to exercise the runtime boundary that receives it and
+  assert the observable rejection or fallback.
+- A component's documented callback payload is part of its caller-facing contract. A focused unit
+  test can invoke the public interaction and assert the payload received by the caller. Calls to a
+  private helper are implementation evidence.
+- A DOM test that checks a live region's role and changed text provides evidence of the exposed
+  semantics. Evidence of actual speech comes from the relevant browser and assistive technology.
+  [MDN ARIA live regions](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions)
+- A real browser can host an integration test that stubs API traffic and verifies UI behavior across
+  components. An end-to-end test for a login redirect that loses a cart exercises the real
+  authentication and persistence dependencies that can lose it and checks the cart on return.
+- A screenshot or layout assertion can protect a verified visual risk, such as a clipped control at
+  a given viewport. Its scope depends on the UI under test and its runtime depends on what can
+  reproduce that layout.
 
-- current layer
-- recommended layer
-- concrete risk that justifies the move
+## Storybook Evidence
 
-2. Framework claim:
+A story can provide a canonical use case or visible state through its args, decorators, globals, or
+loaders. Record the starting state and collaborators that the story supplies and the observable
+behavior the test checks. For a proposed story, describe the public scenario it would make
+reproducible in Storybook and in the test.
 
-- official documentation URL
-- framework source code permalink with commit and lines
+For portable stories, look for reuse through `composeStory` or `composeStories` with the applicable
+project annotations, such as those applied via `setProjectAnnotations`. Check that the test executes
+the setup or `play` steps its assertion depends on. When a spec recreates the same props,
+decorators, or providers, cite the duplicated setup. If the test needs a separate setup, cite the
+runtime condition or collaborator that matters to the regression. For example, a story with an
+in-memory navigation provider may capture a component state while a regression in native browser
+history requires the application's actual router shell.
 
-3. Product behavior claim:
+A paired story and spec can keep scenario setup synchronized. A story's `play` function can itself
+supply behavior evidence when it runs under test and asserts the expected result. The assertions and
+the collaborators they exercise establish the test's scope.
 
-- production file path and symbol
-- test file path and assertion lines
-- story file path and export name when the test reuses Storybook state
+## Supporting Sources
 
-4. Accessibility claim:
+### Observable Behavior
 
-- role, name, focus, or keyboard expectation
-- locator or assertion location
+- [Software Engineering at Google, Chapter 12, Test via Public APIs](https://abseil.io/resources/swe-book/html/ch12.html#test-via-public-apis)
+- [Testing Library introduction](https://testing-library.com/docs/dom-testing-library/intro/)
+- [Testing Library query priority](https://testing-library.com/docs/queries/about/#priority)
 
-5. Runtime claim:
+### Scope, Runtime, and Fidelity
 
-- browser, device, or runtime used
-- evidence that the failure mode is or is not exposed there
+- [Cypress testing types](https://docs.cypress.io/app/core-concepts/testing-types)
+- [Playwright browsers and projects](https://playwright.dev/docs/browsers)
+- [Playwright locators](https://playwright.dev/docs/locators)
+- [Software Engineering at Google, Chapter 13, Test Doubles](https://abseil.io/resources/swe-book/html/ch13.html)
+- [Google Testing Blog, Increase Test Fidelity by Avoiding Mocks](https://testing.googleblog.com/2024/02/increase-test-fidelity-by-avoiding-mocks.html)
 
-6. Visual claim:
+### Storybook Stories and Portable Stories
 
-- screenshot assertion or baseline location
-- diff artifact or approval rule
+- [Storybook AI best practices](https://storybook.js.org/docs/ai/best-practices)
+- [Storybook writing stories](https://storybook.js.org/docs/writing-stories)
+- [Storybook writing tests](https://storybook.js.org/docs/writing-tests)
+- [Storybook stories in unit tests](https://storybook.js.org/docs/writing-tests/integrations/stories-in-unit-tests)
+- [Storybook portable stories in Jest](https://storybook.js.org/docs/api/portable-stories/portable-stories-jest)
+- [Storybook portable stories in Vitest](https://storybook.js.org/docs/api/portable-stories/portable-stories-vitest)
+- [Storybook React portable stories source](https://github.com/storybookjs/storybook/blob/370524faae96a30d27e36efcaa2fc39cd65fab29/code/renderers/react/src/portable-stories.tsx#L46-L159)
+- [Storybook core portable stories source](https://github.com/storybookjs/storybook/blob/370524faae96a30d27e36efcaa2fc39cd65fab29/code/core/src/preview-api/modules/store/csf/portable-stories.ts#L73-L233)
 
-7. Contract claim:
+### Other Evidence
 
-- contract definition artifact
-- boundary assertion location
-
-8. Mutation and stability claim:
-
-- optional mutation report excerpt
-- flaky evidence
-
-9. Storybook reuse claim:
-
-- evidence that `composeStories` or `composeStory` is used
-- evidence that `setProjectAnnotations` or equivalent project-level annotation setup is applied when
-  required
-- evidence that the story represents a public use case rather than internal state enumeration
-- evidence that the paired spec, when present, verifies behavior against the composed story rather
-  than recreating equivalent setup by hand
-
-## Recommended Higher-Value Scenario Shapes
-
-1. Static rule or schema validation prevents the defect before runtime.
-2. Integrated frontend behavior exercises rendered output, state propagation, and boundary mapping
-   through user interactions.
-3. Browser-level flow validates navigation, persistence, timing, and backend response in a real
-   engine.
-4. Accessible interaction validates role, name, focus, and keyboard semantics.
-5. Visual regression validates layout, theming, overflow, or responsive behavior through a visual
-   oracle.
-6. Story-driven component behavior spec reuses a canonical story scenario to verify
-   component-specific behavior that is not better protected by static checks, Playwright-level
-   integration, or end-to-end coverage.
+- Accessibility semantics.
+  [W3C Accessible Name and Description Computation](https://www.w3.org/TR/accname-1.1/)
+- Boundary contracts.
+  [Martin Fowler, Consumer-Driven Contracts](https://martinfowler.com/articles/consumerDrivenContracts.html)
+  and [Pact docs](https://docs.pact.io/)
+- Visual regression. [Playwright screenshot assertions](https://playwright.dev/docs/test-snapshots)
+- Mutation testing. [StrykerJS docs](https://stryker-mutator.io/docs/stryker-js/introduction/)
+- Flaky tests.
+  [Martin Fowler, Eradicating Non-Determinism in Tests](https://martinfowler.com/articles/nonDeterminism.html)
