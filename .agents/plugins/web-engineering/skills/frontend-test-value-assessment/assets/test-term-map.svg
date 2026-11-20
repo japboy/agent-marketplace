@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 54 1944 778" width="1944" height="778" xml:lang="en" role="img" aria-labelledby="title description" font-family="Arial, Helvetica, sans-serif">
+  <title id="title">Test terminology map</title>
+  <desc id="description">Seven example tests aligned with tools, test sizes, the test pyramid, the Testing Trophy, and uses of common terms. Hatched bands mark examples whose classification varies by setup or source.</desc>
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .canvas { fill: #0f172a; }
+      .ink { fill: #f1f5f9; }
+      .muted-ink { fill: #cbd5e1; }
+      .note-number { fill: #ffe0bc; }
+      .term-qualifier { fill: #ffebd3; }
+
+      .row-guide, .column-guide { stroke: #61748f; }
+      .axis-line { stroke: #a4b8d2; }
+      .arrowhead { fill: #a4b8d2; }
+      .hatch-line { stroke: #c4d2ea; }
+      .hatch-key { stroke: #8295b0; }
+
+      .example-card { fill: #1c293c; stroke: #647896; }
+      .tool-band { fill: #223147; stroke: #8295b0; }
+      .tool-divider { stroke: #8295b0; }
+      .runner-band { fill: #17354f; stroke: #6fb2de; }
+      .runner-divider { stroke: #6fb2de; }
+      .runner-ink { fill: #c3e8ff; }
+
+      .size-band { stroke: #76a6ea; }
+      .size-large { fill: #214475; }
+      .size-medium { fill: #1e3a63; }
+      .size-small { fill: #1b3051; }
+      .size-ink { fill: #e0edff; }
+
+      .pyramid-tier { stroke: #65c9a6; }
+      .pyramid-e2e { fill: #195347; }
+      .pyramid-integration { fill: #174639; }
+      .pyramid-unit { fill: #153b31; }
+      .pyramid-ink { fill: #d1fae5; }
+
+      .trophy-tier { stroke: #e0ac55; }
+      .trophy-e2e { fill: #684915; }
+      .trophy-integration { fill: #523916; }
+      .trophy-base { fill: #3d2c19; }
+      .trophy-ink { fill: #fff0c8; }
+
+      .manual-band { fill: #4a2441; stroke: #dc91bc; }
+      .automated-band { fill: #372951; stroke: #b29ae7; }
+      .static-band { fill: #253146; stroke: #8295b0; }
+      .scenario-band { fill: #292b4d; stroke: #a4a1ef; }
+      .functional-band { fill: #4c2e21; stroke: #e1a171; }
+      .visual-band { fill: #174549; stroke: #6acbbf; }
+    }
+  </style>
+  <defs>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line class="hatch-line" x1="0" y1="0" x2="0" y2="8" stroke="#475569" stroke-width="1.6" stroke-opacity="0.45"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="arrowhead" d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect class="canvas" y="54" width="1944" height="778" fill="#ffffff"/>
+  <text class="ink" x="218" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">Example tests</text>
+  <text class="muted-ink" x="218" y="106" text-anchor="middle" font-size="11" fill="#64748b">What each test checks</text>
+  <text class="ink" x="738.0" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">Tools</text>
+  <text class="ink" x="1134" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">Test size</text>
+  <text class="muted-ink" x="1134" y="106" text-anchor="middle" font-size="11" fill="#64748b">Google's resource limits</text>
+  <text class="ink" x="1290" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">Test pyramid</text>
+  <text class="muted-ink" x="1290" y="106" text-anchor="middle" font-size="11" fill="#64748b">Google's example mix</text>
+  <text class="ink" x="1486" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">Testing Trophy</text>
+  <text class="muted-ink" x="1486" y="106" text-anchor="middle" font-size="11" fill="#64748b">Dodds's guide to test effort</text>
+  <text class="ink" x="1756" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">Where terms are used</text>
+  <text class="muted-ink" x="1756" y="106" text-anchor="middle" font-size="11" fill="#64748b">Usage by source and context</text>
+  <text class="muted-ink" x="567.0" y="106" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">Frontend</text>
+  <text class="muted-ink" x="909.0" y="106" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">Backend (Go and Rust)</text>
+  <line class="column-guide" x1="404" y1="112" x2="730" y2="112" stroke="#7d8da3"/>
+  <line class="column-guide" x1="746" y1="112" x2="1072" y2="112" stroke="#7d8da3"/>
+  <line class="axis-line" x1="26" y1="592" x2="26" y2="126" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line class="row-guide" x1="40" y1="528" x2="1924" y2="528" stroke="#8b9ab0" stroke-dasharray="4 4"/>
+  <line class="row-guide" x1="40" y1="460" x2="1924" y2="460" stroke="#8b9ab0" stroke-dasharray="4 4"/>
+  <line class="row-guide" x1="40" y1="392" x2="1924" y2="392" stroke="#8b9ab0" stroke-dasharray="4 4"/>
+  <line class="row-guide" x1="40" y1="324" x2="1924" y2="324" stroke="#8b9ab0" stroke-dasharray="4 4"/>
+  <line class="row-guide" x1="40" y1="256" x2="1924" y2="256" stroke="#8b9ab0" stroke-dasharray="4 4"/>
+  <line class="row-guide" x1="40" y1="188" x2="1924" y2="188" stroke="#8b9ab0" stroke-dasharray="4 4"/>
+  <rect class="example-card" x="48" y="123" width="340" height="62" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="ink" x="62" y="144" font-size="13" font-weight="600" fill="#0f172a">Check the application manually</text>
+  <text class="muted-ink" x="62" y="164" font-size="11" fill="#64748b">Frontend and backend · a person checks the result</text>
+  <rect class="example-card" x="48" y="191" width="340" height="62" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="ink" x="62" y="212" font-size="13" font-weight="600" fill="#0f172a">Exercise a flow in a remote environment</text>
+  <text class="muted-ink" x="62" y="229" font-size="11" fill="#64748b">Frontend · complete a signed-in flow against the real API</text>
+  <text class="muted-ink" x="62" y="244" font-size="11" fill="#64748b">Backend · exercise multiple services in a test environment</text>
+  <rect class="example-card" x="48" y="259" width="340" height="62" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="ink" x="62" y="280" font-size="13" font-weight="600" fill="#0f172a">Exercise a flow locally</text>
+  <text class="muted-ink" x="62" y="297" font-size="11" fill="#64748b">Frontend · exercise the UI with stubbed API responses</text>
+  <text class="muted-ink" x="62" y="312" font-size="11" fill="#64748b">Backend · call the API with its database in a container</text>
+  <text class="note-number" x="378" y="280" text-anchor="end" font-size="12" font-weight="700" fill="#78350f">[2]</text>
+  <rect class="example-card" x="48" y="327" width="340" height="62" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="ink" x="62" y="348" font-size="13" font-weight="600" fill="#0f172a">Run a real component or database</text>
+  <text class="muted-ink" x="62" y="365" font-size="11" fill="#64748b">Frontend · interact with a component in a real browser</text>
+  <text class="muted-ink" x="62" y="380" font-size="11" fill="#64748b">Backend · check interactions with a containerized database</text>
+  <text class="note-number" x="378" y="348" text-anchor="end" font-size="12" font-weight="700" fill="#78350f">[1]</text>
+  <rect class="example-card" x="48" y="395" width="340" height="62" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="ink" x="62" y="416" font-size="13" font-weight="600" fill="#0f172a">Combine parts in one process</text>
+  <text class="muted-ink" x="62" y="433" font-size="11" fill="#64748b">Frontend · check component interactions in jsdom</text>
+  <text class="muted-ink" x="62" y="448" font-size="11" fill="#64748b">Backend · connect a handler to a database test double</text>
+  <rect class="example-card" x="48" y="463" width="340" height="62" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="ink" x="62" y="484" font-size="13" font-weight="600" fill="#0f172a">Call a function directly</text>
+  <text class="muted-ink" x="62" y="504" font-size="11" fill="#64748b">Frontend and backend · pure logic</text>
+  <rect class="example-card" x="48" y="531" width="340" height="62" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="ink" x="62" y="552" font-size="13" font-weight="600" fill="#0f172a">Type checking and static analysis</text>
+  <text class="muted-ink" x="62" y="569" font-size="11" fill="#64748b">Frontend · tsc, ESLint, oxlint</text>
+  <text class="muted-ink" x="62" y="584" font-size="11" fill="#64748b">Backend · go vet, cargo clippy</text>
+  <rect class="tool-band" x="404" y="395" width="62" height="130" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1"/>
+  <text class="ink" x="435.0" y="456.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">Jest</text>
+  <rect class="tool-band" x="470" y="327" width="62" height="198" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1"/>
+  <line class="tool-divider" x1="470" y1="392" x2="532" y2="392" stroke="#64748b" stroke-dasharray="3 3"/>
+  <text class="ink" x="501.0" y="456.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">Vitest</text>
+  <text class="muted-ink" x="501.0" y="350" text-anchor="middle" font-size="10" fill="#475569">Browser</text>
+  <text class="muted-ink" x="501.0" y="363" text-anchor="middle" font-size="10" fill="#475569">Mode</text>
+  <text class="note-number" x="501.0" y="380" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f">[4]</text>
+  <rect class="tool-band" x="536" y="327" width="62" height="130" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1"/>
+  <text class="ink" x="567.0" y="381.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">Testing</text>
+  <text class="ink" x="567.0" y="395.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">Library</text>
+  <text class="note-number" x="567.0" y="444" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f">[5]</text>
+  <rect class="tool-band" x="602" y="327" width="62" height="62" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1"/>
+  <text class="ink" x="633.0" y="354" text-anchor="middle" font-size="10" font-weight="700" fill="#1e293b">Storybook</text>
+  <rect class="runner-band" x="668" y="191" width="62" height="198" rx="6" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.8"/>
+  <line class="runner-divider" x1="668" y1="324" x2="730" y2="324" stroke="#0369a1" stroke-dasharray="3 3"/>
+  <text class="runner-ink" x="699.0" y="218" text-anchor="middle" font-size="10" font-weight="700" fill="#0c4a6e">Playwright</text>
+  <text class="muted-ink" x="699.0" y="282" text-anchor="middle" font-size="10" fill="#475569">Runs</text>
+  <text class="muted-ink" x="699.0" y="295" text-anchor="middle" font-size="10" fill="#475569">tests</text>
+  <text class="muted-ink" x="699.0" y="350" text-anchor="middle" font-size="10" fill="#475569">Drives a</text>
+  <text class="muted-ink" x="699.0" y="363" text-anchor="middle" font-size="10" fill="#475569">browser</text>
+  <text class="note-number" x="699.0" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f">[3]</text>
+  <rect class="runner-band" x="746" y="259" width="62" height="266" rx="6" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.8"/>
+  <text class="runner-ink" x="777.0" y="388.0" text-anchor="middle" font-size="11" font-weight="700" fill="#0c4a6e">go test</text>
+  <text class="note-number" x="777.0" y="448" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f">[6]</text>
+  <rect class="runner-band" x="812" y="327" width="62" height="198" rx="6" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.8"/>
+  <text class="runner-ink" x="843.0" y="422" text-anchor="middle" font-size="10" font-weight="700" fill="#0c4a6e">cargo test</text>
+  <text class="note-number" x="843.0" y="442" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f">[6]</text>
+  <rect class="tool-band" x="878" y="395" width="62" height="62" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1"/>
+  <text class="ink" x="909.0" y="415" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">gomock</text>
+  <text class="ink" x="909.0" y="429" text-anchor="middle" font-size="10" font-weight="700" fill="#1e293b">Mockall</text>
+  <rect class="tool-band" x="944" y="259" width="62" height="130" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1"/>
+  <text class="ink" x="975.0" y="313.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">Test-</text>
+  <text class="ink" x="975.0" y="327.0" text-anchor="middle" font-size="10" font-weight="700" fill="#1e293b">containers</text>
+  <rect class="tool-band" x="1010" y="259" width="62" height="62" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1"/>
+  <text class="ink" x="1041.0" y="286" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">Hurl</text>
+  <rect class="size-band size-large" x="1088" y="191" width="92" height="62" rx="6" fill="#93c5fd" stroke="#2563eb"/>
+  <rect class="size-band size-medium" x="1088" y="259" width="92" height="130" rx="6" fill="#bfdbfe" stroke="#2563eb"/>
+  <rect class="size-band size-small" x="1088" y="395" width="92" height="130" rx="6" fill="#dbeafe" stroke="#2563eb"/>
+  <rect x="1088" y="327" width="92" height="62" fill="url(#hatch)"/>
+  <text class="size-ink" x="1134" y="218" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Large</text>
+  <text class="size-ink" x="1134" y="236" text-anchor="middle" font-size="11" fill="#1e3a8a">Remote access</text>
+  <text class="size-ink" x="1134" y="284" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Medium</text>
+  <text class="size-ink" x="1134" y="302" text-anchor="middle" font-size="11" fill="#1e3a8a">One machine</text>
+  <text class="size-ink" x="1134" y="454" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Small</text>
+  <text class="size-ink" x="1134" y="472" text-anchor="middle" font-size="11" fill="#1e3a8a">One process</text>
+  <text class="muted-ink" x="1134" y="558" text-anchor="middle" font-size="11" fill="#475569">Outside size</text>
+  <text class="muted-ink" x="1134" y="574" text-anchor="middle" font-size="11" fill="#475569">classification</text>
+  <polygon class="pyramid-tier pyramid-e2e" points="1276,188 1304,188 1334.4,324 1245.6,324" fill="#6ee7b7" stroke="#059669"/>
+  <polygon class="pyramid-tier pyramid-integration" points="1245.6,324 1334.4,324 1364.8,460 1215.2,460" fill="#a7f3d0" stroke="#059669"/>
+  <polygon class="pyramid-tier pyramid-unit" points="1215.2,460 1364.8,460 1380,528 1200,528" fill="#d1fae5" stroke="#059669"/>
+  <polygon points="1260.8,256 1319.2,256 1334.4,324 1245.6,324" fill="url(#hatch)"/>
+  <g class="pyramid-ink" text-anchor="middle" fill="#064e3b">
+    <text x="1290" y="228" font-size="13" font-weight="700">E2E</text>
+    <text x="1290" y="245" font-size="11">5%</text>
+    <text x="1290" y="396" font-size="13" font-weight="700">Integration</text>
+    <text x="1290" y="413" font-size="11">15%</text>
+    <text x="1290" y="500" font-size="13" font-weight="700">Unit <tspan font-size="11" font-weight="400">80%</tspan></text>
+  </g>
+  <rect class="trophy-tier trophy-e2e" x="1446" y="194" width="80" height="56" rx="8" fill="#fcd34d" stroke="#d97706"/>
+  <path class="trophy-tier trophy-integration" d="M 1396 262 L 1576 262 L 1576 280 C 1576 400, 1540 456, 1486 456 C 1432 456, 1396 400, 1396 280 Z" fill="#fde68a" stroke="#d97706"/>
+  <rect class="trophy-tier trophy-base" x="1468" y="452" width="36" height="76" fill="#fef3c7" stroke="#d97706"/>
+  <rect class="trophy-tier trophy-base" x="1422" y="532" width="128" height="58" rx="6" fill="#fef3c7" stroke="#d97706"/>
+  <g class="trophy-ink" text-anchor="middle" fill="#78350f">
+    <text x="1486" y="227" font-size="13" font-weight="700">E2E</text>
+    <text x="1486" y="372" font-size="13" font-weight="700">Integration</text>
+    <text x="1486" y="390" font-size="11">Main area of focus</text>
+    <text x="1486" y="496" font-size="12" font-weight="700">Unit</text>
+    <text x="1486" y="566" font-size="13" font-weight="700">Static checks</text>
+  </g>
+  <rect class="manual-band" x="1592" y="123" width="76" height="62" rx="6" fill="#fce7f3" stroke="#db2777"/>
+  <text class="ink" x="1630" y="151" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Manual</text>
+  <text class="ink" x="1630" y="164" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">tests</text>
+  <rect class="automated-band" x="1592" y="191" width="76" height="334" rx="6" fill="#ede9fe" stroke="#7c3aed"/>
+  <text class="ink" x="1630" y="355" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Automated</text>
+  <text class="ink" x="1630" y="368" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">tests</text>
+  <rect class="static-band" x="1592" y="531" width="76" height="62" rx="6" fill="#f1f5f9" stroke="#94a3b8"/>
+  <text class="ink" x="1630" y="559" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Static</text>
+  <text class="ink" x="1630" y="572" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">checks</text>
+  <rect class="scenario-band" x="1676" y="123" width="76" height="198" rx="6" fill="#e0e7ff" stroke="#4f46e5" stroke-dasharray="5 4" stroke-width="1.6"/>
+  <rect x="1676" y="123" width="76" height="198" rx="6" fill="url(#hatch)" opacity="0.5"/>
+  <text class="ink" x="1714" y="210.0" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Scenario</text>
+  <text class="ink" x="1714" y="227.0" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">tests</text>
+  <text class="term-qualifier" x="1714" y="244.0" text-anchor="middle" font-size="10" fill="#7c2d12">Usage stories</text>
+  <text class="note-number" x="1714" y="262.0" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f">[7]</text>
+  <rect class="functional-band" x="1760" y="123" width="76" height="402" rx="6" fill="#ffedd5" stroke="#ea580c"/>
+  <text class="ink" x="1798" y="313" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Functional</text>
+  <text class="ink" x="1798" y="326" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">tests</text>
+  <text class="term-qualifier" x="1798" y="337.0" text-anchor="middle" font-size="10" fill="#7c2d12">ISO 29119-1</text>
+  <text class="note-number" x="1798" y="355.0" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f">[8]</text>
+  <rect class="functional-band" x="1844" y="191" width="76" height="62" rx="6" fill="#ffedd5" stroke="#ea580c"/>
+  <text class="ink" x="1882" y="211" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Functional</text>
+  <text class="ink" x="1882" y="224" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">tests</text>
+  <text class="term-qualifier" x="1882" y="235.0" text-anchor="middle" font-size="10" fill="#7c2d12">Google usage</text>
+  <rect class="visual-band" x="1844" y="259" width="76" height="130" rx="6" fill="#ccfbf1" stroke="#0d9488"/>
+  <text class="ink" x="1882" y="320.0" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Visual</text>
+  <text class="ink" x="1882" y="337.0" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">diffs</text>
+  <text class="muted-ink" x="48" y="628" font-size="12" fill="#334155"><tspan class="note-number" font-weight="700" fill="#78350f">[1]</tspan> A browser or database running on the same machine can fit Medium. A setup that communicates with other machines is Large. Small runs in one process without I/O or blocking calls.</text>
+  <text class="muted-ink" x="48" y="648" font-size="12" fill="#334155"><tspan class="note-number" font-weight="700" fill="#78350f">[2]</tspan> Dodds's examples treat a full app with stubbed HTTP responses as integration and a flow through the real backend as E2E. State what the system boundary includes.</text>
+  <text class="muted-ink" x="72" y="668" font-size="12" fill="#334155">The pyramid uses Google's example mix. The Trophy illustrates where to focus test effort. Start with the behavior you need to protect when placing an individual test.</text>
+  <text class="muted-ink" x="48" y="688" font-size="12" fill="#334155"><tspan class="note-number" font-weight="700" fill="#78350f">[3]</tspan> With Playwright, checking one component's public behavior can be a unit test. Checking collaboration can be integration. E2E through the real API can still fit Medium when everything runs on one machine.</text>
+  <text class="muted-ink" x="48" y="708" font-size="12" fill="#334155"><tspan class="note-number" font-weight="700" fill="#78350f">[4]</tspan> Vitest Browser Mode uses a real browser. Storybook stories can represent usage scenarios. Assign size based on the resources the setup allows.</text>
+  <text class="muted-ink" x="48" y="728" font-size="12" fill="#334155"><tspan class="note-number" font-weight="700" fill="#78350f">[5]</tspan> Testing Library works with the DOM in a simulated environment such as jsdom or in a real browser.</text>
+  <text class="muted-ink" x="48" y="748" font-size="12" fill="#334155"><tspan class="note-number" font-weight="700" fill="#78350f">[6]</tspan> go test and cargo test run tests of different scopes. A backend test with a local database container can fit Medium. Google gives server–database interaction as an integration example.</text>
+  <text class="muted-ink" x="48" y="768" font-size="12" fill="#334155"><tspan class="note-number" font-weight="700" fill="#78350f">[7]</tspan> Scenario tests use stories about how the system is used. Share the starting conditions, actions, expected result, and parts of the system exercised.</text>
+  <text class="muted-ink" x="48" y="788" font-size="12" fill="#334155"><tspan class="note-number" font-weight="700" fill="#78350f">[8]</tspan> ISO/IEC/IEEE 29119-1 lists functional testing as a test type. A test type can apply at one or several test levels. Google's book lists functional tests among the names for broad-scope tests.</text>
+  <rect class="hatch-key" x="48" y="800" width="22" height="14" fill="url(#hatch)" stroke="#94a3b8"/>
+  <text class="muted-ink" x="78" y="812" font-size="12" fill="#334155">Hatching marks examples whose classification varies by setup or source.</text>
+</svg>

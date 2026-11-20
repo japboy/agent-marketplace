@@ -1,158 +1,99 @@
 # Evaluation Rubric
 
-## Scope
+Use the [skill workflow](../SKILL.md) for placement and status decisions. Use this rubric to record
+why an existing or proposed check protects the behavior and to format the report.
 
-This rubric is optimized for frontend tests evaluated with the Testing Trophy as the primary routing
-model.
+## Evidence for Placement
 
-## Phase 1: Trophy Routing
+| Question | Evidence to record |
+| - | - |
+| What behavior is worth protecting? | The end user, assistive technology, or developer caller. Their public operation or input, expected observable result, and a concrete regression. |
+| Can the check detect that regression? | The assertion or static diagnostic that would fail, the relevant production path, and where the failure would be visible. Explain any way the check could pass with the regression present. |
+| What must run for the result to be meaningful? | The execution environment, relevant runtime capabilities, and real and substituted dependencies. A critical journey needs non-unit coverage through the seam where it can fail. |
+| Which plausible setup fits best? | Whether each relevant candidate can detect the regression. Among candidates with comparable detection, explain the differences in stability, maintenance, and execution cost that affect the recommendation. |
+| How is the check classified? | `STATIC` for a static check, or `UNIT`, `INTEGRATION`, or `E2E` by asserted scope for an executable check. Record its runtime and test doubles separately. Give dynamic size under the project's evidenced resource policy, or record it as unknown. |
 
-Answer these in order. Stop at the first decisive answer.
+Two checks on the same public contract can cover different regressions. A type check of an internal
+union and a runtime check of an untrusted payload each need evidence for the defect they can detect.
+A browser integration test with a stubbed API can detect layout or navigation failures within the
+tested scope. A journey that must survive a real sign-in redirect needs coverage across that
+redirect and the return path. State the tested system boundary when reporting E2E.
 
-1. Can a static mechanism prevent this defect with equal or better confidence?
+## Check Quality
 
-- Yes -> `MOVE_TO_STATIC` or `KEEP_STATIC`
+Record the applicable dimensions and the specific strength, weakness, or evidence gap in each. Use
+those findings to justify the status in the skill workflow.
 
-2. Does the risk materially depend on real browser engines, real navigation, persistence, backend
-   round trips, auth flow, device behavior, or multi-screen workflow realism?
+| Dimension | Evidence to look for |
+| - | - |
+| Observable behavior and refactor resilience | The check accesses a public surface and fails when the promised result changes. It survives internal changes that preserve that result. For a hook or component, identify the documented return value, callback payload, or user-facing result that a caller relies on. |
+| Accessibility | The assertion matches the promised role, name, keyboard interaction, focus behavior, or announcement semantics. A claim about what a specific assistive technology announces requires evidence from the relevant setup. |
+| Boundary and visual fidelity | The test exercises the actual contract when compatibility is at issue. A visual assertion detects the specific presentation regression under review. A test double preserves every property the check relies on. |
+| Stability and cost | Evidence from runs or setup explains intermittent outcomes, isolation problems, execution time, or unnecessary duplication. Mark missing measurements as unknown. |
+| Story setup and behavior | Record the public scenario and whether the story supplies the required setup. Cite the story export and relevant configuration, describe the proposed scenario for a new story, or name the runtime condition or collaborator that requires separate setup. Inspect the assertions in the paired spec or `play` function. |
 
-- Yes -> prefer `E2E`
+Use surviving meaningful mutants and known flaky failures as additional evidence of weak detection
+or unreliable results. Identify the particular assertion or setup that needs work. Treat missing
+mutation data as an evidence gap only when it affects a specific claim.
 
-3. Is the risk mainly user-visible behavior spanning multiple frontend units after ruling out the
-   E2E dependencies above?
+## Coverage During Changes
 
-- Yes -> prefer `INTEGRATION`
+Keep the check that covers a current regression until its replacement is in place and shown to
+protect that risk. For `REMOVE`, cite why the contract was retired, why the check covers only
+implementation details, or where equivalent coverage already exists. Broader coverage counts as
+equivalent when it can fail for the same regression. A retired contract can be removed on evidence
+of retirement alone. If its absence is now a required behavior, assess that requirement separately.
 
-4. Is the logic pure, local, and not better expressed through integration or static guarantees?
+Mark a recommendation provisional when it relies on an assumption and state what would resolve it.
+List a test as unassessed when there is too little evidence to support any status. Put both findings
+in the report so a reviewer can tell which recommendations are actionable.
 
-- Yes -> prefer `UNIT`
+## Report Template
 
-5. If none of the above justify unique value:
+Include all required headings in order. Include **Suite Distribution** when the user requests a
+distribution assessment or the review covers an entire suite. When a required section has no
+applicable findings, say so briefly under that heading.
 
-- prefer `REMOVE`
-
-## Phase 2: In-Layer Quality Checks
-
-Once the best layer is chosen, score quality checks from 0 to 2.
-
-| Dimension | 0 | 1 | 2 |
-| - | - | - | - |
-| User outcome | Internal detail only | Partial user-visible signal | Clear user-visible or AT-visible outcome |
-| Accessibility semantics | Critical semantics untested | Partial semantic checks | Role/name/focus/keyboard semantics covered |
-| Behavior focus | Implementation-coupled | Mixed internal and external checks | Behavior-focused assertions |
-| Runtime realism | Unrealistic runtime for the risk | Partial realism | Relevant runtime exercised |
-| Contract confidence | Boundary risk unverified | Partial boundary checks | Explicit compatibility verified |
-| Visual signal | Visual risk unprotected | Partial visual oracle | Meaningful visual guarantee covered |
-| Refactor resilience | Breaks on harmless refactor | Moderate coupling | Stable under internal refactor |
-| Stability | Intermittent or flaky | Rare instability | Stable across reruns |
-| Fidelity | Unrealistic mocks dominate | Mixed doubles with gaps | High-fidelity collaborators or realistic doubles |
-
-Additional Storybook-specific checks when stories are part of the setup:
-
-- Scenario canonicality: `0` if the story is an internal-state dump or arbitrary fixture, `1` if
-  partly meaningful, `2` if it represents a clear public use case or visible state.
-- Story/test synchronization: `0` if the test duplicates story setup by hand, `1` if reuse is
-  partial or annotations are missing, `2` if the test composes the story and keeps project
-  annotations in sync.
-- Story/spec responsibility: `0` if the story and spec duplicate arbitrary setup or blur state
-  declaration with behavior assertions, `1` if the relationship is partially clear, `2` if the story
-  declares the public scenario or visible state and the spec verifies behavior against that composed
-  story.
-
-## Phase 3: Final Status
-
-Use the Phase 1 layer choice first, then Phase 2 quality to decide status.
-
-- Best layer selected and quality mostly strong -> `KEEP_STATIC`, `KEEP_INTEGRATION`, `KEEP_E2E`, or
-  `KEEP_UNIT`
-- Best layer selected but quality weak -> `REWRITE_AT_SAME_LAYER`
-- Wrong layer selected -> `MOVE_TO_STATIC`, `MOVE_TO_INTEGRATION`, `MOVE_TO_E2E`, or `MOVE_TO_UNIT`
-- No unique value remains -> `REMOVE`
-
-## Override Rules
-
-1. If a static mechanism can reasonably prevent the same defect, dynamic tests cannot be the default
-   recommendation.
-2. If the risk spans multiple frontend units and the current test is unit-level, status cannot be
-   `KEEP_UNIT`.
-3. If the risk depends on real browser or device behavior and the current runtime cannot expose it,
-   prefer `MOVE_TO_E2E`.
-4. If the risk is a critical user journey, unit-only coverage is insufficient.
-5. If the same behavior is better expressed through user-visible integration than direct hook or
-   prop wiring checks, prefer `MOVE_TO_INTEGRATION`.
-6. If `User outcome = 0` and `Behavior focus = 0`, status cannot be `KEEP_*`.
-7. If `Stability = 0`, status cannot be `KEEP_*`.
-
-## Special Guidance for Hooks and Components
-
-- Direct hook tests are presumptively `UNIT`.
-- Isolated component tests are presumptively `UNIT` unless they exercise multiple units and
-  user-visible DOM semantics strongly enough to count as `INTEGRATION`.
-- Hook or component tests that only verify plumbing, state wiring, or callback forwarding should
-  generally be `REWRITE_AT_SAME_LAYER`, `MOVE_TO_INTEGRATION`, or `REMOVE`.
-- Story-driven component tests are preferred over bespoke fixtures only when a component test is
-  already justified.
-- A story used in tests should represent a public use case or meaningful visible state, not an
-  exhaustive internal state matrix.
-- When Playwright-level browser or workflow realism is not required but component behavior still
-  needs executable coverage, prefer a story-driven component behavior spec.
-- In that pattern, the story declares the public scenario or visible state, and the paired spec
-  verifies behavior against the composed story. This is a skill policy convention, not a Storybook
-  framework requirement.
-- Reusing stories with `composeStories` or `composeStory` and applying project annotations improves
-  maintainability, but does not upgrade the Trophy layer by itself.
-- If an equivalent story exists and the component test duplicates its props, decorators, or
-  providers manually, prefer `REWRITE_AT_SAME_LAYER` unless a concrete runtime reason prevents
-  reuse.
-
-## Supplementary Evidence
-
-Mutation reports are optional supporting evidence, not routing criteria.
-
-- If a recent mutation report exists and meaningful mutants survive, use that as additional support
-  for `REWRITE_AT_SAME_LAYER`.
-- Do not penalize a code area solely because no mutation report exists.
-
-## Minimal Safety-Net Rule
-
-Before removing or relocating a test, keep at least one higher-value check that protects the same
-business risk in the recommended layer.
-
-## Output Template
+Under **Findings by Test**, use one top-level bullet per assessed test, including a review of one
+test. Start each bullet with its test path and one allowed status on the same line, then record the
+current and proposed setup beneath it.
 
 ```markdown
 ## Decision Summary
 
-- Scope: <module/test-set>
-- Current layer: <STATIC|INTEGRATION|E2E|UNIT>
-- Recommended layer: <STATIC|INTEGRATION|E2E|UNIT|NONE>
-- Final status:
-  <KEEP_STATIC|KEEP_INTEGRATION|KEEP_E2E|KEEP_UNIT|REWRITE_AT_SAME_LAYER|MOVE_TO_STATIC|MOVE_TO_INTEGRATION|MOVE_TO_E2E|MOVE_TO_UNIT|REMOVE>
-- Rationale: <1-2 sentences>
+- <test set and most important coverage decision in prose>
 
-## Trophy Routing Decision
+## Test Placement
 
-- Risk: <risk>
-- Why current layer is or is not the best ROI: <reason>
+- <actor, public operation or input, observable result, and concrete regression>
+- <setup and oracle needed to detect it, with the reason for choosing that setup>
 
 ## Findings by Test
 
-- <test name>: <status>
-  - Quality checks: Outcome=<0-2>, A11y=<0-2>, Behavior=<0-2>, Runtime=<0-2>, Contract=<0-2>,
-    Visual=<0-2>, Resilience=<0-2>, Stability=<0-2>, Fidelity=<0-2>
-  - Story checks when applicable: Canonicality=<0-2>, Sync=<0-2>, StorySpecResponsibility=<0-2>
-  - Evidence: <prod path#Lx>, <test path#Ly>, <doc URL>, <source permalink>
+- `<test path>` — `<one status from the skill workflow>`
+  - Current setup — <STATIC, UNIT, INTEGRATION, E2E, or UNKNOWN, plus runtime, doubles, and
+    applicable size>
+  - Proposed setup — <STATIC, UNIT, INTEGRATION, E2E, NONE, or UNKNOWN, plus relevant changes>
+  - <specific quality finding and production and test evidence>
+  - <story path and export if reused, evidence gaps if material>
 
 ## Recommended Moves
 
-- <test name> -> <destination layer> because <reason>
+- <change to the current check, with the protection required before replacing or removing it>
 
 ## Higher-Value Scenarios to Add
 
-1. <risk -> recommended layer -> expected oracle>
+- <uncovered regression, executable or static check, and expected failing condition>
+
+## Suite Distribution
+
+- <what reviewing the suite as a whole reveals about gaps or duplicate coverage>
 
 ## Residual Risk
 
-- Remaining gaps:
-- Mitigation:
+- <remaining risks, unassessed tests, and unresolved assumptions or flakiness>
+
+## References
+
+- <official documentation and source-code permalink for each framework-bound claim>
 ```

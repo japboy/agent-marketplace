@@ -3,35 +3,93 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Review these frontend tests. src/hooks/useInviteForm.ts contains form state and submits through src/api/invitations.ts. src/hooks/useInviteForm.test.tsx renders the hook, asserts setState calls, and mocks the API client. src/components/InviteForm.stories.tsx exports ValidInvite and supplies the same providers and args, but src/components/InviteForm.spec.tsx duplicates those providers and only asserts that onSubmit was called. The product behavior is that a user enters an email, submits, and sees either a confirmation or an accessible inline error. Give a Testing Trophy decision for each existing test and a replacement plan.",
-      "expected_output": "A structured review that routes the direct hook and callback-plumbing coverage by protected risk, uses the canonical story only when a component-level test remains justified, and recommends user-visible integration coverage without claiming that Storybook changes the Trophy layer.",
+      "prompt": "Review two invitation tests. src/hooks/useInviteForm.test.tsx renders useInviteForm in isolation, mocks the API client, and asserts internal setter calls. src/components/InviteForm.spec.tsx isolates the form and only asserts that an onSubmit spy was called. Its setup duplicates the providers from the ValidInvite export in src/components/InviteForm.stories.tsx. That story uses the project's annotations and renders the production src/components/InviteForm.tsx with src/hooks/useInviteForm.ts and the real src/api/invitations.ts client. The test runner can stub responses at the HTTP boundary while keeping the client in use. A user who submits an email must see confirmation or an accessible inline error. Assess both tests and propose coverage for that behavior.",
+      "expected_output": "A structured review that evaluates the isolated tests against the user-visible regression and recommends integration coverage of the form's submission behavior using the existing ValidInvite story.",
       "assertions": [
-        "The report uses the required section order from Decision Summary through References and assigns exactly one allowed final status to each reviewed test",
-        "The direct hook test is classified as unit-level and is not kept solely for mocked internal state or API-call assertions",
-        "The replacement verifies confirmation or accessible error behavior through user interaction, and any story reuse names src/components/InviteForm.stories.tsx and the ValidInvite export",
-        "Every repository finding cites the supplied production and test paths, and every framework-bound claim includes an official documentation URL plus a source-code permalink with a commit and line range"
+        "The report follows the required section order. In Findings by Test, each assessed test has one top-level bullet starting with its backticked path and exactly one backticked allowed status on the same line.",
+        "The current isolated tests are reported as unit tests and their setter or spy assertions are insufficient evidence for the stated product behavior.",
+        "The proposed check reuses the ValidInvite export from src/components/InviteForm.stories.tsx with its relevant project annotations. It submits an email through the UI and observes confirmation and accessible error outcomes, retaining integration scope by exercising the form, hook, and client together.",
+        "Findings cite the supplied production and test paths. Framework-bound claims, if any, have official documentation and source permalinks."
       ]
     },
     {
       "id": 2,
-      "prompt": "Assess checkout coverage as a critical journey. tests/unit/useCheckout.test.ts mocks authentication, localStorage, the router, and the payment API, then asserts internal step numbers. tests/checkout.spec.ts runs in Playwright but intercepts every backend request and starts directly on /checkout/payment. Production paths are src/checkout/useCheckout.ts and src/checkout/CheckoutPage.tsx. The escaped regression was that a real login redirect dropped the cart and the return navigation reopened an empty checkout. Decide the best layer and final status for each test, and preserve a minimal safety net.",
-      "expected_output": "A Testing Trophy review that recognizes the real authentication, persistence, navigation, and multi-screen dependencies, does not mistake Playwright tooling for automatic end-to-end coverage, and recommends realistic non-unit protection for the critical flow.",
+      "prompt": "Assess checkout as a critical journey. tests/unit/useCheckout.test.ts mocks auth, storage, the router, and the payment API and asserts internal step numbers. tests/checkout.spec.ts uses a real browser through Playwright, stubs every API response, starts at /checkout/payment, and verifies that the checkout route renders payment fields using the fetched cart. Production paths are src/checkout/useCheckout.ts and src/checkout/CheckoutPage.tsx. When the real authentication service issued its session and redirected the browser, the cart was lost and the return URL reopened an empty checkout. Restore a minimal safety net for this regression and assess both existing tests.",
+      "expected_output": "A review that distinguishes the current frontend integration check from the proposed system-level coverage and explains the concrete seams that the proposed checkout test must exercise.",
       "assertions": [
-        "The routing decision evaluates the end-to-end dependency gate before the integration default and identifies authentication, cart persistence, real navigation, and the backend boundary as material risks",
-        "The Playwright test is not labeled end-to-end merely because it uses Playwright; its mocked runtime and direct-entry limitation are reflected in its status",
-        "The recommendation includes at least one realistic non-unit scenario covering login redirect, preserved cart state, return navigation, and a user-visible checkout outcome",
-        "Each existing test receives exactly one allowed final status, and relocation or removal is conditioned on retaining a higher-value safety net for the same business risk"
+        "The current Playwright scenario is recognized as frontend integration coverage with stubbed responses and direct entry.",
+        "The critical regression is covered by an E2E scenario that exercises the real authentication and session boundary, cart persistence, browser redirect and return navigation, and the restored cart as the user-visible outcome.",
+        "Each existing test receives one allowed status. Before a move or removal, the recommendation accounts for currently protected behaviors the proposed E2E would leave uncovered."
       ]
     },
     {
       "id": 3,
-      "prompt": "Should we keep tests/unit/orderStatus.test.ts? It passes arbitrary strings into renderOrderStatus and expects unknown values to render ‘Unknown’. The production type in src/orders/orderStatus.ts is `type OrderStatus = 'pending' | 'paid' | 'cancelled'`, and all callers are TypeScript. The product contract says unsupported API values must be rejected at the API boundary before reaching the component. There is currently no runtime schema validator at that boundary. Produce the assessment and the smallest higher-value replacement.",
-      "expected_output": "A boundary-focused review that separates the compile-time closed union from untrusted API input, routes guarantees in precedence order, and replaces low-value impossible-state component coverage without losing boundary compatibility protection.",
+      "prompt": "Should we keep tests/unit/orderStatus.test.ts? It passes arbitrary strings into renderOrderStatus and expects unknown values to render 'Unknown'. The production type in src/orders/orderStatus.ts is `type OrderStatus = 'pending' | 'paid' | 'cancelled'`, and internal callers are typed. The product contract requires rejection of unsupported API values in src/orders/decodeOrder.ts before they reach the renderer. The production decoder currently trusts the response. Assess the test and propose a minimal replacement for the missing guarantee.",
+      "expected_output": "An assessment that distinguishes the compile-time guarantee for typed callers from runtime validation of the API payload, and proposes a check that detects the actual boundary failure.",
       "assertions": [
-        "The report distinguishes the static guarantee for typed internal callers from the runtime validation required for untrusted API payloads",
-        "The routing follows static-first precedence and does not keep the current unit test as the primary protection for the API-boundary risk",
-        "The replacement plan names a schema or equivalent boundary validator and an observable rejection or fallback assertion at the boundary, while retaining type checking for internal callers",
-        "The finding cites both tests/unit/orderStatus.test.ts and src/orders/orderStatus.ts and marks any unverified implementation detail as unknown"
+        "The review retains the compile-time guarantee of the closed union for typed internal callers and recognizes the untrusted payload as a separate runtime risk.",
+        "The proposed check exercises the production decoding boundary and verifies rejection of unsupported values before rendering. Its scope is justified by what it validates.",
+        "Findings by Test has one top-level bullet starting with the backticked path tests/unit/orderStatus.test.ts and one backticked allowed status on the same line. The finding cites src/orders/orderStatus.ts and ties the missing runtime coverage to src/orders/decodeOrder.ts."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review src/profile/SaveNotice.test.tsx. It renders src/profile/SaveNotice.tsx in isolation and checks a CSS class when the caller sets the documented saved prop. The component is used on one screen. Its public behavior is to expose the status role and the message 'Profile saved' to assistive technology. A regression removed the role and the test still passed. The existing DOM setup can assert the exposed role and message. Decide what to do with the test.",
+      "expected_output": "A recommendation to rewrite the isolated component test at the same scope so that a loss of its accessibility semantics causes a failure.",
+      "assertions": [
+        "The outcome is the status role and message exposed when saved is set through the public prop.",
+        "Findings by Test has one top-level bullet starting with the backticked path src/profile/SaveNotice.test.tsx and the backticked status REWRITE_AT_SAME_LAYER on the same line. The entry reports UNIT as both current and recommended scope, regardless of the single production use.",
+        "The proposed assertions verify the exposed semantics through public output. Any claim about actual announcement by a screen reader requires separate evidence."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review two catalog tests and assess their suite distribution. Both exercise the production catalog page, search client, and result list with stubbed API responses. tests/catalog/results.spec.ts runs in Playwright and verifies that submitting a query displays the matching API results. tests/catalog/keyboard-scroll.test.tsx uses a simulated DOM and verifies that arrow keys on the page change the selection exposed in the list of API results. It missed a browser layout regression that left the selected item outside the visible scroll area. The project uses Google test sizes. Its real browser and test server use multiple processes, with all network access restricted to localhost. The team asks whether a Testing Trophy ratio should drive changes.",
+      "expected_output": "A review that keeps the stable browser integration check, recommends real layout coverage at integration scope for keyboard scrolling, and uses the Testing Trophy to discuss the suite after placement.",
+      "assertions": [
+        "tests/catalog/results.spec.ts receives KEEP_INTEGRATION. It is classified as Medium under the stated resource constraints.",
+        "tests/catalog/keyboard-scroll.test.tsx receives REWRITE_AT_SAME_LAYER. The recommended integration setup uses a real browser with the same API stub and verifies whether the keyboard-selected item is visible in the scroll area.",
+        "The Suite Distribution section follows the individual findings and diagnoses concrete coverage gaps or duplication without a quota or ratio-driven move."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "A cleanup would delete tests/LegacyBanner.test.tsx and tests/ConsentDialog.test.tsx. The product decision retired the feature formerly implemented by src/LegacyBanner.tsx, including its only observable behavior. src/ConsentDialog.tsx still documents onDismiss('escape') for callers. Its isolated test presses Escape and checks that exact callback value. Other tests check that the dialog closes, and no remaining test asserts the callback value. Assess the proposed deletions.",
+      "expected_output": "A removal decision that distinguishes a retired behavior from a live public callback contract and protects the latter during cleanup.",
+      "assertions": [
+        "tests/LegacyBanner.test.tsx receives REMOVE because its behavior is retired, with no replacement requested.",
+        "tests/ConsentDialog.test.tsx receives KEEP_UNIT because the documented onDismiss('escape') value is a caller-visible outcome the isolated test protects.",
+        "The review explains why the dialog closing alone does not establish the callback value and requires equivalent protection before any eventual replacement or deletion."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Review tests/SearchFlow.test.tsx and src/SearchPage.tsx. From the public search form, submitting a query shows the results and places focus on the results heading. The focus regression only reproduces when actual browser layout runs because a sticky overlay obscures the focus target. The test uses a simulated DOM and a stub API response. Its assertions cover the form, router, and results view working together. A proposed setup uses a real browser, drives the same UI and assertions with a layout-aware focus check, and preserves the stub API response. The runner, browser, and web server run in separate processes on one machine and network access is restricted to localhost. The project uses Google's size definitions. Recommend one status and justify scope, runtime and size separately.",
+      "expected_output": "A one-test review whose Findings by Test entry identifies the test and its status together, and explains a rewrite at the same integration scope to exercise the browser layout regression.",
+      "assertions": [
+        "Findings by Test contains exactly one top-level bullet. Its first line has the backticked path tests/SearchFlow.test.tsx and the backticked status REWRITE_AT_SAME_LAYER.",
+        "The current and proposed scopes are INTEGRATION. The proposed setup runs real browser layout with the same stubbed API and checks that the focused results heading is visible and unobscured by the sticky overlay.",
+        "The proposed size is Medium because the runner, browser, and web server use separate processes on one machine with localhost-only network access. The current size is unknown because its resource constraints are unspecified."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Review src/uploads/UploadNotice.test.tsx, a DOM-based test of src/uploads/UploadNotice.tsx. The test sets the documented rejected state and checks for a CSS class. The public behavior in that state is to show 'Upload rejected. Choose a CSV file.' in an element with an alert role. A regression removed the role while leaving the CSS class. The project uses Storybook, and src/uploads/UploadNotice.stories.tsx currently shows only the idle and uploading states. The component owns the displayed notice and receives its state as a prop. The existing Jest setup supports Portable Stories, applies the project's .storybook/preview.tsx annotations, and can check the message and role. Recommend how to cover the regression.",
+      "expected_output": "A same-scope unit rewrite that checks the exposed alert and message using a focused rejected-upload story as the public scenario.",
+      "assertions": [
+        "Findings by Test has one top-level bullet starting with the backticked path src/uploads/UploadNotice.test.tsx and the backticked status REWRITE_AT_SAME_LAYER on the same line. Both setups are UNIT because the assertion verifies one component's public contract.",
+        "The review recommends adding a focused rejected-upload story in src/uploads/UploadNotice.stories.tsx and composing that story in the replacement test with the relevant project annotations.",
+        "The proposed test checks the exposed alert role and the recovery message for the public rejected state. It explains how removing the role would cause the test to fail."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Review src/filters/FilterDrawer.test.tsx and a gap in browser Back coverage. The test renders the OpenDrawer export from src/filters/FilterDrawer.stories.tsx and checks that applying a filter passes the selected value to the onApply callback documented by src/filters/FilterDrawer.tsx. The story represents the open drawer and supplies a callback spy. In production, src/AppShell.tsx owns the browser history entry and restores filters when Back is pressed. A regression replaced the previous history entry, so Back failed to restore the previous filter in the URL and drawer. The project's Storybook preview does not mount the shell and cannot load its production history adapter. The existing browser harness can run the production shell with fixture responses for the filter options. Assess the current check and propose coverage for the regression.",
+      "expected_output": "A review that keeps the test of the drawer's callback contract and recommends a browser integration check using the production shell and native history to catch the Back regression.",
+      "assertions": [
+        "Findings by Test has one top-level bullet starting with the backticked path src/filters/FilterDrawer.test.tsx and the backticked status KEEP_UNIT on the same line. It identifies the documented callback payload as a caller-visible outcome that the existing OpenDrawer-based test protects.",
+        "The proposed regression check uses the production browser harness and explains that the story setup omits the real shell and history adapter that cause the failure. It preserves the story as coverage setup for the component's own public behavior.",
+        "The proposed check is client-side integration coverage of the drawer, shell, and native history. It applies a filter, goes Back, and verifies the previous filter in the URL and the visible drawer state."
       ]
     }
   ]
