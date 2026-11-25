@@ -19,9 +19,9 @@ when reviewing a suite's distribution after placing individual checks.
 - Include Storybook scenarios when they supply setup or executable behavior checks.
 - Include backend, load, or performance checks when they address a specific frontend regression.
 
-When test labels vary across teams, use the [terminology map](assets/test-term-map.svg) and its
-[reading guide](references/REFERENCE.md#test-terminology-map) to agree on their meanings before
-assessing tests.
+When test labels vary across teams, use the
+[terminology map and reading guide](references/REFERENCE.md#test-terminology-map) to agree on their
+meanings before assessing tests.
 
 ## 1. Establish the Contract and Risk
 
