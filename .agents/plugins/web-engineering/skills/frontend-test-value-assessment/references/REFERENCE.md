@@ -5,10 +5,11 @@ contains the review workflow.
 
 ## Test Terminology Map
 
-Use the [test terminology map](../assets/test-term-map.svg) to agree on what test labels mean in the
-review. Read across from a concrete test example. Aligned bands show plausible uses, and hatching
-marks where a different setup or source can change the classification. Follow the skill and rubric
-for recommendations.
+![Frontend test terminology map linking concrete test examples to scope, size, names, and techniques](../assets/test-term-map.svg)
+
+Use this map to agree on what test labels mean in the review. Read across from a concrete test
+example. Aligned bands show plausible uses, and hatching marks where a different setup or source can
+change the classification. Follow the skill and rubric for recommendations.
 
 - **Scope** describes what the assertions validate. State which parts are under test, which
   dependencies are real or substituted, and where an end-to-end path starts and ends.
